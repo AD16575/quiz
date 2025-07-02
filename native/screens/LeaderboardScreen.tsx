@@ -107,105 +107,148 @@ export default function LeaderboardScreen() {
       <Text style={[styles.sectionTitle, { color: themeState.colors.text }]}>
         🏆 Top Champions
       </Text>
-      <View style={styles.podium}>
-        {/* Second Place */}
-        <View style={[styles.podiumPlace, styles.secondPlace]}>
-          <View
-            style={[
-              styles.podiumAvatar,
-              { backgroundColor: themeState.colors.surface },
-            ]}
-          >
-            <Text style={styles.podiumAvatarText}>
-              {mockLeaderboard[1].avatar}
-            </Text>
-          </View>
-          <View style={[styles.podiumRank, { backgroundColor: "#C0C0C0" }]}>
-            <Text style={styles.podiumRankText}>2</Text>
-          </View>
-          <Text
-            style={[styles.podiumName, { color: themeState.colors.text }]}
-            numberOfLines={1}
-          >
-            {mockLeaderboard[1].name.split(" ")[0]}
-          </Text>
-          <Text
-            style={[
-              styles.podiumPoints,
-              { color: themeState.colors.textSecondary },
-            ]}
-          >
-            {mockLeaderboard[1].points.toLocaleString()}
-          </Text>
-        </View>
 
-        {/* First Place */}
-        <View style={[styles.podiumPlace, styles.firstPlace]}>
-          <Ionicons
-            name="crown"
-            size={24}
-            color="#FFD700"
-            style={styles.crown}
-          />
-          <View
-            style={[
-              styles.podiumAvatar,
-              styles.firstPlaceAvatar,
-              { backgroundColor: themeState.colors.surface },
-            ]}
-          >
-            <Text style={styles.podiumAvatarText}>
-              {mockLeaderboard[0].avatar}
+      {/* Improved Podium Layout */}
+      <View
+        style={[
+          styles.podiumContainer,
+          { backgroundColor: themeState.colors.surface },
+        ]}
+      >
+        <View style={styles.podiumGrid}>
+          {/* Second Place */}
+          <View style={[styles.podiumCard, styles.secondPlaceCard]}>
+            <View style={styles.rankBadge}>
+              <Text style={styles.rankNumber}>2</Text>
+            </View>
+            <View style={styles.championAvatar}>
+              <Text style={styles.championEmoji}>
+                {mockLeaderboard[1].avatar}
+              </Text>
+            </View>
+            <Text
+              style={[styles.championName, { color: themeState.colors.text }]}
+              numberOfLines={1}
+            >
+              {mockLeaderboard[1].name.split(" ")[0]}
             </Text>
+            <View style={styles.championStats}>
+              <View style={styles.statRow}>
+                <Ionicons name="star" size={16} color="#C0C0C0" />
+                <Text
+                  style={[
+                    styles.statValue,
+                    { color: themeState.colors.textSecondary },
+                  ]}
+                >
+                  {mockLeaderboard[1].points.toLocaleString()}
+                </Text>
+              </View>
+              <View style={styles.statRow}>
+                <Ionicons name="flame" size={16} color={Colors.light.accent} />
+                <Text
+                  style={[
+                    styles.statValue,
+                    { color: themeState.colors.textSecondary },
+                  ]}
+                >
+                  {mockLeaderboard[1].streak} streak
+                </Text>
+              </View>
+            </View>
           </View>
-          <View style={[styles.podiumRank, { backgroundColor: "#FFD700" }]}>
-            <Text style={styles.podiumRankText}>1</Text>
-          </View>
-          <Text
-            style={[styles.podiumName, { color: themeState.colors.text }]}
-            numberOfLines={1}
-          >
-            {mockLeaderboard[0].name.split(" ")[0]}
-          </Text>
-          <Text
-            style={[
-              styles.podiumPoints,
-              { color: themeState.colors.textSecondary },
-            ]}
-          >
-            {mockLeaderboard[0].points.toLocaleString()}
-          </Text>
-        </View>
 
-        {/* Third Place */}
-        <View style={[styles.podiumPlace, styles.thirdPlace]}>
-          <View
-            style={[
-              styles.podiumAvatar,
-              { backgroundColor: themeState.colors.surface },
-            ]}
-          >
-            <Text style={styles.podiumAvatarText}>
-              {mockLeaderboard[2].avatar}
+          {/* First Place */}
+          <View style={[styles.podiumCard, styles.firstPlaceCard]}>
+            <View style={styles.crownContainer}>
+              <Ionicons name="crown" size={32} color="#FFD700" />
+            </View>
+            <View style={styles.rankBadge}>
+              <Text style={styles.rankNumber}>1</Text>
+            </View>
+            <View style={[styles.championAvatar, styles.winnerAvatar]}>
+              <Text style={styles.championEmoji}>
+                {mockLeaderboard[0].avatar}
+              </Text>
+            </View>
+            <Text
+              style={[
+                styles.championName,
+                styles.winnerName,
+                { color: themeState.colors.text },
+              ]}
+              numberOfLines={1}
+            >
+              {mockLeaderboard[0].name.split(" ")[0]}
             </Text>
+            <View style={styles.championStats}>
+              <View style={styles.statRow}>
+                <Ionicons name="star" size={16} color="#FFD700" />
+                <Text
+                  style={[
+                    styles.statValue,
+                    styles.winnerStat,
+                    { color: themeState.colors.text },
+                  ]}
+                >
+                  {mockLeaderboard[0].points.toLocaleString()}
+                </Text>
+              </View>
+              <View style={styles.statRow}>
+                <Ionicons name="flame" size={16} color={Colors.light.accent} />
+                <Text
+                  style={[
+                    styles.statValue,
+                    { color: themeState.colors.textSecondary },
+                  ]}
+                >
+                  {mockLeaderboard[0].streak} streak
+                </Text>
+              </View>
+            </View>
           </View>
-          <View style={[styles.podiumRank, { backgroundColor: "#CD7F32" }]}>
-            <Text style={styles.podiumRankText}>3</Text>
+
+          {/* Third Place */}
+          <View style={[styles.podiumCard, styles.thirdPlaceCard]}>
+            <View style={styles.rankBadge}>
+              <Text style={styles.rankNumber}>3</Text>
+            </View>
+            <View style={styles.championAvatar}>
+              <Text style={styles.championEmoji}>
+                {mockLeaderboard[2].avatar}
+              </Text>
+            </View>
+            <Text
+              style={[styles.championName, { color: themeState.colors.text }]}
+              numberOfLines={1}
+            >
+              {mockLeaderboard[2].name.split(" ")[0]}
+            </Text>
+            <View style={styles.championStats}>
+              <View style={styles.statRow}>
+                <Ionicons name="star" size={16} color="#CD7F32" />
+                <Text
+                  style={[
+                    styles.statValue,
+                    { color: themeState.colors.textSecondary },
+                  ]}
+                >
+                  {mockLeaderboard[2].points.toLocaleString()}
+                </Text>
+              </View>
+              <View style={styles.statRow}>
+                <Ionicons name="flame" size={16} color={Colors.light.accent} />
+                <Text
+                  style={[
+                    styles.statValue,
+                    { color: themeState.colors.textSecondary },
+                  ]}
+                >
+                  {mockLeaderboard[2].streak} streak
+                </Text>
+              </View>
+            </View>
           </View>
-          <Text
-            style={[styles.podiumName, { color: themeState.colors.text }]}
-            numberOfLines={1}
-          >
-            {mockLeaderboard[2].name.split(" ")[0]}
-          </Text>
-          <Text
-            style={[
-              styles.podiumPoints,
-              { color: themeState.colors.textSecondary },
-            ]}
-          >
-            {mockLeaderboard[2].points.toLocaleString()}
-          </Text>
         </View>
       </View>
     </View>
@@ -232,7 +275,7 @@ export default function LeaderboardScreen() {
       <View style={styles.rankContainer}>
         <View
           style={[
-            styles.rankBadge,
+            styles.rankBadgeSmall,
             { backgroundColor: getRankColor(item.rank) + "20" },
           ]}
         >
@@ -344,7 +387,10 @@ export default function LeaderboardScreen() {
         </Text>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+      >
         {/* Current User Position */}
         {user && (
           <View style={styles.currentUserSection}>
@@ -384,70 +430,6 @@ export default function LeaderboardScreen() {
             ))}
           </View>
         </View>
-
-        {/* Weekly Stats */}
-        <View style={styles.statsSection}>
-          <Text
-            style={[styles.sectionTitle, { color: themeState.colors.text }]}
-          >
-            This Week's Stats
-          </Text>
-          <View style={styles.statsGrid}>
-            <View
-              style={[
-                styles.statCard,
-                { backgroundColor: themeState.colors.surface },
-              ]}
-            >
-              <Ionicons
-                name="people"
-                size={32}
-                color={Colors.light.primary}
-                style={styles.statIcon}
-              />
-              <Text
-                style={[styles.statValue, { color: themeState.colors.text }]}
-              >
-                1,234
-              </Text>
-              <Text
-                style={[
-                  styles.statLabel,
-                  { color: themeState.colors.textSecondary },
-                ]}
-              >
-                Active Players
-              </Text>
-            </View>
-
-            <View
-              style={[
-                styles.statCard,
-                { backgroundColor: themeState.colors.surface },
-              ]}
-            >
-              <Ionicons
-                name="play-circle"
-                size={32}
-                color={Colors.light.secondary}
-                style={styles.statIcon}
-              />
-              <Text
-                style={[styles.statValue, { color: themeState.colors.text }]}
-              >
-                5,678
-              </Text>
-              <Text
-                style={[
-                  styles.statLabel,
-                  { color: themeState.colors.textSecondary },
-                ]}
-              >
-                Quizzes Played
-              </Text>
-            </View>
-          </View>
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -456,6 +438,9 @@ export default function LeaderboardScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  scrollContent: {
+    paddingBottom: 100,
   },
   header: {
     paddingHorizontal: Spacing.md,
@@ -483,78 +468,120 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.md,
     marginBottom: Spacing.lg,
   },
-  podium: {
+  podiumContainer: {
+    borderRadius: BorderRadius.xl,
+    padding: Spacing.lg,
+    elevation: 5,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+  },
+  podiumGrid: {
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "end",
-    height: 220,
-    paddingHorizontal: Spacing.md,
+    height: 280,
   },
-  podiumPlace: {
-    alignItems: "center",
+  podiumCard: {
     flex: 1,
+    alignItems: "center",
     marginHorizontal: Spacing.xs,
+    backgroundColor: "rgba(255, 255, 255, 0.05)",
+    borderRadius: BorderRadius.lg,
+    paddingVertical: Spacing.lg,
+    paddingHorizontal: Spacing.sm,
+    position: "relative",
   },
-  firstPlace: {
+  firstPlaceCard: {
     marginBottom: 0,
+    backgroundColor: "rgba(255, 215, 0, 0.1)",
+    borderWidth: 2,
+    borderColor: "#FFD700",
   },
-  secondPlace: {
-    marginBottom: 30,
+  secondPlaceCard: {
+    marginBottom: 40,
+    backgroundColor: "rgba(192, 192, 192, 0.1)",
+    borderWidth: 2,
+    borderColor: "#C0C0C0",
   },
-  thirdPlace: {
-    marginBottom: 60,
+  thirdPlaceCard: {
+    marginBottom: 80,
+    backgroundColor: "rgba(205, 127, 50, 0.1)",
+    borderWidth: 2,
+    borderColor: "#CD7F32",
   },
-  crown: {
+  crownContainer: {
     position: "absolute",
-    top: -35,
+    top: -20,
     zIndex: 1,
   },
-  podiumAvatar: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
+  rankBadge: {
+    position: "absolute",
+    top: Spacing.sm,
+    right: Spacing.sm,
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: "#FFD700",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: Spacing.sm,
+    elevation: 3,
+  },
+  rankNumber: {
+    fontSize: FontSizes.xs,
+    fontWeight: "bold",
+    color: "white",
+  },
+  championAvatar: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: Spacing.md,
     elevation: 5,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
   },
-  firstPlaceAvatar: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+  winnerAvatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    borderWidth: 3,
+    borderColor: "#FFD700",
   },
-  podiumAvatarText: {
-    fontSize: 36,
+  championEmoji: {
+    fontSize: 40,
   },
-  podiumRank: {
-    position: "absolute",
-    bottom: 60,
-    right: 0,
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    justifyContent: "center",
-    alignItems: "center",
-    elevation: 3,
-  },
-  podiumRankText: {
-    fontSize: FontSizes.sm,
-    fontWeight: "bold",
-    color: "white",
-  },
-  podiumName: {
+  championName: {
     fontSize: FontSizes.md,
     fontWeight: "600",
     textAlign: "center",
-    marginBottom: 4,
+    marginBottom: Spacing.sm,
   },
-  podiumPoints: {
+  winnerName: {
+    fontSize: FontSizes.lg,
+    color: "#FFD700",
+  },
+  championStats: {
+    alignItems: "center",
+    gap: 4,
+  },
+  statRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+  },
+  statValue: {
+    fontSize: FontSizes.xs,
+  },
+  winnerStat: {
     fontSize: FontSizes.sm,
-    textAlign: "center",
+    fontWeight: "bold",
   },
   leaderboardSection: {
     paddingHorizontal: Spacing.md,
@@ -579,7 +606,7 @@ const styles = StyleSheet.create({
     marginRight: Spacing.md,
     minWidth: 50,
   },
-  rankBadge: {
+  rankBadgeSmall: {
     width: 36,
     height: 36,
     borderRadius: 18,
@@ -636,36 +663,5 @@ const styles = StyleSheet.create({
   },
   pointsLabel: {
     fontSize: FontSizes.xs,
-  },
-  statsSection: {
-    paddingHorizontal: Spacing.md,
-    paddingBottom: Spacing.xxl,
-  },
-  statsGrid: {
-    flexDirection: "row",
-    gap: Spacing.md,
-  },
-  statCard: {
-    flex: 1,
-    alignItems: "center",
-    padding: Spacing.lg,
-    borderRadius: BorderRadius.lg,
-    elevation: 2,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-  },
-  statIcon: {
-    marginBottom: Spacing.sm,
-  },
-  statValue: {
-    fontSize: FontSizes.xl,
-    fontWeight: "bold",
-    marginBottom: 4,
-  },
-  statLabel: {
-    fontSize: FontSizes.sm,
-    textAlign: "center",
   },
 });

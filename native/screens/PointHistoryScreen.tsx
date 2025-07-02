@@ -10,6 +10,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
+import { useTheme } from "../contexts/ThemeContext";
 
 const mockTransactions = [
   {
@@ -70,6 +71,7 @@ const filterTypes = ["All", "Quiz", "Referral", "Bonus", "Withdrawal"];
 
 export default function PointHistoryScreen() {
   const navigation = useNavigation();
+  const { state: themeState } = useTheme();
   const [selectedFilter, setSelectedFilter] = useState("All");
 
   const filteredTransactions = mockTransactions.filter(
@@ -102,7 +104,12 @@ export default function PointHistoryScreen() {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[
+        styles.container,
+        { backgroundColor: themeState.colors.background },
+      ]}
+    >
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>

@@ -13,6 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
+import { useTheme } from "../contexts/ThemeContext";
 
 const paymentMethods = [
   { id: "paypal", name: "PayPal", icon: "card", min: 100 },
@@ -48,6 +49,7 @@ const statusColors = {
 export default function WithdrawalScreen() {
   const navigation = useNavigation();
   const { state } = useQuiz();
+  const { state: themeState } = useTheme();
   const user = state.user;
   const [amount, setAmount] = useState("");
   const [selectedMethod, setSelectedMethod] = useState("");
@@ -75,7 +77,12 @@ export default function WithdrawalScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[
+        styles.container,
+        { backgroundColor: themeState.colors.background },
+      ]}
+    >
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
