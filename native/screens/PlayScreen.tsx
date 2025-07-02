@@ -12,12 +12,14 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
+import { useTheme } from "../contexts/ThemeContext";
 
 const { width } = Dimensions.get("window");
 
 export default function PlayScreen() {
   const navigation = useNavigation();
   const { state } = useQuiz();
+  const { state: themeState } = useTheme();
   const { categories, user } = state;
 
   const CategoryCard = ({
@@ -28,29 +30,62 @@ export default function PlayScreen() {
     index: number;
   }) => (
     <TouchableOpacity
-      style={[styles.categoryCard, { backgroundColor: category.color + "15" }]}
+      style={[
+        styles.categoryCard,
+        { backgroundColor: themeState.colors.surface },
+      ]}
       onPress={() =>
         navigation.navigate(
           "QuizList" as never,
           { categoryId: category.id } as never,
         )
       }
+      activeOpacity={0.8}
     >
       <View style={[styles.categoryIcon, { backgroundColor: category.color }]}>
         <Text style={styles.categoryEmoji}>{category.icon}</Text>
       </View>
       <View style={styles.categoryContent}>
-        <Text style={styles.categoryName}>{category.name}</Text>
-        <Text style={styles.categoryDescription}>{category.description}</Text>
+        <Text style={[styles.categoryName, { color: themeState.colors.text }]}>
+          {category.name}
+        </Text>
+        <Text
+          style={[
+            styles.categoryDescription,
+            { color: themeState.colors.textSecondary },
+          ]}
+        >
+          {category.description}
+        </Text>
         <View style={styles.categoryStats}>
           <View style={styles.statItem}>
-            <Text style={styles.statNumber}>{20 + index * 5}</Text>
-            <Text style={styles.statLabel}>Quizzes</Text>
+            <Text
+              style={[styles.statNumber, { color: themeState.colors.text }]}
+            >
+              {20 + index * 5}
+            </Text>
+            <Text
+              style={[
+                styles.statLabel,
+                { color: themeState.colors.textSecondary },
+              ]}
+            >
+              Quizzes
+            </Text>
           </View>
           <TouchableOpacity
             style={[styles.playButton, { backgroundColor: category.color }]}
+            onPress={(e) => {
+              e.stopPropagation(); // Prevent parent TouchableOpacity from firing
+              navigation.navigate(
+                "QuizList" as never,
+                { categoryId: category.id } as never,
+              );
+            }}
+            activeOpacity={0.8}
           >
-            <Text style={styles.playButtonText}>Play Now</Text>
+            <Ionicons name="play" size={16} color="white" />
+            <Text style={styles.playButtonText}>Play</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.difficultyIndicator}>
@@ -61,7 +96,7 @@ export default function PlayScreen() {
                 styles.star,
                 {
                   backgroundColor:
-                    star <= 4 ? Colors.light.accent : Colors.light.border,
+                    star <= 4 ? Colors.light.accent : themeState.colors.border,
                 },
               ]}
             />
@@ -72,17 +107,40 @@ export default function PlayScreen() {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[
+        styles.container,
+        { backgroundColor: themeState.colors.background },
+      ]}
+    >
       {/* Header */}
       <View style={styles.header}>
         <View>
-          <Text style={styles.title}>Quiz Categories</Text>
-          <Text style={styles.subtitle}>Choose your favorite topic</Text>
+          <Text style={[styles.title, { color: themeState.colors.text }]}>
+            Quiz Categories
+          </Text>
+          <Text
+            style={[
+              styles.subtitle,
+              { color: themeState.colors.textSecondary },
+            ]}
+          >
+            Choose your favorite topic
+          </Text>
         </View>
         {user && (
-          <View style={styles.pointsContainer}>
+          <View
+            style={[
+              styles.pointsContainer,
+              { backgroundColor: themeState.colors.surface },
+            ]}
+          >
             <Ionicons name="star" size={20} color={Colors.light.accent} />
-            <Text style={styles.pointsText}>{user.points}</Text>
+            <Text
+              style={[styles.pointsText, { color: themeState.colors.text }]}
+            >
+              {user.points}
+            </Text>
           </View>
         )}
       </View>
@@ -97,12 +155,26 @@ export default function PlayScreen() {
 
         {/* Random Quiz Section */}
         <View style={styles.randomSection}>
-          <View style={styles.randomCard}>
+          <View
+            style={[
+              styles.randomCard,
+              { backgroundColor: themeState.colors.surface },
+            ]}
+          >
             <View style={styles.randomIcon}>
               <Ionicons name="shuffle" size={48} color={Colors.light.primary} />
             </View>
-            <Text style={styles.randomTitle}>Can't Decide?</Text>
-            <Text style={styles.randomSubtitle}>
+            <Text
+              style={[styles.randomTitle, { color: themeState.colors.text }]}
+            >
+              Can't Decide?
+            </Text>
+            <Text
+              style={[
+                styles.randomSubtitle,
+                { color: themeState.colors.textSecondary },
+              ]}
+            >
               Let us pick a random quiz for you!
             </Text>
             <TouchableOpacity
@@ -115,6 +187,7 @@ export default function PlayScreen() {
                   { categoryId: randomCategory.id } as never,
                 );
               }}
+              activeOpacity={0.8}
             >
               <Text style={styles.surpriseButtonText}>Surprise Me!</Text>
             </TouchableOpacity>
@@ -128,7 +201,6 @@ export default function PlayScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.light.background,
   },
   header: {
     flexDirection: "row",
@@ -140,26 +212,27 @@ const styles = StyleSheet.create({
   title: {
     fontSize: FontSizes.xxl,
     fontWeight: "bold",
-    color: Colors.light.text,
   },
   subtitle: {
     fontSize: FontSizes.md,
-    color: Colors.light.textSecondary,
     marginTop: 4,
   },
   pointsContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: Colors.light.surface,
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.sm,
     borderRadius: BorderRadius.full,
     gap: Spacing.xs,
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
   },
   pointsText: {
     fontSize: FontSizes.md,
     fontWeight: "600",
-    color: Colors.light.text,
   },
   categoriesContainer: {
     padding: Spacing.md,
@@ -167,9 +240,14 @@ const styles = StyleSheet.create({
   },
   categoryCard: {
     borderRadius: BorderRadius.xl,
-    padding: Spacing.md,
+    padding: Spacing.lg,
     flexDirection: "row",
     alignItems: "center",
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
   categoryIcon: {
     width: 80,
@@ -177,7 +255,7 @@ const styles = StyleSheet.create({
     borderRadius: BorderRadius.xl,
     justifyContent: "center",
     alignItems: "center",
-    marginRight: Spacing.md,
+    marginRight: Spacing.lg,
   },
   categoryEmoji: {
     fontSize: 40,
@@ -188,13 +266,12 @@ const styles = StyleSheet.create({
   categoryName: {
     fontSize: FontSizes.lg,
     fontWeight: "bold",
-    color: Colors.light.text,
     marginBottom: Spacing.xs,
   },
   categoryDescription: {
     fontSize: FontSizes.sm,
-    color: Colors.light.textSecondary,
     marginBottom: Spacing.md,
+    lineHeight: 18,
   },
   categoryStats: {
     flexDirection: "row",
@@ -208,42 +285,50 @@ const styles = StyleSheet.create({
   statNumber: {
     fontSize: FontSizes.xl,
     fontWeight: "bold",
-    color: Colors.light.primary,
   },
   statLabel: {
     fontSize: FontSizes.xs,
-    color: Colors.light.textSecondary,
   },
   playButton: {
-    paddingHorizontal: Spacing.md,
+    paddingHorizontal: Spacing.lg,
     paddingVertical: Spacing.sm,
-    borderRadius: BorderRadius.md,
+    borderRadius: BorderRadius.full,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Spacing.xs,
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
   },
   playButtonText: {
     color: "white",
-    fontSize: FontSizes.sm,
+    fontSize: FontSizes.md,
     fontWeight: "600",
   },
   difficultyIndicator: {
     flexDirection: "row",
-    gap: 4,
+    gap: 6,
   },
   star: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
+    width: 10,
+    height: 10,
+    borderRadius: 5,
   },
   randomSection: {
     paddingHorizontal: Spacing.md,
-    paddingBottom: Spacing.xl,
+    paddingBottom: Spacing.xxl,
   },
   randomCard: {
-    backgroundColor: `${Colors.light.primary}15`,
     borderRadius: BorderRadius.xl,
     padding: Spacing.xl,
     alignItems: "center",
-    borderWidth: 2,
-    borderColor: `${Colors.light.primary}30`,
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
   randomIcon: {
     marginBottom: Spacing.md,
@@ -251,20 +336,24 @@ const styles = StyleSheet.create({
   randomTitle: {
     fontSize: FontSizes.lg,
     fontWeight: "bold",
-    color: Colors.light.text,
     marginBottom: Spacing.sm,
   },
   randomSubtitle: {
     fontSize: FontSizes.sm,
-    color: Colors.light.textSecondary,
     textAlign: "center",
     marginBottom: Spacing.lg,
+    lineHeight: 18,
   },
   surpriseButton: {
     backgroundColor: Colors.light.primary,
     paddingHorizontal: Spacing.xl,
     paddingVertical: Spacing.md,
     borderRadius: BorderRadius.full,
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
   },
   surpriseButtonText: {
     color: "white",
