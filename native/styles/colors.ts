@@ -2,7 +2,7 @@ export const Colors = {
   light: {
     primary: "#E91E63", // Squid Game Pink
     secondary: "#0F766E", // Squid Game Teal
-    accent: "#FFFF00", // Squid Game Yellow
+    accent: "#FF6B35", // Better orange accent
     background: "#FFFFFF",
     surface: "#F8F9FA",
     text: "#1F2937",
@@ -15,7 +15,7 @@ export const Colors = {
   dark: {
     primary: "#E91E63",
     secondary: "#0F766E",
-    accent: "#FFFF00",
+    accent: "#FF6B35",
     background: "#111827",
     surface: "#1F2937",
     text: "#F9FAFB",
