@@ -145,7 +145,10 @@ export default function PlayScreen() {
         )}
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+      >
         {/* Categories Grid */}
         <View style={styles.categoriesContainer}>
           {categories.map((category, index) => (
@@ -201,6 +204,9 @@ export default function PlayScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  scrollContent: {
+    paddingBottom: 100,
   },
   header: {
     flexDirection: "row",

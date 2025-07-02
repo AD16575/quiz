@@ -11,25 +11,38 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
+import { useTheme } from "../contexts/ThemeContext";
 
 const { width, height } = Dimensions.get("window");
 
 export default function WelcomeScreen() {
   const navigation = useNavigation();
   const { state, dispatch } = useQuiz();
+  const { state: themeState, dispatch: themeDispatch } = useTheme();
 
   const toggleTheme = () => {
-    dispatch({ type: "TOGGLE_THEME" });
+    themeDispatch({ type: "TOGGLE_THEME" });
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[
+        styles.container,
+        { backgroundColor: themeState.colors.background },
+      ]}
+    >
       {/* Theme Toggle */}
-      <TouchableOpacity style={styles.themeToggle} onPress={toggleTheme}>
+      <TouchableOpacity
+        style={[
+          styles.themeToggle,
+          { backgroundColor: themeState.colors.surface },
+        ]}
+        onPress={toggleTheme}
+      >
         <Ionicons
-          name={state.theme === "dark" ? "sunny" : "moon"}
+          name={themeState.isDark ? "sunny" : "moon"}
           size={24}
-          color={Colors.light.text}
+          color={themeState.colors.text}
         />
       </TouchableOpacity>
 

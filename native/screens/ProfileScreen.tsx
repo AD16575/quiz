@@ -7,15 +7,20 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Alert,
+  Dimensions,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
+import { useTheme } from "../contexts/ThemeContext";
+
+const { width } = Dimensions.get("window");
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
   const { state, dispatch } = useQuiz();
+  const { state: themeState } = useTheme();
   const { user } = state;
 
   if (!user) return null;
@@ -79,12 +84,20 @@ export default function ProfileScreen() {
     icon: keyof typeof Ionicons.glyphMap;
     color: string;
   }) => (
-    <View style={styles.statCard}>
+    <View
+      style={[styles.statCard, { backgroundColor: themeState.colors.surface }]}
+    >
       <View style={[styles.statIcon, { backgroundColor: color + "20" }]}>
-        <Ionicons name={icon} size={24} color={color} />
+        <Ionicons name={icon} size={28} color={color} />
       </View>
-      <Text style={styles.statValue}>{value.toLocaleString()}</Text>
-      <Text style={styles.statTitle}>{title}</Text>
+      <Text style={[styles.statValue, { color: themeState.colors.text }]}>
+        {value.toLocaleString()}
+      </Text>
+      <Text
+        style={[styles.statTitle, { color: themeState.colors.textSecondary }]}
+      >
+        {title}
+      </Text>
     </View>
   );
 
@@ -92,7 +105,7 @@ export default function ProfileScreen() {
     title,
     icon,
     onPress,
-    color = Colors.light.text,
+    color = themeState.colors.text,
     destructive = false,
   }: {
     title: string;
@@ -102,8 +115,13 @@ export default function ProfileScreen() {
     destructive?: boolean;
   }) => (
     <TouchableOpacity
-      style={[styles.menuButton, destructive && styles.destructiveButton]}
+      style={[
+        styles.menuButton,
+        { backgroundColor: themeState.colors.surface },
+        destructive && styles.destructiveButton,
+      ]}
       onPress={onPress}
+      activeOpacity={0.7}
     >
       <View style={styles.menuLeft}>
         <View
@@ -121,7 +139,7 @@ export default function ProfileScreen() {
         <Text
           style={[
             styles.menuTitle,
-            { color: destructive ? "#EF4444" : Colors.light.text },
+            { color: destructive ? "#EF4444" : themeState.colors.text },
           ]}
         >
           {title}
@@ -130,70 +148,126 @@ export default function ProfileScreen() {
       <Ionicons
         name="chevron-forward"
         size={20}
-        color={Colors.light.textSecondary}
+        color={themeState.colors.textSecondary}
       />
     </TouchableOpacity>
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Header */}
-        <View style={styles.header}>
-          <View style={styles.profileInfo}>
-            <View style={styles.avatar}>
-              <Text style={styles.avatarText}>{user.name.charAt(0)}</Text>
+    <SafeAreaView
+      style={[
+        styles.container,
+        { backgroundColor: themeState.colors.background },
+      ]}
+    >
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+      >
+        {/* Profile Header */}
+        <View
+          style={[
+            styles.header,
+            { backgroundColor: `${Colors.light.primary}15` },
+          ]}
+        >
+          <View style={styles.profileContainer}>
+            <View style={styles.avatarContainer}>
+              <View style={styles.avatar}>
+                <Text style={styles.avatarText}>{user.name.charAt(0)}</Text>
+              </View>
+              <TouchableOpacity style={styles.editAvatarButton}>
+                <Ionicons name="camera" size={16} color="white" />
+              </TouchableOpacity>
             </View>
-            <View style={styles.userDetails}>
-              <Text style={styles.userName}>{user.name}</Text>
-              <Text style={styles.userEmail}>{user.email}</Text>
-              <Text style={styles.memberSince}>
-                Member since {user.memberSince.toLocaleDateString()}
+
+            <View style={styles.userInfo}>
+              <Text
+                style={[styles.userName, { color: themeState.colors.text }]}
+              >
+                {user.name}
               </Text>
+              <Text
+                style={[
+                  styles.userEmail,
+                  { color: themeState.colors.textSecondary },
+                ]}
+              >
+                {user.email}
+              </Text>
+              <View style={styles.membershipInfo}>
+                <Ionicons
+                  name="calendar"
+                  size={16}
+                  color={themeState.colors.textSecondary}
+                />
+                <Text
+                  style={[
+                    styles.memberSince,
+                    { color: themeState.colors.textSecondary },
+                  ]}
+                >
+                  Member since {user.memberSince.toLocaleDateString()}
+                </Text>
+              </View>
             </View>
+
+            <TouchableOpacity style={styles.editButton}>
+              <Ionicons name="create" size={20} color={Colors.light.primary} />
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.editButton}>
-            <Ionicons name="create" size={20} color={Colors.light.primary} />
-          </TouchableOpacity>
         </View>
 
         {/* Stats Grid */}
-        <View style={styles.statsContainer}>
-          <StatCard
-            title="Total Points"
-            value={user.points}
-            icon="star"
-            color={Colors.light.primary}
-          />
-          <StatCard
-            title="Quizzes Played"
-            value={user.totalQuizzes}
-            icon="play-circle"
-            color={Colors.light.secondary}
-          />
-          <StatCard
-            title="Referrals"
-            value={user.referredUsers}
-            icon="people"
-            color={Colors.light.accent}
-          />
-          <StatCard
-            title="Achievements"
-            value={achievements.filter((a) => a.earned).length}
-            icon="trophy"
-            color="#8B5CF6"
-          />
+        <View style={styles.statsSection}>
+          <Text
+            style={[styles.sectionTitle, { color: themeState.colors.text }]}
+          >
+            Your Statistics
+          </Text>
+          <View style={styles.statsGrid}>
+            <StatCard
+              title="Total Points"
+              value={user.points}
+              icon="star"
+              color={Colors.light.primary}
+            />
+            <StatCard
+              title="Quizzes Played"
+              value={user.totalQuizzes}
+              icon="play-circle"
+              color={Colors.light.secondary}
+            />
+            <StatCard
+              title="Referrals"
+              value={user.referredUsers}
+              icon="people"
+              color={Colors.light.accent}
+            />
+            <StatCard
+              title="Achievements"
+              value={achievements.filter((a) => a.earned).length}
+              icon="trophy"
+              color="#FFD700"
+            />
+          </View>
         </View>
 
         {/* Achievements */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Achievements</Text>
-          <View style={styles.achievementsContainer}>
+          <Text
+            style={[styles.sectionTitle, { color: themeState.colors.text }]}
+          >
+            Achievements ({achievements.filter((a) => a.earned).length}/
+            {achievements.length})
+          </Text>
+          <View style={styles.achievementsGrid}>
             {achievements.map((achievement) => (
               <View
                 key={achievement.id}
                 style={[
                   styles.achievementCard,
+                  { backgroundColor: themeState.colors.surface },
                   !achievement.earned && styles.lockedAchievement,
                 ]}
               >
@@ -203,48 +277,61 @@ export default function ProfileScreen() {
                     {
                       backgroundColor: achievement.earned
                         ? achievement.color + "20"
-                        : Colors.light.border + "50",
+                        : themeState.colors.border + "50",
                     },
                   ]}
                 >
                   <Ionicons
                     name={achievement.icon as any}
-                    size={24}
+                    size={28}
                     color={
                       achievement.earned
                         ? achievement.color
-                        : Colors.light.textSecondary
+                        : themeState.colors.textSecondary
                     }
                   />
                 </View>
-                <View style={styles.achievementInfo}>
-                  <Text
-                    style={[
-                      styles.achievementTitle,
-                      !achievement.earned && styles.lockedText,
-                    ]}
-                  >
-                    {achievement.title}
-                  </Text>
-                  <Text style={styles.achievementDescription}>
-                    {achievement.description}
-                  </Text>
-                </View>
+                <Text
+                  style={[
+                    styles.achievementTitle,
+                    {
+                      color: achievement.earned
+                        ? themeState.colors.text
+                        : themeState.colors.textSecondary,
+                    },
+                  ]}
+                >
+                  {achievement.title}
+                </Text>
+                <Text
+                  style={[
+                    styles.achievementDescription,
+                    { color: themeState.colors.textSecondary },
+                  ]}
+                >
+                  {achievement.description}
+                </Text>
                 {achievement.earned && (
-                  <Ionicons
-                    name="checkmark-circle"
-                    size={20}
-                    color={achievement.color}
-                  />
+                  <View style={styles.achievementBadge}>
+                    <Ionicons
+                      name="checkmark-circle"
+                      size={20}
+                      color={achievement.color}
+                    />
+                  </View>
                 )}
               </View>
             ))}
           </View>
         </View>
 
-        {/* Menu */}
+        {/* Menu Sections */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Account</Text>
+          <Text
+            style={[styles.sectionTitle, { color: themeState.colors.text }]}
+          >
+            Account
+          </Text>
           <View style={styles.menuContainer}>
             <MenuButton
               title="Point History"
@@ -268,14 +355,18 @@ export default function ProfileScreen() {
               title="Settings"
               icon="settings"
               onPress={() => navigation.navigate("Settings" as never)}
-              color={Colors.light.textSecondary}
+              color={themeState.colors.textSecondary}
             />
           </View>
         </View>
 
         {/* Support */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Support</Text>
+          <Text
+            style={[styles.sectionTitle, { color: themeState.colors.text }]}
+          >
+            Support
+          </Text>
           <View style={styles.menuContainer}>
             <MenuButton
               title="Help & FAQ"
@@ -293,21 +384,19 @@ export default function ProfileScreen() {
               title="Terms & Privacy"
               icon="document-text"
               onPress={() => {}}
-              color={Colors.light.textSecondary}
+              color={themeState.colors.textSecondary}
             />
           </View>
         </View>
 
         {/* Logout */}
         <View style={styles.section}>
-          <View style={styles.menuContainer}>
-            <MenuButton
-              title="Logout"
-              icon="log-out"
-              onPress={handleLogout}
-              destructive={true}
-            />
-          </View>
+          <MenuButton
+            title="Logout"
+            icon="log-out"
+            onPress={handleLogout}
+            destructive={true}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -317,21 +406,23 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.light.background,
+  },
+  scrollContent: {
+    paddingBottom: 100,
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: Spacing.md,
-    backgroundColor: `${Colors.light.primary}10`,
-    borderBottomLeftRadius: BorderRadius.xl,
-    borderBottomRightRadius: BorderRadius.xl,
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.xl,
+    borderBottomLeftRadius: BorderRadius.xl * 2,
+    borderBottomRightRadius: BorderRadius.xl * 2,
   },
-  profileInfo: {
+  profileContainer: {
     flexDirection: "row",
     alignItems: "center",
-    flex: 1,
+  },
+  avatarContainer: {
+    position: "relative",
+    marginRight: Spacing.lg,
   },
   avatar: {
     width: 80,
@@ -340,54 +431,89 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.light.primary,
     justifyContent: "center",
     alignItems: "center",
-    marginRight: Spacing.md,
+    elevation: 5,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
   },
   avatarText: {
-    fontSize: 32,
+    fontSize: FontSizes.xxxl,
     fontWeight: "bold",
     color: "white",
   },
-  userDetails: {
+  editAvatarButton: {
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: Colors.light.secondary,
+    justifyContent: "center",
+    alignItems: "center",
+    elevation: 3,
+  },
+  userInfo: {
     flex: 1,
   },
   userName: {
-    fontSize: FontSizes.xl,
+    fontSize: FontSizes.xxl,
     fontWeight: "bold",
-    color: Colors.light.text,
+    marginBottom: 4,
   },
   userEmail: {
     fontSize: FontSizes.md,
-    color: Colors.light.textSecondary,
-    marginTop: 4,
+    marginBottom: Spacing.sm,
+  },
+  membershipInfo: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
   },
   memberSince: {
     fontSize: FontSizes.sm,
-    color: Colors.light.textSecondary,
-    marginTop: 2,
   },
   editButton: {
     padding: Spacing.sm,
     borderRadius: BorderRadius.full,
-    backgroundColor: Colors.light.background,
+    backgroundColor: "white",
+    elevation: 2,
   },
-  statsContainer: {
+  statsSection: {
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.lg,
+  },
+  section: {
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.lg,
+  },
+  sectionTitle: {
+    fontSize: FontSizes.lg,
+    fontWeight: "600",
+    marginBottom: Spacing.md,
+  },
+  statsGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    padding: Spacing.md,
     gap: Spacing.sm,
   },
   statCard: {
     flex: 1,
-    backgroundColor: Colors.light.surface,
+    minWidth: (width - Spacing.md * 2 - Spacing.sm) / 2 - Spacing.sm,
     borderRadius: BorderRadius.lg,
     padding: Spacing.md,
     alignItems: "center",
-    minWidth: "45%",
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
   },
   statIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: BorderRadius.lg,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: Spacing.sm,
@@ -395,76 +521,73 @@ const styles = StyleSheet.create({
   statValue: {
     fontSize: FontSizes.xl,
     fontWeight: "bold",
-    color: Colors.light.text,
+    marginBottom: 4,
   },
   statTitle: {
     fontSize: FontSizes.sm,
-    color: Colors.light.textSecondary,
     textAlign: "center",
-    marginTop: 4,
   },
-  section: {
-    paddingHorizontal: Spacing.md,
-    paddingBottom: Spacing.lg,
-  },
-  sectionTitle: {
-    fontSize: FontSizes.lg,
-    fontWeight: "600",
-    color: Colors.light.text,
-    marginBottom: Spacing.md,
-  },
-  achievementsContainer: {
+  achievementsGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
     gap: Spacing.sm,
   },
   achievementCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: Colors.light.surface,
+    width: (width - Spacing.md * 2 - Spacing.sm) / 2,
     borderRadius: BorderRadius.lg,
     padding: Spacing.md,
+    alignItems: "center",
+    position: "relative",
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
   },
   lockedAchievement: {
     opacity: 0.6,
   },
   achievementIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: BorderRadius.lg,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
     justifyContent: "center",
     alignItems: "center",
-    marginRight: Spacing.md,
-  },
-  achievementInfo: {
-    flex: 1,
+    marginBottom: Spacing.sm,
   },
   achievementTitle: {
     fontSize: FontSizes.md,
     fontWeight: "600",
-    color: Colors.light.text,
-  },
-  lockedText: {
-    color: Colors.light.textSecondary,
+    textAlign: "center",
+    marginBottom: Spacing.xs,
   },
   achievementDescription: {
     fontSize: FontSizes.sm,
-    color: Colors.light.textSecondary,
-    marginTop: 2,
+    textAlign: "center",
+    lineHeight: 18,
+  },
+  achievementBadge: {
+    position: "absolute",
+    top: 8,
+    right: 8,
   },
   menuContainer: {
-    backgroundColor: Colors.light.surface,
-    borderRadius: BorderRadius.lg,
-    overflow: "hidden",
+    gap: Spacing.xs,
   },
   menuButton: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     padding: Spacing.md,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.light.border,
+    borderRadius: BorderRadius.lg,
+    elevation: 1,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
   },
   destructiveButton: {
-    borderBottomWidth: 0,
+    backgroundColor: "#EF444410",
   },
   menuLeft: {
     flexDirection: "row",
@@ -472,9 +595,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   menuIcon: {
-    width: 32,
-    height: 32,
-    borderRadius: BorderRadius.md,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
     marginRight: Spacing.sm,

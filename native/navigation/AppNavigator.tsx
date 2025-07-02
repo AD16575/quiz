@@ -6,6 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { RootStackParamList, BottomTabParamList } from "../types";
 import { Colors } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
+import { useTheme } from "../contexts/ThemeContext";
 
 // Screens
 import SplashScreen from "../screens/SplashScreen";
@@ -28,6 +29,8 @@ const Stack = createStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 function BottomTabNavigator() {
+  const { state: themeState } = useTheme();
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -49,10 +52,10 @@ function BottomTabNavigator() {
           return <Ionicons name={iconName} size={size} color={color} />;
         },
         tabBarActiveTintColor: Colors.light.primary,
-        tabBarInactiveTintColor: Colors.light.textSecondary,
+        tabBarInactiveTintColor: themeState.colors.textSecondary,
         tabBarStyle: {
-          backgroundColor: Colors.light.background,
-          borderTopColor: Colors.light.border,
+          backgroundColor: themeState.colors.surface,
+          borderTopColor: themeState.colors.border,
           height: 85,
           paddingBottom: 25,
           paddingTop: 8,
