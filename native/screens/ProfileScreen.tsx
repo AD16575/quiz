@@ -249,25 +249,25 @@ export default function ProfileScreen() {
             <MenuButton
               title="Point History"
               icon="trending-up"
-              onPress={() => {}}
+              onPress={() => navigation.navigate("PointHistory" as never)}
               color={Colors.light.secondary}
             />
             <MenuButton
               title="Referral Program"
               icon="people"
-              onPress={() => {}}
+              onPress={() => navigation.navigate("Referral" as never)}
               color={Colors.light.primary}
             />
             <MenuButton
               title="Withdrawal"
               icon="wallet"
-              onPress={() => {}}
+              onPress={() => navigation.navigate("Withdrawal" as never)}
               color={Colors.light.accent}
             />
             <MenuButton
               title="Settings"
               icon="settings"
-              onPress={() => {}}
+              onPress={() => navigation.navigate("Settings" as never)}
               color={Colors.light.textSecondary}
             />
           </View>

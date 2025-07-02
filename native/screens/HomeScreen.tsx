@@ -161,7 +161,10 @@ export default function HomeScreen() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Quick Actions</Text>
           <View style={styles.quickActions}>
-            <TouchableOpacity style={styles.quickActionCard}>
+            <TouchableOpacity
+              style={styles.quickActionCard}
+              onPress={() => navigation.navigate("Referral" as never)}
+            >
               <Ionicons
                 name="people"
                 size={32}
@@ -173,7 +176,10 @@ export default function HomeScreen() {
               </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.quickActionCard}>
+            <TouchableOpacity
+              style={styles.quickActionCard}
+              onPress={() => navigation.navigate("Withdrawal" as never)}
+            >
               <Ionicons name="wallet" size={32} color={Colors.light.accent} />
               <Text style={styles.quickActionTitle}>Withdraw</Text>
               <Text style={styles.quickActionSubtitle}>
