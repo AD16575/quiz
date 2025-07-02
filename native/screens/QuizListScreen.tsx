@@ -10,6 +10,7 @@ import {
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
+import { useTheme } from "../contexts/ThemeContext";
 
 const mockQuizzes = [
   {
@@ -44,6 +45,7 @@ const mockQuizzes = [
 export default function QuizListScreen() {
   const navigation = useNavigation();
   const route = useRoute();
+  const { state: themeState } = useTheme();
   const { categoryId } = route.params as any;
 
   const difficultyColors = {
@@ -53,14 +55,13 @@ export default function QuizListScreen() {
   };
 
   const QuizCard = ({ quiz }: { quiz: any }) => (
-    <TouchableOpacity
-      style={styles.quizCard}
-      onPress={() =>
-        navigation.navigate("QuizPlay" as never, { quizId: quiz.id } as never)
-      }
+    <View
+      style={[styles.quizCard, { backgroundColor: themeState.colors.surface }]}
     >
       <View style={styles.quizHeader}>
-        <Text style={styles.quizTitle}>{quiz.title}</Text>
+        <Text style={[styles.quizTitle, { color: themeState.colors.text }]}>
+          {quiz.title}
+        </Text>
         <View
           style={[
             styles.difficultyBadge,
@@ -83,49 +84,134 @@ export default function QuizListScreen() {
           <Ionicons
             name="help-circle"
             size={16}
-            color={Colors.light.textSecondary}
+            color={themeState.colors.textSecondary}
           />
-          <Text style={styles.statText}>{quiz.questions} Questions</Text>
+          <Text
+            style={[
+              styles.statText,
+              { color: themeState.colors.textSecondary },
+            ]}
+          >
+            {quiz.questions} Questions
+          </Text>
         </View>
         <View style={styles.statItem}>
-          <Ionicons name="time" size={16} color={Colors.light.textSecondary} />
-          <Text style={styles.statText}>{quiz.timeLimit}m</Text>
+          <Ionicons
+            name="time"
+            size={16}
+            color={themeState.colors.textSecondary}
+          />
+          <Text
+            style={[
+              styles.statText,
+              { color: themeState.colors.textSecondary },
+            ]}
+          >
+            {quiz.timeLimit}m
+          </Text>
         </View>
         <View style={styles.statItem}>
           <Ionicons name="star" size={16} color={Colors.light.accent} />
-          <Text style={styles.statText}>{quiz.rating}</Text>
+          <Text
+            style={[
+              styles.statText,
+              { color: themeState.colors.textSecondary },
+            ]}
+          >
+            {quiz.rating}
+          </Text>
         </View>
       </View>
 
       <View style={styles.quizFooter}>
         <View style={styles.pointsContainer}>
           <Text style={styles.pointsText}>+{quiz.pointsReward}</Text>
-          <Text style={styles.pointsLabel}>points</Text>
+          <Text
+            style={[
+              styles.pointsLabel,
+              { color: themeState.colors.textSecondary },
+            ]}
+          >
+            points
+          </Text>
         </View>
-        <TouchableOpacity style={styles.playButton}>
+        <TouchableOpacity
+          style={styles.playButton}
+          onPress={() =>
+            navigation.navigate(
+              "QuizPlay" as never,
+              { quizId: quiz.id } as never,
+            )
+          }
+          activeOpacity={0.8}
+        >
           <Ionicons name="play" size={16} color="white" />
           <Text style={styles.playButtonText}>Play</Text>
         </TouchableOpacity>
       </View>
-    </TouchableOpacity>
+
+      <Text
+        style={[
+          styles.quizDescription,
+          { color: themeState.colors.textSecondary },
+        ]}
+      >
+        Test your knowledge in this {quiz.difficulty.toLowerCase()} level quiz
+        with {quiz.questions} carefully crafted questions.
+      </Text>
+    </View>
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[
+        styles.container,
+        { backgroundColor: themeState.colors.background },
+      ]}
+    >
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color={Colors.light.text} />
+          <Ionicons
+            name="arrow-back"
+            size={24}
+            color={themeState.colors.text}
+          />
         </TouchableOpacity>
-        <Text style={styles.title}>Quizzes</Text>
+        <Text style={[styles.title, { color: themeState.colors.text }]}>
+          Quizzes
+        </Text>
         <View style={styles.placeholder} />
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+      >
         <View style={styles.content}>
           {mockQuizzes.map((quiz) => (
             <QuizCard key={quiz.id} quiz={quiz} />
           ))}
+        </View>
+
+        <View style={styles.bottomSection}>
+          <Text
+            style={[
+              styles.bottomText,
+              { color: themeState.colors.textSecondary },
+            ]}
+          >
+            Looking for more quizzes?
+          </Text>
+          <TouchableOpacity
+            style={[
+              styles.browseButton,
+              { backgroundColor: themeState.colors.surface },
+            ]}
+            onPress={() => navigation.navigate("Play" as never)}
+          >
+            <Text style={styles.browseButtonText}>Browse All Categories</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -135,7 +221,6 @@ export default function QuizListScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.light.background,
   },
   header: {
     flexDirection: "row",
@@ -147,20 +232,21 @@ const styles = StyleSheet.create({
   title: {
     fontSize: FontSizes.xl,
     fontWeight: "bold",
-    color: Colors.light.text,
   },
   placeholder: {
     width: 24,
+  },
+  scrollContent: {
+    paddingBottom: 100,
   },
   content: {
     padding: Spacing.md,
     gap: Spacing.md,
   },
   quizCard: {
-    backgroundColor: Colors.light.surface,
     borderRadius: BorderRadius.lg,
-    padding: Spacing.md,
-    elevation: 2,
+    padding: Spacing.lg,
+    elevation: 3,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
@@ -175,7 +261,6 @@ const styles = StyleSheet.create({
   quizTitle: {
     fontSize: FontSizes.lg,
     fontWeight: "600",
-    color: Colors.light.text,
     flex: 1,
     marginRight: Spacing.sm,
   },
@@ -190,7 +275,7 @@ const styles = StyleSheet.create({
   },
   quizStats: {
     flexDirection: "row",
-    gap: Spacing.md,
+    gap: Spacing.lg,
     marginBottom: Spacing.md,
   },
   statItem: {
@@ -200,37 +285,66 @@ const styles = StyleSheet.create({
   },
   statText: {
     fontSize: FontSizes.sm,
-    color: Colors.light.textSecondary,
   },
   quizFooter: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    marginBottom: Spacing.md,
   },
   pointsContainer: {
     alignItems: "center",
   },
   pointsText: {
-    fontSize: FontSizes.lg,
+    fontSize: FontSizes.xl,
     fontWeight: "bold",
     color: Colors.light.primary,
   },
   pointsLabel: {
     fontSize: FontSizes.xs,
-    color: Colors.light.textSecondary,
   },
   playButton: {
     backgroundColor: Colors.light.secondary,
-    paddingHorizontal: Spacing.md,
+    paddingHorizontal: Spacing.lg,
     paddingVertical: Spacing.sm,
-    borderRadius: BorderRadius.md,
+    borderRadius: BorderRadius.full,
     flexDirection: "row",
     alignItems: "center",
-    gap: 4,
+    gap: 6,
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
   },
   playButtonText: {
     color: "white",
+    fontSize: FontSizes.md,
+    fontWeight: "600",
+  },
+  quizDescription: {
     fontSize: FontSizes.sm,
+    lineHeight: 18,
+  },
+  bottomSection: {
+    alignItems: "center",
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.xl,
+  },
+  bottomText: {
+    fontSize: FontSizes.md,
+    marginBottom: Spacing.md,
+  },
+  browseButton: {
+    paddingHorizontal: Spacing.xl,
+    paddingVertical: Spacing.md,
+    borderRadius: BorderRadius.lg,
+    borderWidth: 2,
+    borderColor: Colors.light.primary,
+  },
+  browseButtonText: {
+    color: Colors.light.primary,
+    fontSize: FontSizes.md,
     fontWeight: "600",
   },
 });

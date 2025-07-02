@@ -9,6 +9,7 @@ import {
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
+import { useTheme } from "../contexts/ThemeContext";
 
 const mockQuestion = {
   id: "1",
@@ -20,6 +21,7 @@ const mockQuestion = {
 export default function QuizPlayScreen() {
   const navigation = useNavigation();
   const route = useRoute();
+  const { state: themeState } = useTheme();
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [timeLeft, setTimeLeft] = useState(600); // 10 minutes
   const [showResult, setShowResult] = useState(false);
@@ -61,28 +63,48 @@ export default function QuizPlayScreen() {
   const isCorrect = selectedAnswer === mockQuestion.correctAnswer;
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[
+        styles.container,
+        { backgroundColor: themeState.colors.background },
+      ]}
+    >
       {/* Header */}
-      <View style={styles.header}>
+      <View
+        style={[styles.header, { backgroundColor: themeState.colors.surface }]}
+      >
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="close" size={24} color={Colors.light.text} />
+          <Ionicons name="close" size={24} color={themeState.colors.text} />
         </TouchableOpacity>
-        <Text style={styles.questionNumber}>Question 1 of 1</Text>
+        <Text
+          style={[styles.questionNumber, { color: themeState.colors.text }]}
+        >
+          Question 1 of 1
+        </Text>
         <View style={styles.timer}>
           <Ionicons name="time" size={16} color={Colors.light.accent} />
-          <Text style={styles.timerText}>{formatTime(timeLeft)}</Text>
+          <Text style={[styles.timerText, { color: themeState.colors.text }]}>
+            {formatTime(timeLeft)}
+          </Text>
         </View>
       </View>
 
       {/* Progress Bar */}
       <View style={styles.progressContainer}>
-        <View style={[styles.progressBar, { width: "100%" }]} />
+        <View style={styles.progressBar} />
       </View>
 
       {/* Question */}
       <View style={styles.content}>
-        <View style={styles.questionContainer}>
-          <Text style={styles.question}>{mockQuestion.question}</Text>
+        <View
+          style={[
+            styles.questionContainer,
+            { backgroundColor: themeState.colors.surface },
+          ]}
+        >
+          <Text style={[styles.question, { color: themeState.colors.text }]}>
+            {mockQuestion.question}
+          </Text>
         </View>
 
         {/* Options */}
@@ -92,29 +114,36 @@ export default function QuizPlayScreen() {
               key={index}
               style={[
                 styles.option,
-                selectedAnswer === index && styles.selectedOption,
+                { backgroundColor: themeState.colors.surface },
+                { borderColor: themeState.colors.border },
+                selectedAnswer === index && {
+                  borderColor: Colors.light.primary,
+                  backgroundColor: Colors.light.primary + "10",
+                },
                 showResult && {
                   backgroundColor:
                     index === mockQuestion.correctAnswer
                       ? "#10B98120"
                       : selectedAnswer === index
                         ? "#EF444420"
-                        : Colors.light.surface,
+                        : themeState.colors.surface,
                   borderColor:
                     index === mockQuestion.correctAnswer
                       ? "#10B981"
                       : selectedAnswer === index
                         ? "#EF4444"
-                        : Colors.light.border,
+                        : themeState.colors.border,
                 },
               ]}
               onPress={() => !showResult && handleAnswerSelect(index)}
               disabled={showResult}
+              activeOpacity={0.7}
             >
               <Text
                 style={[
                   styles.optionText,
-                  selectedAnswer === index && styles.selectedOptionText,
+                  { color: themeState.colors.text },
+                  selectedAnswer === index && { fontWeight: "600" },
                 ]}
               >
                 {option}
@@ -141,6 +170,7 @@ export default function QuizPlayScreen() {
             ]}
             onPress={handleSubmit}
             disabled={selectedAnswer === null}
+            activeOpacity={0.8}
           >
             <Text style={styles.submitButtonText}>Submit Answer</Text>
           </TouchableOpacity>
@@ -167,7 +197,6 @@ export default function QuizPlayScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.light.background,
   },
   header: {
     flexDirection: "row",
@@ -175,11 +204,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.md,
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
   },
   questionNumber: {
     fontSize: FontSizes.md,
     fontWeight: "500",
-    color: Colors.light.text,
   },
   timer: {
     flexDirection: "row",
@@ -189,7 +222,6 @@ const styles = StyleSheet.create({
   timerText: {
     fontSize: FontSizes.sm,
     fontWeight: "600",
-    color: Colors.light.text,
   },
   progressContainer: {
     paddingHorizontal: Spacing.md,
@@ -199,21 +231,25 @@ const styles = StyleSheet.create({
     height: 4,
     backgroundColor: Colors.light.primary,
     borderRadius: 2,
+    width: "100%",
   },
   content: {
     flex: 1,
     paddingHorizontal: Spacing.md,
   },
   questionContainer: {
-    backgroundColor: Colors.light.surface,
     borderRadius: BorderRadius.xl,
     padding: Spacing.xl,
     marginBottom: Spacing.xl,
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
   question: {
     fontSize: FontSizes.xl,
     fontWeight: "600",
-    color: Colors.light.text,
     textAlign: "center",
     lineHeight: 28,
   },
@@ -222,26 +258,21 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.xl,
   },
   option: {
-    backgroundColor: Colors.light.surface,
     borderRadius: BorderRadius.lg,
     padding: Spacing.lg,
     borderWidth: 2,
-    borderColor: Colors.light.border,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-  },
-  selectedOption: {
-    borderColor: Colors.light.primary,
-    backgroundColor: `${Colors.light.primary}10`,
+    elevation: 1,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
   },
   optionText: {
     fontSize: FontSizes.md,
-    color: Colors.light.text,
     flex: 1,
-  },
-  selectedOptionText: {
-    fontWeight: "600",
   },
   resultIcon: {
     marginLeft: Spacing.sm,
@@ -251,6 +282,11 @@ const styles = StyleSheet.create({
     paddingVertical: Spacing.lg,
     borderRadius: BorderRadius.xl,
     alignItems: "center",
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
   },
   disabledButton: {
     backgroundColor: Colors.light.textSecondary,
