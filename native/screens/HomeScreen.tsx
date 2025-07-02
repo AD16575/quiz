@@ -12,12 +12,14 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
+import { useTheme } from "../contexts/ThemeContext";
 
 const { width } = Dimensions.get("window");
 
 export default function HomeScreen() {
   const navigation = useNavigation();
   const { state } = useQuiz();
+  const { state: themeState } = useTheme();
   const { user, categories } = state;
 
   if (!user) return null;
@@ -69,8 +71,17 @@ export default function HomeScreen() {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+    <SafeAreaView
+      style={[
+        styles.container,
+        { backgroundColor: themeState.colors.background },
+      ]}
+    >
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+        nestedScrollEnabled={true}
+      >
         {/* Header */}
         <View style={styles.header}>
           <View>
@@ -131,6 +142,7 @@ export default function HomeScreen() {
               <TouchableOpacity
                 style={styles.playButton}
                 onPress={() => navigation.navigate("Play" as never)}
+                activeOpacity={0.8}
               >
                 <Ionicons name="play" size={20} color="white" />
                 <Text style={styles.playButtonText}>Play Now</Text>
@@ -197,6 +209,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.light.background,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    paddingBottom: 100,
   },
   header: {
     flexDirection: "row",

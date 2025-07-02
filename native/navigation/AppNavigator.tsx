@@ -53,9 +53,16 @@ function BottomTabNavigator() {
         tabBarStyle: {
           backgroundColor: Colors.light.background,
           borderTopColor: Colors.light.border,
-          height: 60,
-          paddingBottom: 8,
+          height: 85,
+          paddingBottom: 25,
           paddingTop: 8,
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+          elevation: 10,
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: -3 },
+          shadowOpacity: 0.1,
+          shadowRadius: 10,
         },
         tabBarLabelStyle: {
           fontSize: 12,

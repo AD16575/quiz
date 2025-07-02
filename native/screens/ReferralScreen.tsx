@@ -14,6 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
+import { useTheme } from "../contexts/ThemeContext";
 
 const mockReferredUsers = [
   {
@@ -37,6 +38,7 @@ const mockReferredUsers = [
 export default function ReferralScreen() {
   const navigation = useNavigation();
   const { state } = useQuiz();
+  const { state: themeState } = useTheme();
   const user = state.user;
 
   if (!user) return null;
@@ -61,55 +63,62 @@ export default function ReferralScreen() {
     0,
   );
 
-  const StatCard = ({ title, value, color }: any) => (
-    <View style={[styles.statCard, { borderLeftColor: color }]}>
-      <Text style={[styles.statValue, { color }]}>{value}</Text>
-      <Text style={styles.statTitle}>{title}</Text>
-    </View>
-  );
-
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[
+        styles.container,
+        { backgroundColor: themeState.colors.background },
+      ]}
+    >
       {/* Header */}
-      <View style={styles.header}>
+      <View
+        style={[
+          styles.header,
+          { backgroundColor: themeState.colors.background },
+        ]}
+      >
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color={Colors.light.text} />
+          <Ionicons
+            name="arrow-back"
+            size={24}
+            color={themeState.colors.text}
+          />
         </TouchableOpacity>
-        <Text style={styles.title}>Referral Program</Text>
+        <Text style={[styles.title, { color: themeState.colors.text }]}>
+          Referral Program
+        </Text>
         <View style={styles.placeholder} />
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Stats Overview */}
-        <View style={styles.statsContainer}>
-          <StatCard
-            title="Friends Referred"
-            value={user.referredUsers}
-            color={Colors.light.primary}
-          />
-          <StatCard
-            title="Total Earned"
-            value={`${totalEarned} pts`}
-            color={Colors.light.secondary}
-          />
-          <StatCard
-            title="Per Referral"
-            value="50 pts"
-            color={Colors.light.accent}
-          />
-        </View>
-
         {/* Referral Code Card */}
         <View style={styles.section}>
-          <View style={styles.referralCard}>
+          <View
+            style={[
+              styles.referralCard,
+              { backgroundColor: themeState.colors.surface },
+            ]}
+          >
             <View style={styles.referralHeader}>
               <Ionicons name="gift" size={32} color={Colors.light.primary} />
-              <Text style={styles.referralTitle}>Your Referral Code</Text>
+              <Text
+                style={[
+                  styles.referralTitle,
+                  { color: themeState.colors.text },
+                ]}
+              >
+                Your Referral Code
+              </Text>
             </View>
 
             <View style={styles.codeContainer}>
               <Text style={styles.referralCode}>{user.referralCode}</Text>
-              <Text style={styles.codeDescription}>
+              <Text
+                style={[
+                  styles.codeDescription,
+                  { color: themeState.colors.textSecondary },
+                ]}
+              >
                 Share this code with your friends
               </Text>
             </View>
@@ -134,77 +143,306 @@ export default function ReferralScreen() {
           </View>
         </View>
 
-        {/* How it Works */}
+        {/* Stats Overview - Improved Layout */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>How It Works</Text>
-          <View style={styles.stepsContainer}>
-            <View style={styles.stepItem}>
+          <Text
+            style={[styles.sectionTitle, { color: themeState.colors.text }]}
+          >
+            Your Statistics
+          </Text>
+          <View style={styles.statsGrid}>
+            <View
+              style={[
+                styles.statCard,
+                { backgroundColor: themeState.colors.surface },
+              ]}
+            >
               <View
                 style={[
-                  styles.stepIcon,
+                  styles.statIconContainer,
                   { backgroundColor: Colors.light.primary + "20" },
-                ]}
-              >
-                <Ionicons name="share" size={24} color={Colors.light.primary} />
-              </View>
-              <Text style={styles.stepTitle}>1. Share Your Code</Text>
-              <Text style={styles.stepDescription}>
-                Send your referral code to friends and family
-              </Text>
-            </View>
-
-            <View style={styles.stepItem}>
-              <View
-                style={[
-                  styles.stepIcon,
-                  { backgroundColor: Colors.light.secondary + "20" },
                 ]}
               >
                 <Ionicons
                   name="people"
-                  size={24}
+                  size={28}
+                  color={Colors.light.primary}
+                />
+              </View>
+              <View style={styles.statInfo}>
+                <Text
+                  style={[styles.statValue, { color: Colors.light.primary }]}
+                >
+                  {user.referredUsers}
+                </Text>
+                <Text
+                  style={[
+                    styles.statLabel,
+                    { color: themeState.colors.textSecondary },
+                  ]}
+                >
+                  Friends Referred
+                </Text>
+              </View>
+            </View>
+
+            <View
+              style={[
+                styles.statCard,
+                { backgroundColor: themeState.colors.surface },
+              ]}
+            >
+              <View
+                style={[
+                  styles.statIconContainer,
+                  { backgroundColor: Colors.light.secondary + "20" },
+                ]}
+              >
+                <Ionicons
+                  name="star"
+                  size={28}
                   color={Colors.light.secondary}
                 />
               </View>
-              <Text style={styles.stepTitle}>2. Friend Joins</Text>
-              <Text style={styles.stepDescription}>
-                They sign up using your referral code
-              </Text>
+              <View style={styles.statInfo}>
+                <Text
+                  style={[styles.statValue, { color: Colors.light.secondary }]}
+                >
+                  {totalEarned}
+                </Text>
+                <Text
+                  style={[
+                    styles.statLabel,
+                    { color: themeState.colors.textSecondary },
+                  ]}
+                >
+                  Points Earned
+                </Text>
+              </View>
             </View>
 
-            <View style={styles.stepItem}>
+            <View
+              style={[
+                styles.statCard,
+                { backgroundColor: themeState.colors.surface },
+              ]}
+            >
               <View
                 style={[
-                  styles.stepIcon,
+                  styles.statIconContainer,
                   { backgroundColor: Colors.light.accent + "20" },
                 ]}
               >
-                <Ionicons name="trophy" size={24} color={Colors.light.accent} />
+                <Ionicons name="trophy" size={28} color={Colors.light.accent} />
               </View>
-              <Text style={styles.stepTitle}>3. Earn Rewards</Text>
-              <Text style={styles.stepDescription}>
-                Both you and your friend get bonus points
-              </Text>
+              <View style={styles.statInfo}>
+                <Text
+                  style={[styles.statValue, { color: Colors.light.accent }]}
+                >
+                  50
+                </Text>
+                <Text
+                  style={[
+                    styles.statLabel,
+                    { color: themeState.colors.textSecondary },
+                  ]}
+                >
+                  Per Referral
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+
+        {/* How it Works - Vertical Layout */}
+        <View style={styles.section}>
+          <Text
+            style={[styles.sectionTitle, { color: themeState.colors.text }]}
+          >
+            How It Works
+          </Text>
+          <View style={styles.stepsVerticalContainer}>
+            <View
+              style={[
+                styles.stepVerticalItem,
+                { backgroundColor: themeState.colors.surface },
+              ]}
+            >
+              <View
+                style={[
+                  styles.stepNumber,
+                  { backgroundColor: Colors.light.primary },
+                ]}
+              >
+                <Text style={styles.stepNumberText}>1</Text>
+              </View>
+              <View style={styles.stepContent}>
+                <View
+                  style={[
+                    styles.stepIconContainer,
+                    { backgroundColor: Colors.light.primary + "20" },
+                  ]}
+                >
+                  <Ionicons
+                    name="share"
+                    size={24}
+                    color={Colors.light.primary}
+                  />
+                </View>
+                <View style={styles.stepTextContainer}>
+                  <Text
+                    style={[
+                      styles.stepTitle,
+                      { color: themeState.colors.text },
+                    ]}
+                  >
+                    Share Your Code
+                  </Text>
+                  <Text
+                    style={[
+                      styles.stepDescription,
+                      { color: themeState.colors.textSecondary },
+                    ]}
+                  >
+                    Send your referral code to friends and family via social
+                    media, messaging apps, or email.
+                  </Text>
+                </View>
+              </View>
+            </View>
+
+            <View
+              style={[
+                styles.stepVerticalItem,
+                { backgroundColor: themeState.colors.surface },
+              ]}
+            >
+              <View
+                style={[
+                  styles.stepNumber,
+                  { backgroundColor: Colors.light.secondary },
+                ]}
+              >
+                <Text style={styles.stepNumberText}>2</Text>
+              </View>
+              <View style={styles.stepContent}>
+                <View
+                  style={[
+                    styles.stepIconContainer,
+                    { backgroundColor: Colors.light.secondary + "20" },
+                  ]}
+                >
+                  <Ionicons
+                    name="person-add"
+                    size={24}
+                    color={Colors.light.secondary}
+                  />
+                </View>
+                <View style={styles.stepTextContainer}>
+                  <Text
+                    style={[
+                      styles.stepTitle,
+                      { color: themeState.colors.text },
+                    ]}
+                  >
+                    Friend Joins
+                  </Text>
+                  <Text
+                    style={[
+                      styles.stepDescription,
+                      { color: themeState.colors.textSecondary },
+                    ]}
+                  >
+                    Your friend signs up using your referral code and starts
+                    playing quizzes.
+                  </Text>
+                </View>
+              </View>
+            </View>
+
+            <View
+              style={[
+                styles.stepVerticalItem,
+                { backgroundColor: themeState.colors.surface },
+              ]}
+            >
+              <View
+                style={[
+                  styles.stepNumber,
+                  { backgroundColor: Colors.light.accent },
+                ]}
+              >
+                <Text style={styles.stepNumberText}>3</Text>
+              </View>
+              <View style={styles.stepContent}>
+                <View
+                  style={[
+                    styles.stepIconContainer,
+                    { backgroundColor: Colors.light.accent + "20" },
+                  ]}
+                >
+                  <Ionicons name="gift" size={24} color={Colors.light.accent} />
+                </View>
+                <View style={styles.stepTextContainer}>
+                  <Text
+                    style={[
+                      styles.stepTitle,
+                      { color: themeState.colors.text },
+                    ]}
+                  >
+                    Earn Rewards
+                  </Text>
+                  <Text
+                    style={[
+                      styles.stepDescription,
+                      { color: themeState.colors.textSecondary },
+                    ]}
+                  >
+                    Both you and your friend receive bonus points! Keep
+                    referring for more rewards.
+                  </Text>
+                </View>
+              </View>
             </View>
           </View>
         </View>
 
         {/* Referred Users */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>
+          <Text
+            style={[styles.sectionTitle, { color: themeState.colors.text }]}
+          >
             Your Referrals ({mockReferredUsers.length})
           </Text>
           <View style={styles.referredList}>
             {mockReferredUsers.map((referredUser) => (
-              <View key={referredUser.id} style={styles.referredItem}>
+              <View
+                key={referredUser.id}
+                style={[
+                  styles.referredItem,
+                  { backgroundColor: themeState.colors.surface },
+                ]}
+              >
                 <View style={styles.referredAvatar}>
                   <Text style={styles.referredAvatarText}>
                     {referredUser.name.charAt(0)}
                   </Text>
                 </View>
                 <View style={styles.referredInfo}>
-                  <Text style={styles.referredName}>{referredUser.name}</Text>
-                  <Text style={styles.referredDate}>
+                  <Text
+                    style={[
+                      styles.referredName,
+                      { color: themeState.colors.text },
+                    ]}
+                  >
+                    {referredUser.name}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.referredDate,
+                      { color: themeState.colors.textSecondary },
+                    ]}
+                  >
                     Joined {referredUser.joinedDate.toLocaleDateString()}
                   </Text>
                 </View>
@@ -212,7 +450,14 @@ export default function ReferralScreen() {
                   <Text style={styles.earningsText}>
                     +{Math.floor(referredUser.pointsEarned * 0.1)}
                   </Text>
-                  <Text style={styles.earningsLabel}>points</Text>
+                  <Text
+                    style={[
+                      styles.earningsLabel,
+                      { color: themeState.colors.textSecondary },
+                    ]}
+                  >
+                    points
+                  </Text>
                 </View>
                 <Ionicons
                   name="checkmark-circle"
@@ -227,10 +472,22 @@ export default function ReferralScreen() {
                 <Ionicons
                   name="people"
                   size={48}
-                  color={Colors.light.textSecondary}
+                  color={themeState.colors.textSecondary}
                 />
-                <Text style={styles.emptyText}>No referrals yet</Text>
-                <Text style={styles.emptySubtext}>
+                <Text
+                  style={[
+                    styles.emptyText,
+                    { color: themeState.colors.textSecondary },
+                  ]}
+                >
+                  No referrals yet
+                </Text>
+                <Text
+                  style={[
+                    styles.emptySubtext,
+                    { color: themeState.colors.textSecondary },
+                  ]}
+                >
                   Start sharing your code!
                 </Text>
               </View>
@@ -245,7 +502,6 @@ export default function ReferralScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.light.background,
   },
   header: {
     flexDirection: "row",
@@ -257,34 +513,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: FontSizes.xl,
     fontWeight: "bold",
-    color: Colors.light.text,
   },
   placeholder: {
     width: 24,
-  },
-  statsContainer: {
-    flexDirection: "row",
-    paddingHorizontal: Spacing.md,
-    paddingTop: Spacing.md,
-    gap: Spacing.sm,
-  },
-  statCard: {
-    flex: 1,
-    backgroundColor: Colors.light.surface,
-    borderRadius: BorderRadius.lg,
-    padding: Spacing.md,
-    borderLeftWidth: 4,
-    alignItems: "center",
-  },
-  statValue: {
-    fontSize: FontSizes.xl,
-    fontWeight: "bold",
-  },
-  statTitle: {
-    fontSize: FontSizes.sm,
-    color: Colors.light.textSecondary,
-    textAlign: "center",
-    marginTop: 4,
   },
   section: {
     paddingHorizontal: Spacing.md,
@@ -293,15 +524,16 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: FontSizes.lg,
     fontWeight: "600",
-    color: Colors.light.text,
     marginBottom: Spacing.md,
   },
   referralCard: {
-    backgroundColor: `${Colors.light.primary}10`,
     borderRadius: BorderRadius.xl,
     padding: Spacing.xl,
-    borderWidth: 2,
-    borderColor: `${Colors.light.primary}30`,
+    elevation: 5,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
   },
   referralHeader: {
     alignItems: "center",
@@ -310,7 +542,6 @@ const styles = StyleSheet.create({
   referralTitle: {
     fontSize: FontSizes.xl,
     fontWeight: "bold",
-    color: Colors.light.text,
     marginTop: Spacing.sm,
   },
   codeContainer: {
@@ -322,10 +553,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: Colors.light.primary,
     marginBottom: Spacing.sm,
+    letterSpacing: 2,
   },
   codeDescription: {
     fontSize: FontSizes.md,
-    color: Colors.light.textSecondary,
     textAlign: "center",
   },
   actionButtons: {
@@ -364,43 +595,102 @@ const styles = StyleSheet.create({
     fontSize: FontSizes.md,
     fontWeight: "600",
   },
-  stepsContainer: {
+  // Improved Stats Layout
+  statsGrid: {
+    gap: Spacing.md,
+  },
+  statCard: {
     flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  stepItem: {
-    flex: 1,
     alignItems: "center",
-    paddingHorizontal: Spacing.sm,
+    padding: Spacing.lg,
+    borderRadius: BorderRadius.lg,
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
   },
-  stepIcon: {
+  statIconContainer: {
     width: 60,
     height: 60,
     borderRadius: 30,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: Spacing.md,
+    marginRight: Spacing.md,
+  },
+  statInfo: {
+    flex: 1,
+  },
+  statValue: {
+    fontSize: FontSizes.xxl,
+    fontWeight: "bold",
+    marginBottom: 4,
+  },
+  statLabel: {
+    fontSize: FontSizes.md,
+    fontWeight: "500",
+  },
+  // Vertical Steps Layout
+  stepsVerticalContainer: {
+    gap: Spacing.lg,
+  },
+  stepVerticalItem: {
+    borderRadius: BorderRadius.lg,
+    padding: Spacing.lg,
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+  },
+  stepNumber: {
+    position: "absolute",
+    top: -10,
+    left: Spacing.lg,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1,
+  },
+  stepNumberText: {
+    color: "white",
+    fontSize: FontSizes.md,
+    fontWeight: "bold",
+  },
+  stepContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: Spacing.sm,
+  },
+  stepIconContainer: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: Spacing.md,
+  },
+  stepTextContainer: {
+    flex: 1,
   },
   stepTitle: {
-    fontSize: FontSizes.md,
+    fontSize: FontSizes.lg,
     fontWeight: "600",
-    color: Colors.light.text,
-    textAlign: "center",
     marginBottom: Spacing.xs,
   },
   stepDescription: {
-    fontSize: FontSizes.sm,
-    color: Colors.light.textSecondary,
-    textAlign: "center",
-    lineHeight: 18,
+    fontSize: FontSizes.md,
+    lineHeight: 20,
   },
+  // Referred Users
   referredList: {
     gap: Spacing.md,
   },
   referredItem: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: Colors.light.surface,
     borderRadius: BorderRadius.lg,
     padding: Spacing.md,
   },
@@ -424,11 +714,9 @@ const styles = StyleSheet.create({
   referredName: {
     fontSize: FontSizes.md,
     fontWeight: "600",
-    color: Colors.light.text,
   },
   referredDate: {
     fontSize: FontSizes.sm,
-    color: Colors.light.textSecondary,
     marginTop: 2,
   },
   referredEarnings: {
@@ -442,7 +730,6 @@ const styles = StyleSheet.create({
   },
   earningsLabel: {
     fontSize: FontSizes.xs,
-    color: Colors.light.textSecondary,
   },
   emptyState: {
     alignItems: "center",
@@ -451,12 +738,10 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: FontSizes.lg,
     fontWeight: "600",
-    color: Colors.light.textSecondary,
     marginTop: Spacing.md,
   },
   emptySubtext: {
     fontSize: FontSizes.md,
-    color: Colors.light.textSecondary,
     marginTop: Spacing.xs,
   },
 });
