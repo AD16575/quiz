@@ -255,11 +255,21 @@ export default function HomeScreen() {
           </View>
 
           {/* Quick Actions */}
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Quick Actions</Text>
-            <View style={styles.quickActions}>
+          <View style={dynamicStyles.section}>
+            <Text
+              style={[
+                dynamicStyles.sectionTitle,
+                { color: themeState.colors.text },
+              ]}
+            >
+              Quick Actions
+            </Text>
+            <View style={dynamicStyles.quickActions}>
               <TouchableOpacity
-                style={styles.quickActionCard}
+                style={[
+                  dynamicStyles.quickActionCard,
+                  { backgroundColor: themeState.colors.surface },
+                ]}
                 onPress={() => navigation.navigate("Referral" as never)}
               >
                 <Ionicons
@@ -267,14 +277,29 @@ export default function HomeScreen() {
                   size={32}
                   color={themeState.colors.secondary}
                 />
-                <Text style={styles.quickActionTitle}>Refer Friends</Text>
-                <Text style={styles.quickActionSubtitle}>
+                <Text
+                  style={[
+                    dynamicStyles.quickActionTitle,
+                    { color: themeState.colors.text },
+                  ]}
+                >
+                  Refer Friends
+                </Text>
+                <Text
+                  style={[
+                    dynamicStyles.quickActionSubtitle,
+                    { color: themeState.colors.textSecondary },
+                  ]}
+                >
                   {user.referredUsers} referred
                 </Text>
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={styles.quickActionCard}
+                style={[
+                  dynamicStyles.quickActionCard,
+                  { backgroundColor: themeState.colors.surface },
+                ]}
                 onPress={() => navigation.navigate("Withdrawal" as never)}
               >
                 <Ionicons
@@ -282,8 +307,20 @@ export default function HomeScreen() {
                   size={32}
                   color={themeState.colors.accent}
                 />
-                <Text style={styles.quickActionTitle}>Withdraw</Text>
-                <Text style={styles.quickActionSubtitle}>
+                <Text
+                  style={[
+                    dynamicStyles.quickActionTitle,
+                    { color: themeState.colors.text },
+                  ]}
+                >
+                  Withdraw
+                </Text>
+                <Text
+                  style={[
+                    dynamicStyles.quickActionSubtitle,
+                    { color: themeState.colors.textSecondary },
+                  ]}
+                >
                   ₹{user.withdrawableAmount} available
                 </Text>
               </TouchableOpacity>
