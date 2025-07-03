@@ -115,28 +115,26 @@ export default function HomeScreen() {
         >
           {/* Header */}
           <View style={dynamicStyles.header}>
-            <View>
-              <Text
-                style={[
-                  dynamicStyles.greeting,
-                  { color: themeState.colors.text },
-                ]}
-              >
-                Hello, {user.name}! 👋
-              </Text>
-              <Text
-                style={[
-                  dynamicStyles.subGreeting,
-                  { color: themeState.colors.textSecondary },
-                ]}
-              >
-                Ready to play today?
-              </Text>
+            <View style={dynamicStyles.headerContent}>
+              <Logo size="small" showText={false} />
+              <View style={dynamicStyles.headerText}>
+                <GradientText style={[dynamicStyles.appName]}>
+                  MyQuiz
+                </GradientText>
+                <Text
+                  style={[
+                    dynamicStyles.greeting,
+                    { color: themeState.colors.text },
+                  ]}
+                >
+                  Hello, {user.name}! 👋
+                </Text>
+              </View>
             </View>
             <TouchableOpacity
               style={[
                 dynamicStyles.notificationButton,
-                { backgroundColor: themeState.colors.surface },
+                { backgroundColor: themeState.colors.surfaceCard },
               ]}
             >
               <Ionicons
