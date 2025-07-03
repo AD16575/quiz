@@ -370,69 +370,69 @@ export default function LeaderboardScreen() {
   );
 
   return (
-    <SafeAreaView
-      style={[
-        styles.container,
-        { backgroundColor: themeState.colors.background },
-      ]}
-    >
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={[styles.title, { color: themeState.colors.text }]}>
-          🏆 Leaderboard
-        </Text>
-        <Text
-          style={[styles.subtitle, { color: themeState.colors.textSecondary }]}
-        >
-          Top performers this week
-        </Text>
-      </View>
+    <GradientBackground>
+      <SafeAreaView style={styles.container}>
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={[styles.title, { color: themeState.colors.text }]}>
+            🏆 Leaderboard
+          </Text>
+          <Text
+            style={[
+              styles.subtitle,
+              { color: themeState.colors.textSecondary },
+            ]}
+          >
+            Top performers this week
+          </Text>
+        </View>
 
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
-      >
-        {/* Current User Position */}
-        {user && (
-          <View style={styles.currentUserSection}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContent}
+        >
+          {/* Current User Position */}
+          {user && (
+            <View style={styles.currentUserSection}>
+              <Text
+                style={[styles.sectionTitle, { color: themeState.colors.text }]}
+              >
+                Your Position
+              </Text>
+              <LeaderboardItem
+                item={{
+                  id: user.id,
+                  name: user.name,
+                  points: user.points,
+                  rank: currentUserRank,
+                  avatar: "👤",
+                  streak: 7,
+                  quizzes: user.totalQuizzes,
+                }}
+                isCurrentUser={true}
+              />
+            </View>
+          )}
+
+          {/* Top 3 Podium */}
+          <TopThreePodium />
+
+          {/* Full Leaderboard */}
+          <View style={styles.leaderboardSection}>
             <Text
               style={[styles.sectionTitle, { color: themeState.colors.text }]}
             >
-              Your Position
+              All Players
             </Text>
-            <LeaderboardItem
-              item={{
-                id: user.id,
-                name: user.name,
-                points: user.points,
-                rank: currentUserRank,
-                avatar: "👤",
-                streak: 7,
-                quizzes: user.totalQuizzes,
-              }}
-              isCurrentUser={true}
-            />
+            <View style={styles.leaderboardList}>
+              {mockLeaderboard.map((item) => (
+                <LeaderboardItem key={item.id} item={item} />
+              ))}
+            </View>
           </View>
-        )}
-
-        {/* Top 3 Podium */}
-        <TopThreePodium />
-
-        {/* Full Leaderboard */}
-        <View style={styles.leaderboardSection}>
-          <Text
-            style={[styles.sectionTitle, { color: themeState.colors.text }]}
-          >
-            All Players
-          </Text>
-          <View style={styles.leaderboardList}>
-            {mockLeaderboard.map((item) => (
-              <LeaderboardItem key={item.id} item={item} />
-            ))}
-          </View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+        </ScrollView>
+      </SafeAreaView>
+    </GradientBackground>
   );
 }
 
