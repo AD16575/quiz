@@ -19,9 +19,9 @@ export default function GradientBackground({
     <View style={[styles.container, style]}>
       <LinearGradient
         colors={[
-          colors.backgroundGradient.start,
-          colors.backgroundGradient.middle,
-          colors.backgroundGradient.end,
+          "rgba(238, 58, 124, 0.1)",
+          "rgb(255, 255, 255)",
+          "rgba(24, 154, 144, 0.1)",
         ]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}

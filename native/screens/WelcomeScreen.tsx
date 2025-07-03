@@ -7,6 +7,7 @@ import {
   Dimensions,
   SafeAreaView,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
@@ -49,9 +50,14 @@ export default function WelcomeScreen() {
           {/* Logo Section - Exact match to web app */}
           <View style={styles.logoSection}>
             <View style={styles.logoContainer}>
-              <View style={styles.logoBackground}>
+              <LinearGradient
+                colors={["rgb(238, 58, 124)", "rgb(24, 154, 144)"]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.logoBackground}
+              >
                 <Text style={styles.logoText}>Q</Text>
-              </View>
+              </LinearGradient>
               <View style={styles.logoAccentDot} />
             </View>
             <View style={styles.titleContainer}>
@@ -146,14 +152,13 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     borderRadius: 16,
-    backgroundColor: "rgb(238, 58, 124)",
+    justifyContent: "center",
+    alignItems: "center",
     shadowColor: "rgba(0, 0, 0, 0.1)",
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 1,
     shadowRadius: 15,
     elevation: 10,
-    justifyContent: "center",
-    alignItems: "center",
   },
   logoText: {
     color: "rgb(255, 255, 255)",
@@ -209,7 +214,7 @@ const styles = StyleSheet.create({
     lineHeight: 22,
   },
   actionContainer: {
-    marginTop: 48,
+    marginTop: 64,
     maxWidth: 448,
     width: "100%",
     gap: 16,
