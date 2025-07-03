@@ -110,91 +110,100 @@ export default function PlayScreen() {
   return (
     <GradientBackground>
       <SafeAreaView style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <View>
-          <Text style={[styles.title, { color: themeState.colors.text }]}>
-            Quiz Categories
-          </Text>
-          <Text
-            style={[
-              styles.subtitle,
-              { color: themeState.colors.textSecondary },
-            ]}
-          >
-            Choose your favorite topic
-          </Text>
-        </View>
-        {user && (
-          <View
-            style={[
-              styles.pointsContainer,
-              { backgroundColor: themeState.colors.surface },
-            ]}
-          >
-            <Ionicons name="star" size={20} color={Colors.light.accent} />
-            <Text
-              style={[styles.pointsText, { color: themeState.colors.text }]}
-            >
-              {user.points}
-            </Text>
-          </View>
-        )}
-      </View>
-
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
-      >
-        {/* Categories Grid */}
-        <View style={styles.categoriesContainer}>
-          {categories.map((category, index) => (
-            <CategoryCard key={category.id} category={category} index={index} />
-          ))}
-        </View>
-
-        {/* Random Quiz Section */}
-        <View style={styles.randomSection}>
-          <View
-            style={[
-              styles.randomCard,
-              { backgroundColor: themeState.colors.surface },
-            ]}
-          >
-            <View style={styles.randomIcon}>
-              <Ionicons name="shuffle" size={48} color={Colors.light.primary} />
-            </View>
-            <Text
-              style={[styles.randomTitle, { color: themeState.colors.text }]}
-            >
-              Can't Decide?
+        {/* Header */}
+        <View style={styles.header}>
+          <View>
+            <Text style={[styles.title, { color: themeState.colors.text }]}>
+              Quiz Categories
             </Text>
             <Text
               style={[
-                styles.randomSubtitle,
+                styles.subtitle,
                 { color: themeState.colors.textSecondary },
               ]}
             >
-              Let us pick a random quiz for you!
+              Choose your favorite topic
             </Text>
-            <TouchableOpacity
-              style={styles.surpriseButton}
-              onPress={() => {
-                const randomCategory =
-                  categories[Math.floor(Math.random() * categories.length)];
-                navigation.navigate(
-                  "QuizList" as never,
-                  { categoryId: randomCategory.id } as never,
-                );
-              }}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.surpriseButtonText}>Surprise Me!</Text>
-            </TouchableOpacity>
           </View>
+          {user && (
+            <View
+              style={[
+                styles.pointsContainer,
+                { backgroundColor: themeState.colors.surface },
+              ]}
+            >
+              <Ionicons name="star" size={20} color={Colors.light.accent} />
+              <Text
+                style={[styles.pointsText, { color: themeState.colors.text }]}
+              >
+                {user.points}
+              </Text>
+            </View>
+          )}
         </View>
-      </ScrollView>
-    </SafeAreaView>
+
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContent}
+        >
+          {/* Categories Grid */}
+          <View style={styles.categoriesContainer}>
+            {categories.map((category, index) => (
+              <CategoryCard
+                key={category.id}
+                category={category}
+                index={index}
+              />
+            ))}
+          </View>
+
+          {/* Random Quiz Section */}
+          <View style={styles.randomSection}>
+            <View
+              style={[
+                styles.randomCard,
+                { backgroundColor: themeState.colors.surface },
+              ]}
+            >
+              <View style={styles.randomIcon}>
+                <Ionicons
+                  name="shuffle"
+                  size={48}
+                  color={Colors.light.primary}
+                />
+              </View>
+              <Text
+                style={[styles.randomTitle, { color: themeState.colors.text }]}
+              >
+                Can't Decide?
+              </Text>
+              <Text
+                style={[
+                  styles.randomSubtitle,
+                  { color: themeState.colors.textSecondary },
+                ]}
+              >
+                Let us pick a random quiz for you!
+              </Text>
+              <TouchableOpacity
+                style={styles.surpriseButton}
+                onPress={() => {
+                  const randomCategory =
+                    categories[Math.floor(Math.random() * categories.length)];
+                  navigation.navigate(
+                    "QuizList" as never,
+                    { categoryId: randomCategory.id } as never,
+                  );
+                }}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.surpriseButtonText}>Surprise Me!</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </GradientBackground>
   );
 }
 
