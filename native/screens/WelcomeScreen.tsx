@@ -46,55 +46,66 @@ export default function WelcomeScreen() {
         </TouchableOpacity>
 
         <View style={styles.content}>
-        {/* Logo Section */}
-        <View style={styles.logoSection}>
-          <Logo size="large" showText={false} />
-          <GradientText style={[styles.title, { color: themeState.colors.text }]}>
-            MyQuiz
-          </GradientText>
-          <Text style={[styles.tagline, { color: themeState.colors.textSecondary }]}>
-            Play. Learn. Earn.
-          </Text>
-        </View>
-
-        {/* Illustration */}
-        <View style={styles.illustration}>
-          <View style={styles.illustrationCard}>
-            <Ionicons name="play" size={64} color={Colors.light.primary} />
-            <Text style={styles.illustrationText}>
-              Challenge yourself with fun quizzes and earn points while
-              learning!
+          {/* Logo Section */}
+          <View style={styles.logoSection}>
+            <Logo size="large" showText={false} />
+            <GradientText
+              style={[styles.title, { color: themeState.colors.text }]}
+            >
+              MyQuiz
+            </GradientText>
+            <Text
+              style={[
+                styles.tagline,
+                { color: themeState.colors.textSecondary },
+              ]}
+            >
+              Play. Learn. Earn.
             </Text>
           </View>
-        </View>
 
-        {/* Action Buttons */}
-        <View style={styles.actionContainer}>
-          <TouchableOpacity
-            style={styles.getStartedButton}
-            onPress={() => navigation.navigate("Signup" as never)}
-          >
-            <Ionicons name="play" size={20} color="white" />
-            <Text style={styles.getStartedText}>Get Started</Text>
-          </TouchableOpacity>
+          {/* Illustration */}
+          <View style={styles.illustration}>
+            <View style={styles.illustrationCard}>
+              <Ionicons name="play" size={64} color={Colors.light.primary} />
+              <Text style={styles.illustrationText}>
+                Challenge yourself with fun quizzes and earn points while
+                learning!
+              </Text>
+            </View>
+          </View>
 
-          <TouchableOpacity
-            style={styles.loginButton}
-            onPress={() => navigation.navigate("Login" as never)}
-          >
-            <Ionicons name="log-in" size={20} color={Colors.light.secondary} />
-            <Text style={styles.loginText}>Login</Text>
-          </TouchableOpacity>
+          {/* Action Buttons */}
+          <View style={styles.actionContainer}>
+            <TouchableOpacity
+              style={styles.getStartedButton}
+              onPress={() => navigation.navigate("Signup" as never)}
+            >
+              <Ionicons name="play" size={20} color="white" />
+              <Text style={styles.getStartedText}>Get Started</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.loginButton}
+              onPress={() => navigation.navigate("Login" as never)}
+            >
+              <Ionicons
+                name="log-in"
+                size={20}
+                color={Colors.light.secondary}
+              />
+              <Text style={styles.loginText}>Login</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </GradientBackground>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.light.background,
   },
   themeToggle: {
     position: "absolute",
@@ -103,7 +114,11 @@ const styles = StyleSheet.create({
     zIndex: 1,
     padding: Spacing.sm,
     borderRadius: BorderRadius.full,
-    backgroundColor: Colors.light.surface,
+    shadowColor: "rgba(0, 0, 0, 0.1)",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 1,
+    shadowRadius: 12,
+    elevation: 5,
   },
   content: {
     flex: 1,
