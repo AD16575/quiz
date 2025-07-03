@@ -1,41 +1,49 @@
 export const Colors = {
   light: {
-    primary: "rgb(238, 58, 124)", // Web app pink
-    secondary: "rgb(24, 154, 144)", // Web app teal
-    accent: "#FF6B35",
-    background: "#FFFFFF",
+    primary: "rgb(238, 58, 124)", // Exact web app pink
+    secondary: "rgb(24, 154, 144)", // Exact web app teal
+    accent: "rgb(255, 204, 0)", // Web app yellow accent
+    background: "rgb(255, 255, 255)", // Exact web app white
     backgroundGradient: {
       start: "rgba(238, 58, 124, 0.1)",
       middle: "rgb(255, 255, 255)",
       end: "rgba(24, 154, 144, 0.1)",
     },
-    surface: "#FFFFFF",
-    surfaceElevated: "#F8F9FA",
-    text: "rgb(2, 8, 23)", // Web app dark text
-    textSecondary: "#6B7280",
-    border: "#E5E7EB",
-    success: "#10B981",
-    warning: "#F59E0B",
-    error: "#EF4444",
+    surface: "rgb(255, 255, 255)",
+    surfaceCard: "rgba(255, 255, 255, 0.8)",
+    text: "rgb(2, 8, 23)", // Exact web app dark text
+    textSecondary: "rgb(100, 116, 139)", // Exact web app secondary text
+    textMuted: "rgb(148, 163, 184)",
+    border: "rgba(148, 163, 184, 0.2)",
+    borderLight: "rgba(238, 58, 124, 0.1)",
+    success: "rgb(34, 197, 94)",
+    warning: "rgb(245, 158, 11)",
+    error: "rgb(239, 68, 68)",
+    gradient:
+      "linear-gradient(to right bottom, rgb(238, 58, 124), rgb(24, 154, 144))",
   },
   dark: {
     primary: "rgb(238, 58, 124)",
     secondary: "rgb(24, 154, 144)",
-    accent: "#FF6B35",
-    background: "#0F172A",
+    accent: "rgb(255, 204, 0)",
+    background: "rgb(15, 23, 42)",
     backgroundGradient: {
       start: "rgba(238, 58, 124, 0.05)",
-      middle: "#0F172A",
+      middle: "rgb(15, 23, 42)",
       end: "rgba(24, 154, 144, 0.05)",
     },
-    surface: "#1E293B",
-    surfaceElevated: "#334155",
-    text: "#F1F5F9",
-    textSecondary: "#94A3B8",
-    border: "#334155",
-    success: "#10B981",
-    warning: "#F59E0B",
-    error: "#EF4444",
+    surface: "rgb(30, 41, 59)",
+    surfaceCard: "rgba(30, 41, 59, 0.8)",
+    text: "rgb(241, 245, 249)",
+    textSecondary: "rgb(148, 163, 184)",
+    textMuted: "rgb(100, 116, 139)",
+    border: "rgba(51, 65, 85, 0.5)",
+    borderLight: "rgba(238, 58, 124, 0.1)",
+    success: "rgb(34, 197, 94)",
+    warning: "rgb(245, 158, 11)",
+    error: "rgb(239, 68, 68)",
+    gradient:
+      "linear-gradient(to right bottom, rgb(238, 58, 124), rgb(24, 154, 144))",
   },
 };
 
