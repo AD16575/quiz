@@ -80,6 +80,40 @@ export default function WelcomeScreen() {
             </View>
           </View>
 
+          {/* Challenge Card Section */}
+          <View style={styles.cardSection}>
+            <View
+              style={[
+                styles.challengeCard,
+                {
+                  backgroundColor: themeState.isDark
+                    ? "rgba(31, 41, 55, 0.8)"
+                    : "rgba(238, 58, 124, 0.05)",
+                },
+              ]}
+            >
+              <Ionicons
+                name="play"
+                size={48}
+                color="rgb(238, 58, 124)"
+                style={styles.cardIcon}
+              />
+              <Text
+                style={[
+                  styles.cardText,
+                  {
+                    color: themeState.isDark
+                      ? "rgb(156, 163, 175)"
+                      : "rgb(100, 116, 139)",
+                  },
+                ]}
+              >
+                Challenge yourself with fun quizzes and earn points while
+                learning!
+              </Text>
+            </View>
+          </View>
+
           {/* Action Buttons */}
           <View style={styles.actionContainer}>
             <TouchableOpacity
@@ -209,6 +243,28 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 
+  cardSection: {
+    marginTop: 32,
+    marginBottom: 32,
+    maxWidth: 448,
+    width: "100%",
+  },
+  challengeCard: {
+    borderRadius: 16,
+    padding: 24,
+    alignItems: "center",
+    justifyContent: "center",
+    minHeight: 120,
+  },
+  cardIcon: {
+    marginBottom: 12,
+  },
+  cardText: {
+    fontSize: 16,
+    lineHeight: 24,
+    textAlign: "center",
+    fontWeight: "400",
+  },
   actionContainer: {
     maxWidth: 448,
     width: "100%",
