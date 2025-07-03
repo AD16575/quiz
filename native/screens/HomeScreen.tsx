@@ -188,7 +188,7 @@ export default function HomeScreen() {
                 <Ionicons
                   name="flash"
                   size={48}
-                  color={themeState.colors.primary}
+                  color="rgb(238, 58, 124)"
                   style={dynamicStyles.playIcon}
                 />
                 <Text
@@ -210,7 +210,7 @@ export default function HomeScreen() {
                 <TouchableOpacity
                   style={[
                     dynamicStyles.playButton,
-                    { backgroundColor: themeState.colors.primary },
+                    { backgroundColor: "rgb(238, 58, 124)" },
                   ]}
                   onPress={() => navigation.navigate("Play" as never)}
                   activeOpacity={0.8}
