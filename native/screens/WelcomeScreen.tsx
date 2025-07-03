@@ -65,7 +65,16 @@ export default function WelcomeScreen() {
             </View>
             <View style={styles.titleContainer}>
               <GradientText style={styles.title}>MyQuiz</GradientText>
-              <Text style={[styles.tagline, { color: "rgb(100, 116, 139)" }]}>
+              <Text
+                style={[
+                  styles.tagline,
+                  {
+                    color: themeState.isDark
+                      ? "rgb(156, 163, 175)"
+                      : "rgb(100, 116, 139)",
+                  },
+                ]}
+              >
                 Play. Learn. Earn.
               </Text>
             </View>
@@ -87,7 +96,7 @@ export default function WelcomeScreen() {
                 {
                   borderColor: themeState.colors.secondary,
                   backgroundColor: themeState.isDark
-                    ? "rgba(24, 154, 144, 0.1)"
+                    ? "rgba(24, 154, 144, 0.15)"
                     : "transparent",
                 },
               ]}

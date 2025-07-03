@@ -1,5 +1,6 @@
 import React from "react";
 import { Text, TextStyle } from "react-native";
+import { useTheme } from "../../contexts/ThemeContext";
 
 interface GradientTextProps {
   children: React.ReactNode;
@@ -12,16 +13,19 @@ export default function GradientText({
   style,
   colors = ["rgb(238, 58, 124)", "rgb(24, 154, 144)"],
 }: GradientTextProps) {
-  // For React Native, we'll use a rich color with shadow to simulate gradient
-  // This gives the best visual approximation of the web app's gradient text
+  const { state: themeState } = useTheme();
+
+  // Enhanced visibility for dark mode
   return (
     <Text
       style={[
         {
           color: "rgb(238, 58, 124)",
-          textShadowColor: "rgba(24, 154, 144, 0.5)",
+          textShadowColor: themeState.isDark
+            ? "rgba(24, 154, 144, 0.8)"
+            : "rgba(24, 154, 144, 0.5)",
           textShadowOffset: { width: 1, height: 1 },
-          textShadowRadius: 3,
+          textShadowRadius: themeState.isDark ? 4 : 3,
         },
         style,
       ]}
