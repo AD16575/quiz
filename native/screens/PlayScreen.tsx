@@ -108,12 +108,8 @@ export default function PlayScreen() {
   );
 
   return (
-    <SafeAreaView
-      style={[
-        styles.container,
-        { backgroundColor: themeState.colors.background },
-      ]}
-    >
+    <GradientBackground>
+      <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
         <View>
