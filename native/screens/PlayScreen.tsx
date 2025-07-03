@@ -172,11 +172,7 @@ export default function PlayScreen() {
               ]}
             >
               <View style={styles.randomIcon}>
-                <Ionicons
-                  name="shuffle"
-                  size={48}
-                  color={Colors.light.primary}
-                />
+                <Ionicons name="shuffle" size={48} color="rgb(238, 58, 124)" />
               </View>
               <Text
                 style={[styles.randomTitle, { color: themeState.colors.text }]}

@@ -165,7 +165,7 @@ export default function ProfileScreen() {
           <View
             style={[
               styles.header,
-              { backgroundColor: `${Colors.light.primary}15` },
+              { backgroundColor: "rgba(238, 58, 124, 0.05)" },
             ]}
           >
             <View style={styles.profileContainer}>
