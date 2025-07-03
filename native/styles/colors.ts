@@ -1,11 +1,17 @@
 export const Colors = {
   light: {
-    primary: "#E91E63", // Squid Game Pink
-    secondary: "#0F766E", // Squid Game Teal
-    accent: "#FF6B35", // Better orange accent
+    primary: "rgb(238, 58, 124)", // Web app pink
+    secondary: "rgb(24, 154, 144)", // Web app teal
+    accent: "#FF6B35",
     background: "#FFFFFF",
-    surface: "#F8F9FA",
-    text: "#1F2937",
+    backgroundGradient: {
+      start: "rgba(238, 58, 124, 0.1)",
+      middle: "rgb(255, 255, 255)",
+      end: "rgba(24, 154, 144, 0.1)",
+    },
+    surface: "#FFFFFF",
+    surfaceElevated: "#F8F9FA",
+    text: "rgb(2, 8, 23)", // Web app dark text
     textSecondary: "#6B7280",
     border: "#E5E7EB",
     success: "#10B981",
@@ -13,11 +19,17 @@ export const Colors = {
     error: "#EF4444",
   },
   dark: {
-    primary: "#E91E63",
-    secondary: "#0F766E",
+    primary: "rgb(238, 58, 124)",
+    secondary: "rgb(24, 154, 144)",
     accent: "#FF6B35",
     background: "#0F172A",
+    backgroundGradient: {
+      start: "rgba(238, 58, 124, 0.05)",
+      middle: "#0F172A",
+      end: "rgba(24, 154, 144, 0.05)",
+    },
     surface: "#1E293B",
+    surfaceElevated: "#334155",
     text: "#F1F5F9",
     textSecondary: "#94A3B8",
     border: "#334155",
