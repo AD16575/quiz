@@ -12,6 +12,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
+import GradientBackground from "../components/common/GradientBackground";
+import Logo from "../components/common/Logo";
+import GradientText from "../components/common/GradientText";
 
 const { width, height } = Dimensions.get("window");
 
