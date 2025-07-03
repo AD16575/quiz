@@ -116,9 +116,9 @@ export default function HomeScreen() {
           {/* Header */}
           <View style={dynamicStyles.header}>
             <View style={dynamicStyles.headerContent}>
-              <Logo size="small" showText={false} />
+              <Logo size="small" />
               <View style={dynamicStyles.headerText}>
-                <GradientText style={[dynamicStyles.appName]}>
+                <GradientText style={dynamicStyles.appName}>
                   MyQuiz
                 </GradientText>
                 <Text
@@ -357,7 +357,7 @@ const createStyles = (colors: any) =>
       flex: 1,
     },
     appName: {
-      fontSize: FontSizes.lg,
+      fontSize: FontSizes.xl,
       fontWeight: "700",
       marginBottom: 2,
     },
