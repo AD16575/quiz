@@ -26,6 +26,7 @@ export default function HomeScreen() {
   if (!user) return null;
 
   const featuredCategories = categories.slice(0, 4); // Show first 4 categories
+  const dynamicStyles = createStyles(themeState.colors);
 
   const StatCard = ({
     title,
@@ -38,14 +39,27 @@ export default function HomeScreen() {
     icon: keyof typeof Ionicons.glyphMap;
     color: string;
   }) => (
-    <View style={[styles.statCard, { borderLeftColor: color }]}>
-      <View style={styles.statContent}>
-        <View style={[styles.statIcon, { backgroundColor: color + "20" }]}>
+    <View style={[dynamicStyles.statCard, { borderLeftColor: color }]}>
+      <View style={dynamicStyles.statContent}>
+        <View
+          style={[dynamicStyles.statIcon, { backgroundColor: color + "20" }]}
+        >
           <Ionicons name={icon} size={24} color={color} />
         </View>
-        <View style={styles.statText}>
-          <Text style={styles.statValue}>{value.toLocaleString()}</Text>
-          <Text style={styles.statTitle}>{title}</Text>
+        <View style={dynamicStyles.statText}>
+          <Text
+            style={[dynamicStyles.statValue, { color: themeState.colors.text }]}
+          >
+            {value.toLocaleString()}
+          </Text>
+          <Text
+            style={[
+              dynamicStyles.statTitle,
+              { color: themeState.colors.textSecondary },
+            ]}
+          >
+            {title}
+          </Text>
         </View>
       </View>
     </View>
@@ -53,7 +67,10 @@ export default function HomeScreen() {
 
   const CategoryCard = ({ category }: { category: any }) => (
     <TouchableOpacity
-      style={[styles.categoryCard, { backgroundColor: category.color + "15" }]}
+      style={[
+        dynamicStyles.categoryCard,
+        { backgroundColor: category.color + "15" },
+      ]}
       onPress={() =>
         navigation.navigate(
           "QuizList" as never,
@@ -61,11 +78,26 @@ export default function HomeScreen() {
         )
       }
     >
-      <View style={[styles.categoryIcon, { backgroundColor: category.color }]}>
-        <Text style={styles.categoryEmoji}>{category.icon}</Text>
+      <View
+        style={[
+          dynamicStyles.categoryIcon,
+          { backgroundColor: category.color },
+        ]}
+      >
+        <Text style={dynamicStyles.categoryEmoji}>{category.icon}</Text>
       </View>
-      <Text style={styles.categoryName}>{category.name}</Text>
-      <Text style={styles.categoryDescription} numberOfLines={2}>
+      <Text
+        style={[dynamicStyles.categoryName, { color: themeState.colors.text }]}
+      >
+        {category.name}
+      </Text>
+      <Text
+        style={[
+          dynamicStyles.categoryDescription,
+          { color: themeState.colors.textSecondary },
+        ]}
+        numberOfLines={2}
+      >
         {category.description}
       </Text>
     </TouchableOpacity>
@@ -73,19 +105,38 @@ export default function HomeScreen() {
 
   return (
     <GradientBackground>
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={dynamicStyles.container}>
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.scrollContent}
+          contentContainerStyle={dynamicStyles.scrollContent}
           nestedScrollEnabled={true}
         >
           {/* Header */}
-          <View style={styles.header}>
+          <View style={dynamicStyles.header}>
             <View>
-              <Text style={styles.greeting}>Hello, {user.name}! 👋</Text>
-              <Text style={styles.subGreeting}>Ready to play today?</Text>
+              <Text
+                style={[
+                  dynamicStyles.greeting,
+                  { color: themeState.colors.text },
+                ]}
+              >
+                Hello, {user.name}! 👋
+              </Text>
+              <Text
+                style={[
+                  dynamicStyles.subGreeting,
+                  { color: themeState.colors.textSecondary },
+                ]}
+              >
+                Ready to play today?
+              </Text>
             </View>
-            <TouchableOpacity style={styles.notificationButton}>
+            <TouchableOpacity
+              style={[
+                dynamicStyles.notificationButton,
+                { backgroundColor: themeState.colors.surface },
+              ]}
+            >
               <Ionicons
                 name="notifications-outline"
                 size={24}
@@ -95,7 +146,7 @@ export default function HomeScreen() {
           </View>
 
           {/* Stats Grid */}
-          <View style={styles.statsContainer}>
+          <View style={dynamicStyles.statsContainer}>
             <StatCard
               title="Total Points"
               value={user.points}
