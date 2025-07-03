@@ -77,6 +77,7 @@ export default function WelcomeScreen() {
               style={styles.getStartedButton}
               onPress={() => navigation.navigate("Signup" as never)}
             >
+              <Ionicons name="play" size={20} color="white" />
               <Text style={styles.getStartedText}>Get Started</Text>
             </TouchableOpacity>
 
@@ -92,6 +93,11 @@ export default function WelcomeScreen() {
               ]}
               onPress={() => navigation.navigate("Login" as never)}
             >
+              <Ionicons
+                name="log-in"
+                size={20}
+                color={themeState.colors.secondary}
+              />
               <Text
                 style={[
                   styles.loginText,
