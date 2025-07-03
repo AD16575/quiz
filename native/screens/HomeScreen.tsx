@@ -179,8 +179,8 @@ export default function HomeScreen() {
               style={[
                 dynamicStyles.playCard,
                 {
-                  backgroundColor: themeState.colors.primary + "15",
-                  borderColor: themeState.colors.primary + "30",
+                  backgroundColor: "rgba(238, 58, 124, 0.1)",
+                  borderColor: "rgba(238, 58, 124, 0.2)",
                 },
               ]}
             >
