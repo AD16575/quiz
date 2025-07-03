@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, TextStyle, View, Platform } from "react-native";
+import { Text, TextStyle, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
 interface GradientTextProps {
@@ -13,29 +13,15 @@ export default function GradientText({
   style,
   colors = ["rgb(238, 58, 124)", "rgb(24, 154, 144)"],
 }: GradientTextProps) {
-  // Create a gradient text effect by overlaying multiple text elements
+  // Simulate gradient text by creating two text layers with different colors
+  // This creates a visual gradient effect similar to the web app
   return (
     <View style={{ position: "relative" }}>
-      {/* Background gradient */}
-      <LinearGradient
-        colors={colors}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-        style={{
-          position: "absolute",
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 0,
-          borderRadius: 4,
-        }}
-      />
-
-      {/* Invisible text for layout */}
+      {/* First layer - Pink color */}
       <Text
         style={[
           {
-            color: "transparent",
+            color: "rgb(238, 58, 124)",
           },
           style,
         ]}
@@ -43,24 +29,22 @@ export default function GradientText({
         {children}
       </Text>
 
-      {/* Visible gradient text overlay */}
+      {/* Second layer - Teal overlay for gradient effect */}
       <Text
         style={[
           {
             position: "absolute",
-            left: 0,
+            left: 2,
             top: 0,
-            right: 0,
-            bottom: 0,
-            color: "rgb(238, 58, 124)",
-            textShadowColor: "rgb(24, 154, 144)",
-            textShadowOffset: { width: 0.5, height: 0.5 },
-            textShadowRadius: 1,
+            color: "rgb(24, 154, 144)",
+            opacity: 0.7,
           },
           style,
         ]}
       >
-        {children}
+        {children
+          .toString()
+          .slice(0, Math.floor(children.toString().length / 2))}
       </Text>
     </View>
   );
