@@ -155,252 +155,253 @@ export default function ProfileScreen() {
   );
 
   return (
-    <SafeAreaView
-      style={[
-        styles.container,
-        { backgroundColor: themeState.colors.background },
-      ]}
-    >
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
-      >
-        {/* Profile Header */}
-        <View
-          style={[
-            styles.header,
-            { backgroundColor: `${Colors.light.primary}15` },
-          ]}
+    <GradientBackground>
+      <SafeAreaView style={styles.container}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContent}
         >
-          <View style={styles.profileContainer}>
-            <View style={styles.avatarContainer}>
-              <View style={styles.avatar}>
-                <Text style={styles.avatarText}>{user.name.charAt(0)}</Text>
+          {/* Profile Header */}
+          <View
+            style={[
+              styles.header,
+              { backgroundColor: `${Colors.light.primary}15` },
+            ]}
+          >
+            <View style={styles.profileContainer}>
+              <View style={styles.avatarContainer}>
+                <View style={styles.avatar}>
+                  <Text style={styles.avatarText}>{user.name.charAt(0)}</Text>
+                </View>
+                <TouchableOpacity style={styles.editAvatarButton}>
+                  <Ionicons name="camera" size={16} color="white" />
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity style={styles.editAvatarButton}>
-                <Ionicons name="camera" size={16} color="white" />
+
+              <View style={styles.userInfo}>
+                <Text
+                  style={[styles.userName, { color: themeState.colors.text }]}
+                >
+                  {user.name}
+                </Text>
+                <Text
+                  style={[
+                    styles.userEmail,
+                    { color: themeState.colors.textSecondary },
+                  ]}
+                >
+                  {user.email}
+                </Text>
+                <View style={styles.membershipInfo}>
+                  <Ionicons
+                    name="calendar"
+                    size={16}
+                    color={themeState.colors.textSecondary}
+                  />
+                  <Text
+                    style={[
+                      styles.memberSince,
+                      { color: themeState.colors.textSecondary },
+                    ]}
+                  >
+                    Member since {user.memberSince.toLocaleDateString()}
+                  </Text>
+                </View>
+              </View>
+
+              <TouchableOpacity style={styles.editButton}>
+                <Ionicons
+                  name="create"
+                  size={20}
+                  color={Colors.light.primary}
+                />
               </TouchableOpacity>
             </View>
+          </View>
 
-            <View style={styles.userInfo}>
-              <Text
-                style={[styles.userName, { color: themeState.colors.text }]}
-              >
-                {user.name}
-              </Text>
-              <Text
-                style={[
-                  styles.userEmail,
-                  { color: themeState.colors.textSecondary },
-                ]}
-              >
-                {user.email}
-              </Text>
-              <View style={styles.membershipInfo}>
-                <Ionicons
-                  name="calendar"
-                  size={16}
-                  color={themeState.colors.textSecondary}
-                />
-                <Text
-                  style={[
-                    styles.memberSince,
-                    { color: themeState.colors.textSecondary },
-                  ]}
-                >
-                  Member since {user.memberSince.toLocaleDateString()}
-                </Text>
-              </View>
+          {/* Stats Grid */}
+          <View style={styles.statsSection}>
+            <Text
+              style={[styles.sectionTitle, { color: themeState.colors.text }]}
+            >
+              Your Statistics
+            </Text>
+            <View style={styles.statsGrid}>
+              <StatCard
+                title="Total Points"
+                value={user.points}
+                icon="star"
+                color={Colors.light.primary}
+              />
+              <StatCard
+                title="Quizzes Played"
+                value={user.totalQuizzes}
+                icon="play-circle"
+                color={Colors.light.secondary}
+              />
+              <StatCard
+                title="Referrals"
+                value={user.referredUsers}
+                icon="people"
+                color={Colors.light.accent}
+              />
+              <StatCard
+                title="Achievements"
+                value={achievements.filter((a) => a.earned).length}
+                icon="trophy"
+                color="#FFD700"
+              />
             </View>
-
-            <TouchableOpacity style={styles.editButton}>
-              <Ionicons name="create" size={20} color={Colors.light.primary} />
-            </TouchableOpacity>
           </View>
-        </View>
 
-        {/* Stats Grid */}
-        <View style={styles.statsSection}>
-          <Text
-            style={[styles.sectionTitle, { color: themeState.colors.text }]}
-          >
-            Your Statistics
-          </Text>
-          <View style={styles.statsGrid}>
-            <StatCard
-              title="Total Points"
-              value={user.points}
-              icon="star"
-              color={Colors.light.primary}
-            />
-            <StatCard
-              title="Quizzes Played"
-              value={user.totalQuizzes}
-              icon="play-circle"
-              color={Colors.light.secondary}
-            />
-            <StatCard
-              title="Referrals"
-              value={user.referredUsers}
-              icon="people"
-              color={Colors.light.accent}
-            />
-            <StatCard
-              title="Achievements"
-              value={achievements.filter((a) => a.earned).length}
-              icon="trophy"
-              color="#FFD700"
-            />
-          </View>
-        </View>
-
-        {/* Achievements */}
-        <View style={styles.section}>
-          <Text
-            style={[styles.sectionTitle, { color: themeState.colors.text }]}
-          >
-            Achievements ({achievements.filter((a) => a.earned).length}/
-            {achievements.length})
-          </Text>
-          <View style={styles.achievementsGrid}>
-            {achievements.map((achievement) => (
-              <View
-                key={achievement.id}
-                style={[
-                  styles.achievementCard,
-                  { backgroundColor: themeState.colors.surface },
-                  !achievement.earned && styles.lockedAchievement,
-                ]}
-              >
+          {/* Achievements */}
+          <View style={styles.section}>
+            <Text
+              style={[styles.sectionTitle, { color: themeState.colors.text }]}
+            >
+              Achievements ({achievements.filter((a) => a.earned).length}/
+              {achievements.length})
+            </Text>
+            <View style={styles.achievementsGrid}>
+              {achievements.map((achievement) => (
                 <View
+                  key={achievement.id}
                   style={[
-                    styles.achievementIcon,
-                    {
-                      backgroundColor: achievement.earned
-                        ? achievement.color + "20"
-                        : themeState.colors.border + "50",
-                    },
+                    styles.achievementCard,
+                    { backgroundColor: themeState.colors.surface },
+                    !achievement.earned && styles.lockedAchievement,
                   ]}
                 >
-                  <Ionicons
-                    name={achievement.icon as any}
-                    size={28}
-                    color={
-                      achievement.earned
-                        ? achievement.color
-                        : themeState.colors.textSecondary
-                    }
-                  />
-                </View>
-                <Text
-                  style={[
-                    styles.achievementTitle,
-                    {
-                      color: achievement.earned
-                        ? themeState.colors.text
-                        : themeState.colors.textSecondary,
-                    },
-                  ]}
-                >
-                  {achievement.title}
-                </Text>
-                <Text
-                  style={[
-                    styles.achievementDescription,
-                    { color: themeState.colors.textSecondary },
-                  ]}
-                >
-                  {achievement.description}
-                </Text>
-                {achievement.earned && (
-                  <View style={styles.achievementBadge}>
+                  <View
+                    style={[
+                      styles.achievementIcon,
+                      {
+                        backgroundColor: achievement.earned
+                          ? achievement.color + "20"
+                          : themeState.colors.border + "50",
+                      },
+                    ]}
+                  >
                     <Ionicons
-                      name="checkmark-circle"
-                      size={20}
-                      color={achievement.color}
+                      name={achievement.icon as any}
+                      size={28}
+                      color={
+                        achievement.earned
+                          ? achievement.color
+                          : themeState.colors.textSecondary
+                      }
                     />
                   </View>
-                )}
-              </View>
-            ))}
+                  <Text
+                    style={[
+                      styles.achievementTitle,
+                      {
+                        color: achievement.earned
+                          ? themeState.colors.text
+                          : themeState.colors.textSecondary,
+                      },
+                    ]}
+                  >
+                    {achievement.title}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.achievementDescription,
+                      { color: themeState.colors.textSecondary },
+                    ]}
+                  >
+                    {achievement.description}
+                  </Text>
+                  {achievement.earned && (
+                    <View style={styles.achievementBadge}>
+                      <Ionicons
+                        name="checkmark-circle"
+                        size={20}
+                        color={achievement.color}
+                      />
+                    </View>
+                  )}
+                </View>
+              ))}
+            </View>
           </View>
-        </View>
 
-        {/* Menu Sections */}
-        <View style={styles.section}>
-          <Text
-            style={[styles.sectionTitle, { color: themeState.colors.text }]}
-          >
-            Account
-          </Text>
-          <View style={styles.menuContainer}>
+          {/* Menu Sections */}
+          <View style={styles.section}>
+            <Text
+              style={[styles.sectionTitle, { color: themeState.colors.text }]}
+            >
+              Account
+            </Text>
+            <View style={styles.menuContainer}>
+              <MenuButton
+                title="Point History"
+                icon="trending-up"
+                onPress={() => navigation.navigate("PointHistory" as never)}
+                color={Colors.light.secondary}
+              />
+              <MenuButton
+                title="Referral Program"
+                icon="people"
+                onPress={() => navigation.navigate("Referral" as never)}
+                color={Colors.light.primary}
+              />
+              <MenuButton
+                title="Withdrawal"
+                icon="wallet"
+                onPress={() => navigation.navigate("Withdrawal" as never)}
+                color={Colors.light.accent}
+              />
+              <MenuButton
+                title="Settings"
+                icon="settings"
+                onPress={() => navigation.navigate("Settings" as never)}
+                color={themeState.colors.textSecondary}
+              />
+            </View>
+          </View>
+
+          {/* Support */}
+          <View style={styles.section}>
+            <Text
+              style={[styles.sectionTitle, { color: themeState.colors.text }]}
+            >
+              Support
+            </Text>
+            <View style={styles.menuContainer}>
+              <MenuButton
+                title="Help & FAQ"
+                icon="help-circle"
+                onPress={() => {}}
+                color={Colors.light.secondary}
+              />
+              <MenuButton
+                title="Contact Support"
+                icon="mail"
+                onPress={() => {}}
+                color={Colors.light.primary}
+              />
+              <MenuButton
+                title="Terms & Privacy"
+                icon="document-text"
+                onPress={() => {}}
+                color={themeState.colors.textSecondary}
+              />
+            </View>
+          </View>
+
+          {/* Logout */}
+          <View style={styles.section}>
             <MenuButton
-              title="Point History"
-              icon="trending-up"
-              onPress={() => navigation.navigate("PointHistory" as never)}
-              color={Colors.light.secondary}
-            />
-            <MenuButton
-              title="Referral Program"
-              icon="people"
-              onPress={() => navigation.navigate("Referral" as never)}
-              color={Colors.light.primary}
-            />
-            <MenuButton
-              title="Withdrawal"
-              icon="wallet"
-              onPress={() => navigation.navigate("Withdrawal" as never)}
-              color={Colors.light.accent}
-            />
-            <MenuButton
-              title="Settings"
-              icon="settings"
-              onPress={() => navigation.navigate("Settings" as never)}
-              color={themeState.colors.textSecondary}
+              title="Logout"
+              icon="log-out"
+              onPress={handleLogout}
+              destructive={true}
             />
           </View>
-        </View>
-
-        {/* Support */}
-        <View style={styles.section}>
-          <Text
-            style={[styles.sectionTitle, { color: themeState.colors.text }]}
-          >
-            Support
-          </Text>
-          <View style={styles.menuContainer}>
-            <MenuButton
-              title="Help & FAQ"
-              icon="help-circle"
-              onPress={() => {}}
-              color={Colors.light.secondary}
-            />
-            <MenuButton
-              title="Contact Support"
-              icon="mail"
-              onPress={() => {}}
-              color={Colors.light.primary}
-            />
-            <MenuButton
-              title="Terms & Privacy"
-              icon="document-text"
-              onPress={() => {}}
-              color={themeState.colors.textSecondary}
-            />
-          </View>
-        </View>
-
-        {/* Logout */}
-        <View style={styles.section}>
-          <MenuButton
-            title="Logout"
-            icon="log-out"
-            onPress={handleLogout}
-            destructive={true}
-          />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+        </ScrollView>
+      </SafeAreaView>
+    </GradientBackground>
   );
 }
 
