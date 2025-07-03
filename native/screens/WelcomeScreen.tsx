@@ -60,7 +60,7 @@ export default function WelcomeScreen() {
           {/* Illustration */}
           <View style={styles.illustration}>
             <View style={styles.illustrationCard}>
-              <Ionicons name="play" size={64} color={Colors.light.primary} />
+              <Ionicons name="play" size={64} color="rgb(238, 58, 124)" />
               <Text style={styles.illustrationText}>
                 Challenge yourself with fun quizzes and earn points while
                 learning!
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     gap: Spacing.md,
   },
   getStartedButton: {
-    backgroundColor: Colors.light.primary,
+    backgroundColor: "rgb(238, 58, 124)",
     paddingVertical: Spacing.lg,
     borderRadius: BorderRadius.xl,
     flexDirection: "row",
@@ -172,9 +172,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: Spacing.sm,
     elevation: 5,
-    shadowColor: Colors.light.primary,
+    shadowColor: "rgba(238, 58, 124, 0.3)",
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 1,
     shadowRadius: 8,
   },
   getStartedText: {
@@ -187,14 +187,14 @@ const styles = StyleSheet.create({
     paddingVertical: Spacing.lg,
     borderRadius: BorderRadius.xl,
     borderWidth: 2,
-    borderColor: Colors.light.secondary,
+    borderColor: "rgb(24, 154, 144)",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     gap: Spacing.sm,
   },
   loginText: {
-    color: Colors.light.secondary,
+    color: "rgb(24, 154, 144)",
     fontSize: FontSizes.lg,
     fontWeight: "600",
   },
