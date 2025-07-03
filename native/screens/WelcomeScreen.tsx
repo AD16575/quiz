@@ -160,15 +160,16 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.light.accent,
   },
   title: {
-    fontSize: FontSizes.xxxl * 1.5,
-    fontWeight: "bold",
-    color: Colors.light.primary,
+    fontSize: 48,
+    fontWeight: "700",
     marginBottom: Spacing.sm,
+    textAlign: "center",
   },
   tagline: {
-    fontSize: FontSizes.xl,
-    color: Colors.light.textSecondary,
-    fontWeight: "600",
+    fontSize: 20,
+    fontWeight: "400",
+    textAlign: "center",
+    lineHeight: 28,
   },
   illustration: {
     width: width * 0.8,
