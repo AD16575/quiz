@@ -422,7 +422,12 @@ const createStyles = (colors: any) =>
     },
     playCard: {
       borderRadius: BorderRadius.xl,
-      borderWidth: 2,
+      borderWidth: 1,
+      shadowColor: "rgba(0, 0, 0, 0.1)",
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 1,
+      shadowRadius: 12,
+      elevation: 5,
     },
     playContent: {
       padding: Spacing.xl,
