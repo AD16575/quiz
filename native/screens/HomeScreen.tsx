@@ -174,43 +174,80 @@ export default function HomeScreen() {
           </View>
 
           {/* Play Now Section */}
-          <View style={styles.playSection}>
-            <View style={styles.playCard}>
-              <View style={styles.playContent}>
+          <View style={dynamicStyles.playSection}>
+            <View
+              style={[
+                dynamicStyles.playCard,
+                {
+                  backgroundColor: themeState.colors.primary + "15",
+                  borderColor: themeState.colors.primary + "30",
+                },
+              ]}
+            >
+              <View style={dynamicStyles.playContent}>
                 <Ionicons
                   name="flash"
                   size={48}
                   color={themeState.colors.primary}
-                  style={styles.playIcon}
+                  style={dynamicStyles.playIcon}
                 />
-                <Text style={styles.playTitle}>Ready to Play?</Text>
-                <Text style={styles.playSubtitle}>
+                <Text
+                  style={[
+                    dynamicStyles.playTitle,
+                    { color: themeState.colors.text },
+                  ]}
+                >
+                  Ready to Play?
+                </Text>
+                <Text
+                  style={[
+                    dynamicStyles.playSubtitle,
+                    { color: themeState.colors.textSecondary },
+                  ]}
+                >
                   Choose from various categories and start earning points!
                 </Text>
                 <TouchableOpacity
-                  style={styles.playButton}
+                  style={[
+                    dynamicStyles.playButton,
+                    { backgroundColor: themeState.colors.primary },
+                  ]}
                   onPress={() => navigation.navigate("Play" as never)}
                   activeOpacity={0.8}
                 >
                   <Ionicons name="play" size={20} color="white" />
-                  <Text style={styles.playButtonText}>Play Now</Text>
+                  <Text style={dynamicStyles.playButtonText}>Play Now</Text>
                 </TouchableOpacity>
               </View>
             </View>
           </View>
 
           {/* Categories Section */}
-          <View style={styles.section}>
-            <View style={styles.sectionHeader}>
-              <Text style={styles.sectionTitle}>Categories</Text>
+          <View style={dynamicStyles.section}>
+            <View style={dynamicStyles.sectionHeader}>
+              <Text
+                style={[
+                  dynamicStyles.sectionTitle,
+                  { color: themeState.colors.text },
+                ]}
+              >
+                Categories
+              </Text>
               <TouchableOpacity
                 onPress={() => navigation.navigate("Play" as never)}
               >
-                <Text style={styles.seeAllText}>See All</Text>
+                <Text
+                  style={[
+                    dynamicStyles.seeAllText,
+                    { color: themeState.colors.primary },
+                  ]}
+                >
+                  See All
+                </Text>
               </TouchableOpacity>
             </View>
 
-            <View style={styles.categoriesGrid}>
+            <View style={dynamicStyles.categoriesGrid}>
               {featuredCategories.map((category) => (
                 <CategoryCard key={category.id} category={category} />
               ))}
