@@ -35,7 +35,10 @@ export default function WelcomeScreen() {
         <TouchableOpacity
           style={[
             styles.themeToggle,
-            { backgroundColor: themeState.colors.surfaceCard },
+            {
+              backgroundColor: themeState.colors.surface,
+              borderColor: themeState.colors.border,
+            },
           ]}
           onPress={toggleTheme}
         >
@@ -114,6 +117,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
     padding: Spacing.sm,
     borderRadius: BorderRadius.full,
+    borderWidth: 1,
     shadowColor: "rgba(0, 0, 0, 0.1)",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 1,
@@ -181,7 +185,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   tagline: {
-    color: "rgb(100, 116, 139)",
     fontSize: 20,
     fontWeight: "400",
     lineHeight: 28,

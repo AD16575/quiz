@@ -13,16 +13,23 @@ export default function GradientBackground({
   style,
 }: GradientBackgroundProps) {
   const { state: themeState } = useTheme();
-  const { colors } = themeState;
+
+  const gradientColors = themeState.isDark
+    ? [
+        "rgba(238, 58, 124, 0.05)",
+        "rgb(15, 23, 42)",
+        "rgba(24, 154, 144, 0.05)",
+      ]
+    : [
+        "rgba(238, 58, 124, 0.1)",
+        "rgb(255, 255, 255)",
+        "rgba(24, 154, 144, 0.1)",
+      ];
 
   return (
     <View style={[styles.container, style]}>
       <LinearGradient
-        colors={[
-          "rgba(238, 58, 124, 0.1)",
-          "rgb(255, 255, 255)",
-          "rgba(24, 154, 144, 0.1)",
-        ]}
+        colors={gradientColors}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={StyleSheet.absoluteFillObject}

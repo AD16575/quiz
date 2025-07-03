@@ -1,5 +1,6 @@
 import React from "react";
 import { Text, TextStyle } from "react-native";
+import { useTheme } from "../../contexts/ThemeContext";
 
 interface GradientTextProps {
   children: React.ReactNode;
@@ -12,13 +13,13 @@ export default function GradientText({
   style,
   colors = ["rgb(238, 58, 124)", "rgb(24, 154, 144)"],
 }: GradientTextProps) {
-  // For React Native, we'll use the primary color as fallback
-  // since true gradient text requires more complex implementation
+  const { state: themeState } = useTheme();
+
   return (
     <Text
       style={[
         {
-          color: "rgb(238, 58, 124)",
+          color: themeState.colors.primary,
         },
         style,
       ]}
