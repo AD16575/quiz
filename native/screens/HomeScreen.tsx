@@ -332,193 +332,194 @@ export default function HomeScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.light.background,
-  },
-  scrollContent: {
-    flexGrow: 1,
-    paddingBottom: 100,
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.lg,
-  },
-  greeting: {
-    fontSize: FontSizes.xl,
-    fontWeight: "bold",
-    color: Colors.light.text,
-  },
-  subGreeting: {
-    fontSize: FontSizes.md,
-    color: Colors.light.textSecondary,
-    marginTop: 4,
-  },
-  notificationButton: {
-    padding: Spacing.sm,
-    borderRadius: BorderRadius.full,
-    backgroundColor: Colors.light.surface,
-  },
-  statsContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    paddingHorizontal: Spacing.md,
-    gap: Spacing.sm,
-  },
-  statCard: {
-    flex: 1,
-    backgroundColor: Colors.light.surface,
-    borderRadius: BorderRadius.lg,
-    padding: Spacing.md,
-    borderLeftWidth: 4,
-    minWidth: (width - Spacing.md * 2 - Spacing.sm) / 2 - Spacing.sm,
-  },
-  statContent: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  statIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: BorderRadius.lg,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: Spacing.sm,
-  },
-  statText: {
-    flex: 1,
-  },
-  statValue: {
-    fontSize: FontSizes.lg,
-    fontWeight: "bold",
-    color: Colors.light.text,
-  },
-  statTitle: {
-    fontSize: FontSizes.xs,
-    color: Colors.light.textSecondary,
-    marginTop: 2,
-  },
-  playSection: {
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.lg,
-  },
-  playCard: {
-    backgroundColor: `${Colors.light.primary}15`,
-    borderRadius: BorderRadius.xl,
-    borderWidth: 2,
-    borderColor: `${Colors.light.primary}30`,
-  },
-  playContent: {
-    padding: Spacing.xl,
-    alignItems: "center",
-  },
-  playIcon: {
-    marginBottom: Spacing.md,
-  },
-  playTitle: {
-    fontSize: FontSizes.xxl,
-    fontWeight: "bold",
-    color: Colors.light.text,
-    marginBottom: Spacing.sm,
-  },
-  playSubtitle: {
-    fontSize: FontSizes.md,
-    color: Colors.light.textSecondary,
-    textAlign: "center",
-    marginBottom: Spacing.lg,
-  },
-  playButton: {
-    backgroundColor: Colors.light.primary,
-    paddingHorizontal: Spacing.xl,
-    paddingVertical: Spacing.md,
-    borderRadius: BorderRadius.full,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: Spacing.sm,
-  },
-  playButtonText: {
-    color: "white",
-    fontSize: FontSizes.md,
-    fontWeight: "600",
-  },
-  section: {
-    paddingHorizontal: Spacing.md,
-    paddingBottom: Spacing.lg,
-  },
-  sectionHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: Spacing.md,
-  },
-  sectionTitle: {
-    fontSize: FontSizes.xl,
-    fontWeight: "bold",
-    color: Colors.light.text,
-  },
-  seeAllText: {
-    fontSize: FontSizes.md,
-    color: Colors.light.primary,
-    fontWeight: "600",
-  },
-  categoriesGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: Spacing.sm,
-  },
-  categoryCard: {
-    width: (width - Spacing.md * 2 - Spacing.sm) / 2,
-    padding: Spacing.md,
-    borderRadius: BorderRadius.lg,
-    alignItems: "center",
-  },
-  categoryIcon: {
-    width: 60,
-    height: 60,
-    borderRadius: BorderRadius.xl,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: Spacing.md,
-  },
-  categoryEmoji: {
-    fontSize: 30,
-  },
-  categoryName: {
-    fontSize: FontSizes.md,
-    fontWeight: "600",
-    color: Colors.light.text,
-    textAlign: "center",
-    marginBottom: Spacing.xs,
-  },
-  categoryDescription: {
-    fontSize: FontSizes.sm,
-    color: Colors.light.textSecondary,
-    textAlign: "center",
-  },
-  quickActions: {
-    flexDirection: "row",
-    gap: Spacing.md,
-  },
-  quickActionCard: {
-    flex: 1,
-    backgroundColor: Colors.light.surface,
-    padding: Spacing.md,
-    borderRadius: BorderRadius.lg,
-    alignItems: "center",
-  },
-  quickActionTitle: {
-    fontSize: FontSizes.md,
-    fontWeight: "600",
-    color: Colors.light.text,
-    marginTop: Spacing.sm,
-  },
-  quickActionSubtitle: {
-    fontSize: FontSizes.sm,
-    color: Colors.light.textSecondary,
-    marginTop: 2,
-  },
-});
+const createStyles = (colors: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: Colors.light.background,
+    },
+    scrollContent: {
+      flexGrow: 1,
+      paddingBottom: 100,
+    },
+    header: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      paddingHorizontal: Spacing.md,
+      paddingVertical: Spacing.lg,
+    },
+    greeting: {
+      fontSize: FontSizes.xl,
+      fontWeight: "bold",
+      color: Colors.light.text,
+    },
+    subGreeting: {
+      fontSize: FontSizes.md,
+      color: Colors.light.textSecondary,
+      marginTop: 4,
+    },
+    notificationButton: {
+      padding: Spacing.sm,
+      borderRadius: BorderRadius.full,
+      backgroundColor: Colors.light.surface,
+    },
+    statsContainer: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      paddingHorizontal: Spacing.md,
+      gap: Spacing.sm,
+    },
+    statCard: {
+      flex: 1,
+      backgroundColor: Colors.light.surface,
+      borderRadius: BorderRadius.lg,
+      padding: Spacing.md,
+      borderLeftWidth: 4,
+      minWidth: (width - Spacing.md * 2 - Spacing.sm) / 2 - Spacing.sm,
+    },
+    statContent: {
+      flexDirection: "row",
+      alignItems: "center",
+    },
+    statIcon: {
+      width: 40,
+      height: 40,
+      borderRadius: BorderRadius.lg,
+      justifyContent: "center",
+      alignItems: "center",
+      marginRight: Spacing.sm,
+    },
+    statText: {
+      flex: 1,
+    },
+    statValue: {
+      fontSize: FontSizes.lg,
+      fontWeight: "bold",
+      color: Colors.light.text,
+    },
+    statTitle: {
+      fontSize: FontSizes.xs,
+      color: Colors.light.textSecondary,
+      marginTop: 2,
+    },
+    playSection: {
+      paddingHorizontal: Spacing.md,
+      paddingVertical: Spacing.lg,
+    },
+    playCard: {
+      backgroundColor: `${Colors.light.primary}15`,
+      borderRadius: BorderRadius.xl,
+      borderWidth: 2,
+      borderColor: `${Colors.light.primary}30`,
+    },
+    playContent: {
+      padding: Spacing.xl,
+      alignItems: "center",
+    },
+    playIcon: {
+      marginBottom: Spacing.md,
+    },
+    playTitle: {
+      fontSize: FontSizes.xxl,
+      fontWeight: "bold",
+      color: Colors.light.text,
+      marginBottom: Spacing.sm,
+    },
+    playSubtitle: {
+      fontSize: FontSizes.md,
+      color: Colors.light.textSecondary,
+      textAlign: "center",
+      marginBottom: Spacing.lg,
+    },
+    playButton: {
+      backgroundColor: Colors.light.primary,
+      paddingHorizontal: Spacing.xl,
+      paddingVertical: Spacing.md,
+      borderRadius: BorderRadius.full,
+      flexDirection: "row",
+      alignItems: "center",
+      gap: Spacing.sm,
+    },
+    playButtonText: {
+      color: "white",
+      fontSize: FontSizes.md,
+      fontWeight: "600",
+    },
+    section: {
+      paddingHorizontal: Spacing.md,
+      paddingBottom: Spacing.lg,
+    },
+    sectionHeader: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: Spacing.md,
+    },
+    sectionTitle: {
+      fontSize: FontSizes.xl,
+      fontWeight: "bold",
+      color: Colors.light.text,
+    },
+    seeAllText: {
+      fontSize: FontSizes.md,
+      color: Colors.light.primary,
+      fontWeight: "600",
+    },
+    categoriesGrid: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      gap: Spacing.sm,
+    },
+    categoryCard: {
+      width: (width - Spacing.md * 2 - Spacing.sm) / 2,
+      padding: Spacing.md,
+      borderRadius: BorderRadius.lg,
+      alignItems: "center",
+    },
+    categoryIcon: {
+      width: 60,
+      height: 60,
+      borderRadius: BorderRadius.xl,
+      justifyContent: "center",
+      alignItems: "center",
+      marginBottom: Spacing.md,
+    },
+    categoryEmoji: {
+      fontSize: 30,
+    },
+    categoryName: {
+      fontSize: FontSizes.md,
+      fontWeight: "600",
+      color: Colors.light.text,
+      textAlign: "center",
+      marginBottom: Spacing.xs,
+    },
+    categoryDescription: {
+      fontSize: FontSizes.sm,
+      color: Colors.light.textSecondary,
+      textAlign: "center",
+    },
+    quickActions: {
+      flexDirection: "row",
+      gap: Spacing.md,
+    },
+    quickActionCard: {
+      flex: 1,
+      backgroundColor: Colors.light.surface,
+      padding: Spacing.md,
+      borderRadius: BorderRadius.lg,
+      alignItems: "center",
+    },
+    quickActionTitle: {
+      fontSize: FontSizes.md,
+      fontWeight: "600",
+      color: Colors.light.text,
+      marginTop: Spacing.sm,
+    },
+    quickActionSubtitle: {
+      fontSize: FontSizes.sm,
+      color: Colors.light.textSecondary,
+      marginTop: 2,
+    },
+  });
