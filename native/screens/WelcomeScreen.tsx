@@ -48,20 +48,13 @@ export default function WelcomeScreen() {
         <View style={styles.content}>
           {/* Logo Section */}
           <View style={styles.logoSection}>
-            <Logo size="large" showText={false} />
-            <GradientText
-              style={[styles.title, { color: themeState.colors.text }]}
-            >
-              MyQuiz
-            </GradientText>
-            <Text
-              style={[
-                styles.tagline,
-                { color: themeState.colors.textSecondary },
-              ]}
-            >
-              Play. Learn. Earn.
-            </Text>
+            <Logo size="large" />
+            <View style={styles.titleContainer}>
+              <GradientText style={styles.title}>MyQuiz</GradientText>
+              <Text style={[styles.tagline, { color: "rgb(100, 116, 139)" }]}>
+                Play. Learn. Earn.
+              </Text>
+            </View>
           </View>
 
           {/* Illustration */}
@@ -135,9 +128,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontSize: 48,
+    fontSize: 64,
     fontWeight: "700",
-    marginBottom: Spacing.sm,
+    marginBottom: 8,
     textAlign: "center",
   },
   tagline: {
