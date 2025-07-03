@@ -49,7 +49,9 @@ export default function WelcomeScreen() {
           {/* Logo Section - Exact match to web app */}
           <View style={styles.logoSection}>
             <View style={styles.logoContainer}>
-              <View style={styles.logoBackground} />
+              <View style={styles.logoBackground}>
+                <Text style={styles.logoText}>Q</Text>
+              </View>
               <View style={styles.logoAccentDot} />
             </View>
             <View style={styles.titleContainer}>
@@ -68,10 +70,25 @@ export default function WelcomeScreen() {
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={styles.loginButton}
+              style={[
+                styles.loginButton,
+                {
+                  borderColor: themeState.colors.secondary,
+                  backgroundColor: themeState.isDark
+                    ? "rgba(24, 154, 144, 0.1)"
+                    : "transparent",
+                },
+              ]}
               onPress={() => navigation.navigate("Login" as never)}
             >
-              <Text style={styles.loginText}>Login</Text>
+              <Text
+                style={[
+                  styles.loginText,
+                  { color: themeState.colors.secondary },
+                ]}
+              >
+                Login
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -135,6 +152,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 15,
     elevation: 10,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  logoText: {
+    color: "rgb(255, 255, 255)",
+    fontSize: 64,
+    fontWeight: "700",
+    textAlign: "center",
   },
   logoAccentDot: {
     position: "absolute",
@@ -220,10 +245,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 2,
-    borderColor: "rgb(24, 154, 144)",
   },
   loginText: {
-    color: "rgb(24, 154, 144)",
     fontSize: 18,
     fontWeight: "600",
     lineHeight: 28,
