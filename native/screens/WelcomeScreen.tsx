@@ -46,14 +46,15 @@ export default function WelcomeScreen() {
         </TouchableOpacity>
 
         <View style={styles.content}>
-          {/* Logo Section */}
+          {/* Logo Section - Exact match to web app */}
           <View style={styles.logoSection}>
-            <Logo size="large" />
+            <View style={styles.logoContainer}>
+              <View style={styles.logoBackground} />
+              <View style={styles.logoAccentDot} />
+            </View>
             <View style={styles.titleContainer}>
               <GradientText style={styles.title}>MyQuiz</GradientText>
-              <Text style={[styles.tagline, { color: "rgb(100, 116, 139)" }]}>
-                Play. Learn. Earn.
-              </Text>
+              <Text style={styles.tagline}>Play. Learn. Earn.</Text>
             </View>
           </View>
 
@@ -115,29 +116,69 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: Spacing.md,
-    justifyContent: "center",
     alignItems: "center",
+    justifyContent: "center",
+    marginLeft: "auto",
+    marginRight: "auto",
+    paddingTop: 32,
+    paddingBottom: 32,
+    paddingLeft: 16,
+    paddingRight: 16,
+    width: "100%",
   },
   logoSection: {
     alignItems: "center",
-    marginBottom: Spacing.xxl,
+    maxWidth: 448,
+    textAlign: "center",
+    width: "100%",
+  },
+  logoContainer: {
+    height: 128,
+    width: 128,
+    position: "relative",
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+  logoBackground: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    borderRadius: 16,
+    backgroundColor: "rgb(238, 58, 124)",
+    shadowColor: "rgba(0, 0, 0, 0.1)",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 1,
+    shadowRadius: 15,
+    elevation: 10,
+  },
+  logoAccentDot: {
+    position: "absolute",
+    top: -4,
+    right: -4,
+    width: 24,
+    height: 24,
+    backgroundColor: "rgb(255, 204, 0)",
+    borderRadius: 12,
   },
   titleContainer: {
     marginTop: 32,
     alignItems: "center",
   },
   title: {
-    fontSize: 64,
+    fontSize: 48,
     fontWeight: "700",
-    marginBottom: 8,
+    lineHeight: 48,
     textAlign: "center",
   },
   tagline: {
+    color: "rgb(100, 116, 139)",
     fontSize: 20,
     fontWeight: "400",
-    textAlign: "center",
     lineHeight: 28,
+    marginTop: 16,
+    textAlign: "center",
   },
   illustration: {
     width: width * 0.8,
