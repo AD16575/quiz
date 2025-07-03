@@ -1,7 +1,6 @@
 import React from "react";
-import { Text, TextStyle, View } from "react-native";
+import { Text, TextStyle, View, Platform } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { useTheme } from "../../contexts/ThemeContext";
 
 interface GradientTextProps {
   children: React.ReactNode;
@@ -14,19 +13,49 @@ export default function GradientText({
   style,
   colors = ["rgb(238, 58, 124)", "rgb(24, 154, 144)"],
 }: GradientTextProps) {
-  const { state: themeState } = useTheme();
-
-  // For now, we'll use a strong gradient color effect
-  // True gradient text clipping is complex in React Native
+  // Create a gradient text effect by overlaying multiple text elements
   return (
     <View style={{ position: "relative" }}>
+      {/* Background gradient */}
+      <LinearGradient
+        colors={colors}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0,
+          borderRadius: 4,
+        }}
+      />
+
+      {/* Invisible text for layout */}
       <Text
         style={[
           {
-            color: "rgb(238, 58, 124)", // Primary gradient color
+            color: "transparent",
+          },
+          style,
+        ]}
+      >
+        {children}
+      </Text>
+
+      {/* Visible gradient text overlay */}
+      <Text
+        style={[
+          {
+            position: "absolute",
+            left: 0,
+            top: 0,
+            right: 0,
+            bottom: 0,
+            color: "rgb(238, 58, 124)",
             textShadowColor: "rgb(24, 154, 144)",
-            textShadowOffset: { width: 1, height: 1 },
-            textShadowRadius: 2,
+            textShadowOffset: { width: 0.5, height: 0.5 },
+            textShadowRadius: 1,
           },
           style,
         ]}
