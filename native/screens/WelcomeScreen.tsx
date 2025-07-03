@@ -124,13 +124,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    marginLeft: "auto",
-    marginRight: "auto",
-    paddingTop: 32,
-    paddingBottom: 32,
-    paddingLeft: 16,
-    paddingRight: 16,
-    width: "100%",
+    paddingHorizontal: 24,
+    paddingVertical: 48,
   },
   logoSection: {
     alignItems: "center",
@@ -193,26 +188,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
     textAlign: "center",
   },
-  illustration: {
-    width: width * 0.8,
-    height: 250,
-    marginBottom: Spacing.xxl,
-  },
-  illustrationCard: {
-    flex: 1,
-    backgroundColor: `${Colors.light.primary}10`,
-    borderRadius: BorderRadius.xl * 2,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: Spacing.xl,
-  },
-  illustrationText: {
-    fontSize: FontSizes.md,
-    color: Colors.light.textSecondary,
-    textAlign: "center",
-    marginTop: Spacing.lg,
-    lineHeight: 22,
-  },
+
   actionContainer: {
     maxWidth: 448,
     width: "100%",
