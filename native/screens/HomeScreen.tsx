@@ -392,11 +392,9 @@ const createStyles = (colors: any) =>
     statValue: {
       fontSize: FontSizes.lg,
       fontWeight: "bold",
-      color: Colors.light.text,
     },
     statTitle: {
       fontSize: FontSizes.xs,
-      color: Colors.light.textSecondary,
       marginTop: 2,
     },
     playSection: {
@@ -404,10 +402,8 @@ const createStyles = (colors: any) =>
       paddingVertical: Spacing.lg,
     },
     playCard: {
-      backgroundColor: `${Colors.light.primary}15`,
       borderRadius: BorderRadius.xl,
       borderWidth: 2,
-      borderColor: `${Colors.light.primary}30`,
     },
     playContent: {
       padding: Spacing.xl,
@@ -419,17 +415,14 @@ const createStyles = (colors: any) =>
     playTitle: {
       fontSize: FontSizes.xxl,
       fontWeight: "bold",
-      color: Colors.light.text,
       marginBottom: Spacing.sm,
     },
     playSubtitle: {
       fontSize: FontSizes.md,
-      color: Colors.light.textSecondary,
       textAlign: "center",
       marginBottom: Spacing.lg,
     },
     playButton: {
-      backgroundColor: Colors.light.primary,
       paddingHorizontal: Spacing.xl,
       paddingVertical: Spacing.md,
       borderRadius: BorderRadius.full,
