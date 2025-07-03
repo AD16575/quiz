@@ -213,6 +213,8 @@ const styles = StyleSheet.create({
     paddingRight: 24,
     justifyContent: "center",
     alignItems: "center",
+    flexDirection: "row",
+    gap: 8,
     shadowColor: "rgba(0, 0, 0, 0.1)",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 1,
@@ -234,6 +236,8 @@ const styles = StyleSheet.create({
     paddingRight: 24,
     justifyContent: "center",
     alignItems: "center",
+    flexDirection: "row",
+    gap: 8,
     borderWidth: 2,
   },
   loginText: {
