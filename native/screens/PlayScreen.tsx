@@ -33,7 +33,10 @@ export default function PlayScreen() {
     <TouchableOpacity
       style={[
         styles.categoryCard,
-        { backgroundColor: themeState.colors.surface },
+        {
+          backgroundColor: themeState.colors.surfaceCard,
+          borderColor: themeState.colors.borderLight,
+        },
       ]}
       onPress={() =>
         navigation.navigate(
@@ -162,7 +165,10 @@ export default function PlayScreen() {
             <View
               style={[
                 styles.randomCard,
-                { backgroundColor: themeState.colors.surface },
+                {
+                  backgroundColor: themeState.colors.surfaceCard,
+                  borderColor: themeState.colors.borderLight,
+                },
               ]}
             >
               <View style={styles.randomIcon}>
