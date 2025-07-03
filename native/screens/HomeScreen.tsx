@@ -14,6 +14,8 @@ import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
 import GradientBackground from "../components/common/GradientBackground";
+import Logo from "../components/common/Logo";
+import GradientText from "../components/common/GradientText";
 
 const { width } = Dimensions.get("window");
 
@@ -348,13 +350,22 @@ const createStyles = (colors: any) =>
       paddingHorizontal: Spacing.md,
       paddingVertical: Spacing.lg,
     },
-    greeting: {
-      fontSize: FontSizes.xl,
-      fontWeight: "bold",
+    headerContent: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: Spacing.sm,
     },
-    subGreeting: {
+    headerText: {
+      flex: 1,
+    },
+    appName: {
+      fontSize: FontSizes.lg,
+      fontWeight: "700",
+      marginBottom: 2,
+    },
+    greeting: {
       fontSize: FontSizes.md,
-      marginTop: 4,
+      fontWeight: "600",
     },
     notificationButton: {
       padding: Spacing.sm,
