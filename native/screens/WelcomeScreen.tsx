@@ -58,24 +58,12 @@ export default function WelcomeScreen() {
             </View>
           </View>
 
-          {/* Illustration */}
-          <View style={styles.illustration}>
-            <View style={styles.illustrationCard}>
-              <Ionicons name="play" size={64} color="rgb(238, 58, 124)" />
-              <Text style={styles.illustrationText}>
-                Challenge yourself with fun quizzes and earn points while
-                learning!
-              </Text>
-            </View>
-          </View>
-
           {/* Action Buttons */}
           <View style={styles.actionContainer}>
             <TouchableOpacity
               style={styles.getStartedButton}
               onPress={() => navigation.navigate("Signup" as never)}
             >
-              <Ionicons name="play" size={20} color="white" />
               <Text style={styles.getStartedText}>Get Started</Text>
             </TouchableOpacity>
 
@@ -83,11 +71,6 @@ export default function WelcomeScreen() {
               style={styles.loginButton}
               onPress={() => navigation.navigate("Login" as never)}
             >
-              <Ionicons
-                name="log-in"
-                size={20}
-                color={Colors.light.secondary}
-              />
               <Text style={styles.loginText}>Login</Text>
             </TouchableOpacity>
           </View>
