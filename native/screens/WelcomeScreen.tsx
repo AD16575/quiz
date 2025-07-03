@@ -65,7 +65,14 @@ export default function WelcomeScreen() {
             </View>
             <View style={styles.titleContainer}>
               <GradientText style={styles.title}>MyQuiz</GradientText>
-              <Text style={styles.tagline}>Play. Learn. Earn.</Text>
+              <Text
+                style={[
+                  styles.tagline,
+                  { color: themeState.colors.textSecondary },
+                ]}
+              >
+                Play. Learn. Earn.
+              </Text>
             </View>
           </View>
 
