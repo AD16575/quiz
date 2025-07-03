@@ -336,7 +336,6 @@ const createStyles = (colors: any) =>
   StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: Colors.light.background,
     },
     scrollContent: {
       flexGrow: 1,
@@ -352,17 +351,14 @@ const createStyles = (colors: any) =>
     greeting: {
       fontSize: FontSizes.xl,
       fontWeight: "bold",
-      color: Colors.light.text,
     },
     subGreeting: {
       fontSize: FontSizes.md,
-      color: Colors.light.textSecondary,
       marginTop: 4,
     },
     notificationButton: {
       padding: Spacing.sm,
       borderRadius: BorderRadius.full,
-      backgroundColor: Colors.light.surface,
     },
     statsContainer: {
       flexDirection: "row",
@@ -372,7 +368,7 @@ const createStyles = (colors: any) =>
     },
     statCard: {
       flex: 1,
-      backgroundColor: Colors.light.surface,
+      backgroundColor: colors.surface,
       borderRadius: BorderRadius.lg,
       padding: Spacing.md,
       borderLeftWidth: 4,
