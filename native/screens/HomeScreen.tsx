@@ -72,17 +72,13 @@ export default function HomeScreen() {
   );
 
   return (
-    <SafeAreaView
-      style={[
-        styles.container,
-        { backgroundColor: themeState.colors.background },
-      ]}
-    >
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
-        nestedScrollEnabled={true}
-      >
+    <GradientBackground>
+      <SafeAreaView style={styles.container}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContent}
+          nestedScrollEnabled={true}
+        >
         {/* Header */}
         <View style={styles.header}>
           <View>
@@ -93,7 +89,7 @@ export default function HomeScreen() {
             <Ionicons
               name="notifications-outline"
               size={24}
-              color={Colors.light.text}
+              color={themeState.colors.text}
             />
           </TouchableOpacity>
         </View>
@@ -104,19 +100,19 @@ export default function HomeScreen() {
             title="Total Points"
             value={user.points}
             icon="star"
-            color={Colors.light.primary}
+            color={themeState.colors.primary}
           />
           <StatCard
             title="Quizzes Played"
             value={user.totalQuizzes}
             icon="play-circle"
-            color={Colors.light.secondary}
+            color={themeState.colors.secondary}
           />
           <StatCard
             title="Withdrawable"
             value={user.withdrawableAmount}
             icon="wallet"
-            color={Colors.light.accent}
+            color={themeState.colors.accent}
           />
           <StatCard
             title="Referrals"
@@ -133,7 +129,7 @@ export default function HomeScreen() {
               <Ionicons
                 name="flash"
                 size={48}
-                color={Colors.light.primary}
+                color={themeState.colors.primary}
                 style={styles.playIcon}
               />
               <Text style={styles.playTitle}>Ready to Play?</Text>
@@ -181,7 +177,7 @@ export default function HomeScreen() {
               <Ionicons
                 name="people"
                 size={32}
-                color={Colors.light.secondary}
+                color={themeState.colors.secondary}
               />
               <Text style={styles.quickActionTitle}>Refer Friends</Text>
               <Text style={styles.quickActionSubtitle}>
@@ -193,7 +189,7 @@ export default function HomeScreen() {
               style={styles.quickActionCard}
               onPress={() => navigation.navigate("Withdrawal" as never)}
             >
-              <Ionicons name="wallet" size={32} color={Colors.light.accent} />
+              <Ionicons name="wallet" size={32} color={themeState.colors.accent} />
               <Text style={styles.quickActionTitle}>Withdraw</Text>
               <Text style={styles.quickActionSubtitle}>
                 ₹{user.withdrawableAmount} available
