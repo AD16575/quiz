@@ -135,8 +135,8 @@ const styles = StyleSheet.create({
   logoSection: {
     alignItems: "center",
     maxWidth: 448,
-    textAlign: "center",
     width: "100%",
+    marginBottom: 48,
   },
   logoContainer: {
     height: 128,
@@ -214,7 +214,6 @@ const styles = StyleSheet.create({
     lineHeight: 22,
   },
   actionContainer: {
-    marginTop: 64,
     maxWidth: 448,
     width: "100%",
     gap: 16,
