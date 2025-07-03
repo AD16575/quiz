@@ -79,126 +79,131 @@ export default function HomeScreen() {
           contentContainerStyle={styles.scrollContent}
           nestedScrollEnabled={true}
         >
-        {/* Header */}
-        <View style={styles.header}>
-          <View>
-            <Text style={styles.greeting}>Hello, {user.name}! 👋</Text>
-            <Text style={styles.subGreeting}>Ready to play today?</Text>
-          </View>
-          <TouchableOpacity style={styles.notificationButton}>
-            <Ionicons
-              name="notifications-outline"
-              size={24}
-              color={themeState.colors.text}
-            />
-          </TouchableOpacity>
-        </View>
-
-        {/* Stats Grid */}
-        <View style={styles.statsContainer}>
-          <StatCard
-            title="Total Points"
-            value={user.points}
-            icon="star"
-            color={themeState.colors.primary}
-          />
-          <StatCard
-            title="Quizzes Played"
-            value={user.totalQuizzes}
-            icon="play-circle"
-            color={themeState.colors.secondary}
-          />
-          <StatCard
-            title="Withdrawable"
-            value={user.withdrawableAmount}
-            icon="wallet"
-            color={themeState.colors.accent}
-          />
-          <StatCard
-            title="Referrals"
-            value={user.referredUsers}
-            icon="people"
-            color="#8B5CF6"
-          />
-        </View>
-
-        {/* Play Now Section */}
-        <View style={styles.playSection}>
-          <View style={styles.playCard}>
-            <View style={styles.playContent}>
+          {/* Header */}
+          <View style={styles.header}>
+            <View>
+              <Text style={styles.greeting}>Hello, {user.name}! 👋</Text>
+              <Text style={styles.subGreeting}>Ready to play today?</Text>
+            </View>
+            <TouchableOpacity style={styles.notificationButton}>
               <Ionicons
-                name="flash"
-                size={48}
-                color={themeState.colors.primary}
-                style={styles.playIcon}
+                name="notifications-outline"
+                size={24}
+                color={themeState.colors.text}
               />
-              <Text style={styles.playTitle}>Ready to Play?</Text>
-              <Text style={styles.playSubtitle}>
-                Choose from various categories and start earning points!
-              </Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Stats Grid */}
+          <View style={styles.statsContainer}>
+            <StatCard
+              title="Total Points"
+              value={user.points}
+              icon="star"
+              color={themeState.colors.primary}
+            />
+            <StatCard
+              title="Quizzes Played"
+              value={user.totalQuizzes}
+              icon="play-circle"
+              color={themeState.colors.secondary}
+            />
+            <StatCard
+              title="Withdrawable"
+              value={user.withdrawableAmount}
+              icon="wallet"
+              color={themeState.colors.accent}
+            />
+            <StatCard
+              title="Referrals"
+              value={user.referredUsers}
+              icon="people"
+              color="#8B5CF6"
+            />
+          </View>
+
+          {/* Play Now Section */}
+          <View style={styles.playSection}>
+            <View style={styles.playCard}>
+              <View style={styles.playContent}>
+                <Ionicons
+                  name="flash"
+                  size={48}
+                  color={themeState.colors.primary}
+                  style={styles.playIcon}
+                />
+                <Text style={styles.playTitle}>Ready to Play?</Text>
+                <Text style={styles.playSubtitle}>
+                  Choose from various categories and start earning points!
+                </Text>
+                <TouchableOpacity
+                  style={styles.playButton}
+                  onPress={() => navigation.navigate("Play" as never)}
+                  activeOpacity={0.8}
+                >
+                  <Ionicons name="play" size={20} color="white" />
+                  <Text style={styles.playButtonText}>Play Now</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+
+          {/* Categories Section */}
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>Categories</Text>
               <TouchableOpacity
-                style={styles.playButton}
                 onPress={() => navigation.navigate("Play" as never)}
-                activeOpacity={0.8}
               >
-                <Ionicons name="play" size={20} color="white" />
-                <Text style={styles.playButtonText}>Play Now</Text>
+                <Text style={styles.seeAllText}>See All</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.categoriesGrid}>
+              {featuredCategories.map((category) => (
+                <CategoryCard key={category.id} category={category} />
+              ))}
+            </View>
+          </View>
+
+          {/* Quick Actions */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Quick Actions</Text>
+            <View style={styles.quickActions}>
+              <TouchableOpacity
+                style={styles.quickActionCard}
+                onPress={() => navigation.navigate("Referral" as never)}
+              >
+                <Ionicons
+                  name="people"
+                  size={32}
+                  color={themeState.colors.secondary}
+                />
+                <Text style={styles.quickActionTitle}>Refer Friends</Text>
+                <Text style={styles.quickActionSubtitle}>
+                  {user.referredUsers} referred
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.quickActionCard}
+                onPress={() => navigation.navigate("Withdrawal" as never)}
+              >
+                <Ionicons
+                  name="wallet"
+                  size={32}
+                  color={themeState.colors.accent}
+                />
+                <Text style={styles.quickActionTitle}>Withdraw</Text>
+                <Text style={styles.quickActionSubtitle}>
+                  ₹{user.withdrawableAmount} available
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
-        </View>
-
-        {/* Categories Section */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Categories</Text>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Play" as never)}
-            >
-              <Text style={styles.seeAllText}>See All</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.categoriesGrid}>
-            {featuredCategories.map((category) => (
-              <CategoryCard key={category.id} category={category} />
-            ))}
-          </View>
-        </View>
-
-        {/* Quick Actions */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Quick Actions</Text>
-          <View style={styles.quickActions}>
-            <TouchableOpacity
-              style={styles.quickActionCard}
-              onPress={() => navigation.navigate("Referral" as never)}
-            >
-              <Ionicons
-                name="people"
-                size={32}
-                color={themeState.colors.secondary}
-              />
-              <Text style={styles.quickActionTitle}>Refer Friends</Text>
-              <Text style={styles.quickActionSubtitle}>
-                {user.referredUsers} referred
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.quickActionCard}
-              onPress={() => navigation.navigate("Withdrawal" as never)}
-            >
-              <Ionicons name="wallet" size={32} color={themeState.colors.accent} />
-              <Text style={styles.quickActionTitle}>Withdraw</Text>
-              <Text style={styles.quickActionSubtitle}>
-                ₹{user.withdrawableAmount} available
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+        </ScrollView>
+      </SafeAreaView>
+    </GradientBackground>
   );
 }
 
