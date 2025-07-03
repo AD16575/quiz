@@ -16,9 +16,9 @@ export default function GradientBackground({
 
   const gradientColors = themeState.isDark
     ? [
-        "rgba(238, 58, 124, 0.02)",
-        "rgb(15, 23, 42)",
-        "rgba(24, 154, 144, 0.02)",
+        "rgba(238, 58, 124, 0.015)",
+        "rgb(11, 17, 30)",
+        "rgba(24, 154, 144, 0.015)",
       ]
     : [
         "rgba(238, 58, 124, 0.1)",
