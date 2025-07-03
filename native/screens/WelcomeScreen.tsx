@@ -28,36 +28,33 @@ export default function WelcomeScreen() {
   };
 
   return (
-    <SafeAreaView
-      style={[
-        styles.container,
-        { backgroundColor: themeState.colors.background },
-      ]}
-    >
-      {/* Theme Toggle */}
-      <TouchableOpacity
-        style={[
-          styles.themeToggle,
-          { backgroundColor: themeState.colors.surface },
-        ]}
-        onPress={toggleTheme}
-      >
-        <Ionicons
-          name={themeState.isDark ? "sunny" : "moon"}
-          size={24}
-          color={themeState.colors.text}
-        />
-      </TouchableOpacity>
+    <GradientBackground>
+      <SafeAreaView style={styles.container}>
+        {/* Theme Toggle */}
+        <TouchableOpacity
+          style={[
+            styles.themeToggle,
+            { backgroundColor: themeState.colors.surfaceCard },
+          ]}
+          onPress={toggleTheme}
+        >
+          <Ionicons
+            name={themeState.isDark ? "sunny" : "moon"}
+            size={24}
+            color={themeState.colors.text}
+          />
+        </TouchableOpacity>
 
-      <View style={styles.content}>
+        <View style={styles.content}>
         {/* Logo Section */}
         <View style={styles.logoSection}>
-          <View style={styles.logoContainer}>
-            <Text style={styles.logo}>Q</Text>
-            <View style={styles.logoBadge} />
-          </View>
-          <Text style={styles.title}>MyQuiz</Text>
-          <Text style={styles.tagline}>Play. Learn. Earn.</Text>
+          <Logo size="large" showText={false} />
+          <GradientText style={[styles.title, { color: themeState.colors.text }]}>
+            MyQuiz
+          </GradientText>
+          <Text style={[styles.tagline, { color: themeState.colors.textSecondary }]}>
+            Play. Learn. Earn.
+          </Text>
         </View>
 
         {/* Illustration */}
