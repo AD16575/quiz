@@ -162,7 +162,7 @@ export default function LeaderboardScreen() {
           {/* First Place */}
           <View style={[styles.podiumCard, styles.firstPlaceCard]}>
             <View style={styles.crownContainer}>
-              <Ionicons name="crown" size={32} color="#FFD700" />
+              <Ionicons name="trophy" size={32} color="#FFD700" />
             </View>
             <View style={styles.rankBadge}>
               <Text style={styles.rankNumber}>1</Text>
