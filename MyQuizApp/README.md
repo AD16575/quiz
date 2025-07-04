@@ -63,9 +63,10 @@ A complete React Native clone of the MyQuiz web application with identical desig
 
 ### SDK Version
 
-- **Expo SDK**: 50.0.14 (Stable)
-- **React Native**: 0.73.6
-- **Compatible with most Expo Go versions**
+- **Expo SDK**: 53.0.0 (Latest - matches your Expo CLI)
+- **React Native**: 0.79.5
+- **React**: 19.0.0
+- **All packages**: Expo-recommended versions for perfect compatibility
 
 ## 🔧 Troubleshooting
 
