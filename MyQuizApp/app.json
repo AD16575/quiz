@@ -23,7 +23,6 @@
     "web": {
       "bundler": "metro"
     },
-    "plugins": [],
-    "sdkVersion": "53.0.0"
+    "plugins": []
   }
 }

@@ -63,9 +63,55 @@ A complete React Native clone of the MyQuiz web application with identical desig
 
 ### SDK Version
 
-- **Expo SDK**: 53.0.0 (Latest)
-- **React Native**: 0.76.1
-- **Compatible with current Expo Go versions**
+- **Expo SDK**: 50.0.14 (Stable)
+- **React Native**: 0.73.6
+- **Compatible with most Expo Go versions**
+
+## 🔧 Troubleshooting
+
+### Fix "PlatformConstants could not be found" Error
+
+If you get TurboModuleRegistry errors, run this:
+
+**On Mac/Linux:**
+
+```bash
+chmod +x clear-cache.sh
+./clear-cache.sh
+```
+
+**On Windows:**
+
+```bash
+clear-cache.bat
+```
+
+**Manual Steps:**
+
+```bash
+# 1. Delete caches
+rm -rf node_modules
+rm package-lock.json
+
+# 2. Clear npm cache
+npm cache clean --force
+
+# 3. Reinstall dependencies
+npm install
+
+# 4. Start with cache clearing
+npx expo start --clear
+```
+
+### Alternative Solution
+
+If still having issues, try:
+
+```bash
+npm install -g @expo/cli@latest
+npx create-expo-app --template blank-typescript MyQuizFixed
+# Then copy src/ folder to new project
+```
 
 ## 📱 Screens Implemented
 
