@@ -32,28 +32,40 @@ A complete React Native clone of the MyQuiz web application with identical desig
 
 ### Prerequisites
 
-- Node.js (v16 or higher)
-- Expo CLI
-- React Native development environment
+- Node.js (v18 or higher)
+- Expo CLI (`npm install -g @expo/cli`)
+- **Expo Go app** (Latest version supporting SDK 53)
 
 ### Installation
 
-1. **Install dependencies**:
+1. **Navigate to project**:
 
    ```bash
    cd MyQuizApp
+   ```
+
+2. **Install dependencies**:
+
+   ```bash
    npm install
    ```
 
-2. **Start the development server**:
+3. **Start the development server**:
 
    ```bash
-   npm start
+   npx expo start
    ```
 
-3. **Run on device**:
-   - Scan QR code with Expo Go app
-   - Or use `npm run android` / `npm run ios`
+4. **Run on device**:
+   - **iOS**: Scan QR code with Expo Go app (Camera app)
+   - **Android**: Scan QR code with Expo Go app
+   - Or press `i` for iOS simulator / `a` for Android emulator
+
+### SDK Version
+
+- **Expo SDK**: 53.0.0 (Latest)
+- **React Native**: 0.76.1
+- **Compatible with current Expo Go versions**
 
 ## 📱 Screens Implemented
 
