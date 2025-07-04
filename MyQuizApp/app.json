@@ -11,18 +11,17 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.myquizapp.app"
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#ffffff"
-      },
-      "package": "com.myquizapp.app"
+      }
     },
     "web": {
       "bundler": "metro"
     },
-    "plugins": []
+    "main": "./App.tsx",
+    "platforms": ["ios", "android", "web"]
   }
 }
