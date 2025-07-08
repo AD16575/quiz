@@ -1,9 +1,11 @@
 export const Colors = {
   light: {
-    primary: "rgb(238, 58, 124)", // Exact web app pink
-    secondary: "rgb(24, 154, 144)", // Exact web app teal
-    accent: "rgb(255, 204, 0)", // Web app yellow accent
-    background: "rgb(255, 255, 255)", // Exact web app white
+    // Squid Game themed colors matching web exactly
+    primary: "rgb(238, 58, 124)", // squid-pink
+    secondary: "rgb(24, 154, 144)", // squid-teal
+    accent: "rgb(255, 204, 0)", // squid-yellow
+    dark: "rgb(34, 38, 49)", // squid-dark
+    background: "rgb(255, 255, 255)", // Clean white background
     backgroundGradient: {
       start: "rgba(238, 58, 124, 0.1)",
       middle: "rgb(255, 255, 255)",
@@ -11,39 +13,38 @@ export const Colors = {
     },
     surface: "rgb(255, 255, 255)",
     surfaceCard: "rgba(255, 255, 255, 0.8)",
-    text: "rgb(2, 8, 23)", // Exact web app dark text
-    textSecondary: "rgb(100, 116, 139)", // Exact web app secondary text
+    text: "rgb(34, 38, 49)", // squid-dark for text
+    textSecondary: "rgb(100, 116, 139)",
     textMuted: "rgb(148, 163, 184)",
-    border: "rgba(148, 163, 184, 0.2)",
+    border: "hsl(214.3, 31.8%, 91.4%)", // Matching web border
     borderLight: "rgba(238, 58, 124, 0.1)",
+    ring: "rgb(238, 58, 124)", // squid-pink for focus rings
     success: "rgb(34, 197, 94)",
     warning: "rgb(245, 158, 11)",
     error: "rgb(239, 68, 68)",
-    gradient:
-      "linear-gradient(to right bottom, rgb(238, 58, 124), rgb(24, 154, 144))",
   },
   dark: {
-    primary: "rgb(238, 58, 124)",
-    secondary: "rgb(24, 154, 144)",
-    accent: "rgb(255, 204, 0)",
-    background: "rgb(11, 17, 30)",
+    primary: "rgb(238, 58, 124)", // squid-pink
+    secondary: "rgb(24, 154, 144)", // squid-teal
+    accent: "rgb(255, 204, 0)", // squid-yellow
+    dark: "rgb(34, 38, 49)", // squid-dark
+    background: "rgb(34, 38, 49)", // squid-dark background
     backgroundGradient: {
-      start: "rgba(238, 58, 124, 0.015)",
-      middle: "rgb(11, 17, 30)",
-      end: "rgba(24, 154, 144, 0.015)",
+      start: "rgba(238, 58, 124, 0.05)",
+      middle: "rgb(34, 38, 49)",
+      end: "rgba(24, 154, 144, 0.05)",
     },
-    surface: "rgba(17, 24, 39, 0.7)",
-    surfaceCard: "rgba(17, 24, 39, 0.9)",
-    text: "rgb(243, 244, 246)",
+    surface: "rgba(55, 65, 81, 0.8)",
+    surfaceCard: "rgba(55, 65, 81, 0.9)",
+    text: "rgb(248, 250, 252)", // squid-light
     textSecondary: "rgb(156, 163, 175)",
     textMuted: "rgb(107, 114, 128)",
     border: "rgba(75, 85, 99, 0.3)",
     borderLight: "rgba(238, 58, 124, 0.2)",
+    ring: "rgb(238, 58, 124)", // squid-pink for focus rings
     success: "rgb(34, 197, 94)",
     warning: "rgb(245, 158, 11)",
     error: "rgb(239, 68, 68)",
-    gradient:
-      "linear-gradient(to right bottom, rgb(238, 58, 124), rgb(24, 154, 144))",
   },
 };
 
