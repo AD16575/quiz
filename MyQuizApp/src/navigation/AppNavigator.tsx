@@ -31,8 +31,8 @@ function BottomTabNavigator() {
 
           if (route.name === "Home") {
             iconName = focused ? "home" : "home-outline";
-          } else if (route.name === "Play") {
-            iconName = focused ? "play-circle" : "play-circle-outline";
+          } else if (route.name === "Categories") {
+            iconName = focused ? "grid" : "grid-outline";
           } else if (route.name === "Leaderboard") {
             iconName = focused ? "trophy" : "trophy-outline";
           } else if (route.name === "Profile") {
@@ -68,7 +68,7 @@ function BottomTabNavigator() {
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Play" component={PlayScreen} />
+      <Tab.Screen name="Categories" component={PlayScreen} />
       <Tab.Screen name="Leaderboard" component={LeaderboardScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
