@@ -158,7 +158,7 @@ const mockLeaderboard: LeaderboardEntry[] = [
 ];
 
 const initialState: QuizState = {
-  user: null, // Start with no user to show auth flow
+  user: null, // Always start with no user to show splash → welcome → auth flow
   currentQuiz: null,
   quizProgress: {
     currentQuestion: 0,
