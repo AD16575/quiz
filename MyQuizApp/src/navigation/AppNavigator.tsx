@@ -97,6 +97,9 @@ export function AppNavigator() {
       ) : (
         <>
           <Stack.Screen name="Main" component={BottomTabNavigator} />
+          <Stack.Screen name="QuizList" component={QuizListScreen} />
+          <Stack.Screen name="QuizPlay" component={QuizPlayScreen} />
+          <Stack.Screen name="QuizResult" component={QuizResultScreen} />
         </>
       )}
     </Stack.Navigator>
