@@ -1,32 +1,46 @@
 import React, { createContext, useContext, useReducer, ReactNode } from "react";
 import {
   User,
-  Category,
   Quiz,
   QuizResult,
-  Achievement,
+  PointTransaction,
+  QuizCategory,
   LeaderboardEntry,
 } from "../types";
 
 interface QuizState {
   user: User | null;
-  categories: Category[];
-  quizzes: Quiz[];
-  results: QuizResult[];
-  leaderboard: LeaderboardEntry[];
   currentQuiz: Quiz | null;
+  quizProgress: {
+    currentQuestion: number;
+    answers: number[];
+    timeLeft: number;
+    isActive: boolean;
+  };
+  categories: QuizCategory[];
+  recentQuizzes: Quiz[];
+  pointHistory: PointTransaction[];
+  leaderboard: LeaderboardEntry[];
   isLoading: boolean;
+  theme: "light" | "dark";
 }
 
 type QuizAction =
-  | { type: "SET_USER"; payload: User }
-  | { type: "SET_CATEGORIES"; payload: Category[] }
-  | { type: "SET_QUIZZES"; payload: Quiz[] }
-  | { type: "SET_CURRENT_QUIZ"; payload: Quiz | null }
-  | { type: "ADD_RESULT"; payload: QuizResult }
-  | { type: "SET_LOADING"; payload: boolean };
+  | { type: "SET_USER"; payload: User | null }
+  | { type: "SET_CURRENT_QUIZ"; payload: Quiz }
+  | { type: "START_QUIZ"; payload: Quiz }
+  | {
+      type: "ANSWER_QUESTION";
+      payload: { questionIndex: number; answer: number };
+    }
+  | { type: "NEXT_QUESTION" }
+  | { type: "FINISH_QUIZ"; payload: QuizResult }
+  | { type: "SET_CATEGORIES"; payload: QuizCategory[] }
+  | { type: "SET_LOADING"; payload: boolean }
+  | { type: "TOGGLE_THEME" }
+  | { type: "ADD_POINTS"; payload: number };
 
-// Mock Data
+// Mock Data matching web exactly
 const mockUser: User = {
   id: "1",
   name: "John Doe",
@@ -34,7 +48,9 @@ const mockUser: User = {
   points: 1250,
   totalQuizzes: 47,
   withdrawableAmount: 125,
+  referralCode: "JOHN2024",
   referredUsers: 8,
+  memberSince: new Date("2024-01-15"),
   streak: 5,
   achievements: [
     {
@@ -57,68 +73,58 @@ const mockUser: User = {
   ],
 };
 
-const mockCategories: Category[] = [
+const mockCategories: QuizCategory[] = [
   {
-    id: "1",
-    name: "Science",
-    description: "Test your scientific knowledge",
-    icon: "🧪",
-    color: "rgb(34, 197, 94)",
+    id: "general",
+    name: "General Knowledge",
+    icon: "🧠",
+    color: "rgb(168, 85, 247)",
+    description: "Test your general knowledge",
     quizCount: 25,
   },
   {
-    id: "2",
-    name: "History",
-    description: "Journey through time",
-    icon: "🏛️",
-    color: "rgb(245, 158, 11)",
+    id: "current-affairs",
+    name: "Current Affairs",
+    icon: "📰",
+    color: "rgb(59, 130, 246)",
+    description: "Stay updated with latest news",
     quizCount: 18,
   },
   {
-    id: "3",
+    id: "technology",
     name: "Technology",
-    description: "Digital world knowledge",
-    icon: "💻",
-    color: "rgb(59, 130, 246)",
+    icon: "📱",
+    color: "rgb(34, 197, 94)",
+    description: "Tech trends and innovations",
     quizCount: 22,
   },
   {
-    id: "4",
-    name: "Sports",
-    description: "Athletic achievements and records",
-    icon: "⚽",
-    color: "rgb(239, 68, 68)",
-    quizCount: 15,
-  },
-  {
-    id: "5",
+    id: "geography",
     name: "Geography",
-    description: "Explore the world",
     icon: "🌍",
-    color: "rgb(168, 85, 247)",
-    quizCount: 20,
+    color: "rgb(245, 158, 11)",
+    description: "Explore the world",
+    quizCount: 16,
   },
   {
-    id: "6",
-    name: "Literature",
-    description: "Books and authors",
-    icon: "📚",
+    id: "health",
+    name: "Health & Fitness",
+    icon: "❤️",
+    color: "rgb(239, 68, 68)",
+    description: "Health and wellness topics",
+    quizCount: 14,
+  },
+  {
+    id: "entertainment",
+    name: "Entertainment",
+    icon: "🎵",
     color: "rgb(236, 72, 153)",
-    quizCount: 12,
+    description: "Movies, music, and pop culture",
+    quizCount: 20,
   },
 ];
 
 const mockLeaderboard: LeaderboardEntry[] = [
-  {
-    id: "1",
-    userId: "1",
-    userName: "John Doe",
-    avatar: "👨‍💼",
-    points: 1250,
-    rank: 3,
-    totalQuizzes: 47,
-    streak: 5,
-  },
   {
     id: "2",
     userId: "2",
@@ -139,32 +145,98 @@ const mockLeaderboard: LeaderboardEntry[] = [
     totalQuizzes: 55,
     streak: 8,
   },
+  {
+    id: "1",
+    userId: "1",
+    userName: "John Doe",
+    avatar: "👨‍💼",
+    points: 1250,
+    rank: 3,
+    totalQuizzes: 47,
+    streak: 5,
+  },
 ];
 
 const initialState: QuizState = {
-  user: mockUser,
-  categories: mockCategories,
-  quizzes: [],
-  results: [],
-  leaderboard: mockLeaderboard,
+  user: null, // Start with no user to show auth flow
   currentQuiz: null,
+  quizProgress: {
+    currentQuestion: 0,
+    answers: [],
+    timeLeft: 0,
+    isActive: false,
+  },
+  categories: mockCategories,
+  recentQuizzes: [],
+  pointHistory: [],
+  leaderboard: mockLeaderboard,
   isLoading: false,
+  theme: "light",
 };
 
 function quizReducer(state: QuizState, action: QuizAction): QuizState {
   switch (action.type) {
     case "SET_USER":
       return { ...state, user: action.payload };
-    case "SET_CATEGORIES":
-      return { ...state, categories: action.payload };
-    case "SET_QUIZZES":
-      return { ...state, quizzes: action.payload };
     case "SET_CURRENT_QUIZ":
       return { ...state, currentQuiz: action.payload };
-    case "ADD_RESULT":
-      return { ...state, results: [...state.results, action.payload] };
+    case "START_QUIZ":
+      return {
+        ...state,
+        currentQuiz: action.payload,
+        quizProgress: {
+          currentQuestion: 0,
+          answers: [],
+          timeLeft: action.payload.timeLimit || 0,
+          isActive: true,
+        },
+      };
+    case "ANSWER_QUESTION":
+      const newAnswers = [...state.quizProgress.answers];
+      newAnswers[action.payload.questionIndex] = action.payload.answer;
+      return {
+        ...state,
+        quizProgress: {
+          ...state.quizProgress,
+          answers: newAnswers,
+        },
+      };
+    case "NEXT_QUESTION":
+      return {
+        ...state,
+        quizProgress: {
+          ...state.quizProgress,
+          currentQuestion: state.quizProgress.currentQuestion + 1,
+        },
+      };
+    case "FINISH_QUIZ":
+      return {
+        ...state,
+        quizProgress: {
+          ...state.quizProgress,
+          isActive: false,
+        },
+        user: state.user
+          ? {
+              ...state.user,
+              points: state.user.points + action.payload.pointsEarned,
+              totalQuizzes: state.user.totalQuizzes + 1,
+            }
+          : null,
+      };
+    case "SET_CATEGORIES":
+      return { ...state, categories: action.payload };
     case "SET_LOADING":
       return { ...state, isLoading: action.payload };
+    case "TOGGLE_THEME":
+      return { ...state, theme: state.theme === "light" ? "dark" : "light" };
+    case "ADD_POINTS":
+      return {
+        ...state,
+        user: state.user
+          ? { ...state.user, points: state.user.points + action.payload }
+          : null,
+      };
     default:
       return state;
   }
