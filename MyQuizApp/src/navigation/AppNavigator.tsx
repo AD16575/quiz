@@ -10,6 +10,8 @@ import { useTheme } from "../contexts/ThemeContext";
 // Screens
 import SplashScreen from "../screens/SplashScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
+import LoginScreen from "../screens/LoginScreen";
+import SignupScreen from "../screens/SignupScreen";
 import HomeScreen from "../screens/HomeScreen";
 import PlayScreen from "../screens/PlayScreen";
 import LeaderboardScreen from "../screens/LeaderboardScreen";
@@ -86,6 +88,8 @@ export function AppNavigator() {
         <>
           <Stack.Screen name="Splash" component={SplashScreen} />
           <Stack.Screen name="Welcome" component={WelcomeScreen} />
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Signup" component={SignupScreen} />
         </>
       ) : (
         <>
