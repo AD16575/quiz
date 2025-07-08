@@ -172,7 +172,7 @@ export default function HomeScreen() {
             </Text>
             <TouchableOpacity
               style={styles.playButton}
-              onPress={() => navigation.navigate("Play" as never)}
+              onPress={() => navigation.navigate("Categories" as never)}
             >
               <Ionicons name="play" size={20} color="white" />
               <Text style={styles.playButtonText}>Play Now</Text>
