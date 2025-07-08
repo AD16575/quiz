@@ -14,6 +14,9 @@ import LoginScreen from "../screens/LoginScreen";
 import SignupScreen from "../screens/SignupScreen";
 import HomeScreen from "../screens/HomeScreen";
 import PlayScreen from "../screens/PlayScreen";
+import QuizListScreen from "../screens/QuizListScreen";
+import QuizPlayScreen from "../screens/QuizPlayScreen";
+import QuizResultScreen from "../screens/QuizResultScreen";
 import LeaderboardScreen from "../screens/LeaderboardScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 
