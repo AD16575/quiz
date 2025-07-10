@@ -1,73 +1,115 @@
 import React, { useEffect, useRef } from "react";
-import { View, StyleSheet, Animated, Easing, SafeAreaView } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Animated,
+  Easing,
+  SafeAreaView,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "../contexts/ThemeContext";
 import GradientBackground from "../components/common/GradientBackground";
+import Logo from "../components/common/Logo";
+import GradientText from "../components/common/GradientText";
 
 export default function SplashScreen() {
   const navigation = useNavigation();
   const { state: themeState } = useTheme();
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const scaleAnim = useRef(new Animated.Value(0.5)).current;
-  const rotateAnim = useRef(new Animated.Value(0)).current;
+  const titleFadeAnim = useRef(new Animated.Value(0)).current;
+  const taglineFadeAnim = useRef(new Animated.Value(0)).current;
+  const loaderFadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    // Animate logo entrance with rotation (like web app)
-    Animated.parallel([
+    // Sequential animations matching web app
+    Animated.sequence([
+      // Logo appears first
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 1000,
+        duration: 800,
         easing: Easing.out(Easing.cubic),
         useNativeDriver: true,
       }),
-      Animated.timing(scaleAnim, {
+      // Title appears after logo
+      Animated.timing(titleFadeAnim, {
         toValue: 1,
-        duration: 1000,
-        easing: Easing.out(Easing.back(1.5)),
+        duration: 800,
+        easing: Easing.out(Easing.cubic),
         useNativeDriver: true,
       }),
-      Animated.timing(rotateAnim, {
+      // Tagline appears
+      Animated.timing(taglineFadeAnim, {
         toValue: 1,
-        duration: 2000,
+        duration: 800,
+        easing: Easing.out(Easing.cubic),
+        useNativeDriver: true,
+      }),
+      // Loading spinner appears
+      Animated.timing(loaderFadeAnim, {
+        toValue: 1,
+        duration: 800,
         easing: Easing.out(Easing.cubic),
         useNativeDriver: true,
       }),
     ]).start();
 
-    // Navigate to welcome screen after delay
+    // Navigate to welcome screen after total delay
     const timer = setTimeout(() => {
       navigation.navigate("Welcome" as never);
-    }, 2500);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, [navigation]);
-
-  const spin = rotateAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: ["0deg", "360deg"],
-  });
 
   return (
     <GradientBackground>
       <SafeAreaView style={styles.container}>
         <View style={styles.content}>
+          {/* Logo Section */}
+          <Animated.View style={[styles.logoSection, { opacity: fadeAnim }]}>
+            <Logo size="large" />
+          </Animated.View>
+
+          {/* Title */}
           <Animated.View
-            style={[
-              styles.logoContainer,
-              {
-                opacity: fadeAnim,
-                transform: [{ scale: scaleAnim }, { rotate: spin }],
-              },
-            ]}
+            style={[styles.titleSection, { opacity: titleFadeAnim }]}
           >
-            <LinearGradient
-              colors={["rgb(238, 58, 124)", "rgb(24, 154, 144)"]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.logoBackground}
-            />
-            <View style={styles.logoAccentDot} />
+            <GradientText style={styles.title}>MyQuiz</GradientText>
+          </Animated.View>
+
+          {/* Tagline */}
+          <Animated.View
+            style={[styles.taglineSection, { opacity: taglineFadeAnim }]}
+          >
+            <Text
+              style={[
+                styles.tagline,
+                { color: themeState.colors.textSecondary },
+              ]}
+            >
+              Play. Learn. Earn.
+            </Text>
+          </Animated.View>
+
+          {/* Loading Spinner */}
+          <Animated.View
+            style={[styles.loaderSection, { opacity: loaderFadeAnim }]}
+          >
+            <View style={styles.spinner}>
+              <View
+                style={[
+                  styles.spinnerOuter,
+                  { borderColor: themeState.colors.border },
+                ]}
+              />
+              <View
+                style={[
+                  styles.spinnerInner,
+                  { borderTopColor: "rgb(238, 58, 124)" },
+                ]}
+              />
+            </View>
           </Animated.View>
         </View>
       </SafeAreaView>
@@ -83,31 +125,54 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    paddingHorizontal: 24,
   },
-  logoContainer: {
-    width: 128,
-    height: 128,
-    position: "relative",
-    shadowColor: "rgba(0, 0, 0, 0.1)",
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 1,
-    shadowRadius: 15,
-    elevation: 15,
+  logoSection: {
+    marginBottom: 32,
   },
-  logoBackground: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 16,
+  titleSection: {
+    marginBottom: 16,
+  },
+  title: {
+    fontSize: 48,
+    fontWeight: "700",
+    textAlign: "center",
+  },
+  taglineSection: {
+    marginBottom: 48,
+  },
+  tagline: {
+    fontSize: 20,
+    textAlign: "center",
+    fontWeight: "600",
+  },
+  loaderSection: {
     justifyContent: "center",
     alignItems: "center",
   },
-  logoAccentDot: {
+  spinner: {
+    width: 32,
+    height: 32,
+    position: "relative",
+  },
+  spinnerOuter: {
+    width: 32,
+    height: 32,
+    borderWidth: 2,
+    borderRadius: 16,
+    borderStyle: "solid",
+    opacity: 0.3,
+  },
+  spinnerInner: {
     position: "absolute",
-    top: -4,
-    right: -4,
-    width: 24,
-    height: 24,
-    backgroundColor: "rgb(255, 204, 0)",
-    borderRadius: 12,
+    top: 0,
+    left: 0,
+    width: 32,
+    height: 32,
+    borderWidth: 2,
+    borderRadius: 16,
+    borderStyle: "solid",
+    borderColor: "transparent",
+    borderTopWidth: 2,
   },
 });

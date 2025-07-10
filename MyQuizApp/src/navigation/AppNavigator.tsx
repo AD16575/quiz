@@ -10,8 +10,13 @@ import { useTheme } from "../contexts/ThemeContext";
 // Screens
 import SplashScreen from "../screens/SplashScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
+import LoginScreen from "../screens/LoginScreen";
+import SignupScreen from "../screens/SignupScreen";
 import HomeScreen from "../screens/HomeScreen";
 import PlayScreen from "../screens/PlayScreen";
+import QuizListScreen from "../screens/QuizListScreen";
+import QuizPlayScreen from "../screens/QuizPlayScreen";
+import QuizResultScreen from "../screens/QuizResultScreen";
 import LeaderboardScreen from "../screens/LeaderboardScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 
@@ -29,8 +34,8 @@ function BottomTabNavigator() {
 
           if (route.name === "Home") {
             iconName = focused ? "home" : "home-outline";
-          } else if (route.name === "Play") {
-            iconName = focused ? "play-circle" : "play-circle-outline";
+          } else if (route.name === "Categories") {
+            iconName = focused ? "grid" : "grid-outline";
           } else if (route.name === "Leaderboard") {
             iconName = focused ? "trophy" : "trophy-outline";
           } else if (route.name === "Profile") {
@@ -66,7 +71,7 @@ function BottomTabNavigator() {
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Play" component={PlayScreen} />
+      <Tab.Screen name="Categories" component={PlayScreen} />
       <Tab.Screen name="Leaderboard" component={LeaderboardScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
@@ -76,22 +81,33 @@ function BottomTabNavigator() {
 export function AppNavigator() {
   const { state } = useQuiz();
 
+  if (state.user) {
+    // User is logged in - show main app screens
+    return (
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name="Main" component={BottomTabNavigator} />
+        <Stack.Screen name="QuizList" component={QuizListScreen} />
+        <Stack.Screen name="QuizPlay" component={QuizPlayScreen} />
+        <Stack.Screen name="QuizResult" component={QuizResultScreen} />
+      </Stack.Navigator>
+    );
+  }
+
+  // User not logged in - show auth flow
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
       }}
     >
-      {!state.user ? (
-        <>
-          <Stack.Screen name="Splash" component={SplashScreen} />
-          <Stack.Screen name="Welcome" component={WelcomeScreen} />
-        </>
-      ) : (
-        <>
-          <Stack.Screen name="Main" component={BottomTabNavigator} />
-        </>
-      )}
+      <Stack.Screen name="Splash" component={SplashScreen} />
+      <Stack.Screen name="Welcome" component={WelcomeScreen} />
+      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Signup" component={SignupScreen} />
     </Stack.Navigator>
   );
 }

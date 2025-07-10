@@ -1,49 +1,78 @@
 import React from "react";
-import { View, Text, StyleSheet, SafeAreaView } from "react-native";
-import { useTheme } from "../contexts/ThemeContext";
-import GradientBackground from "../components/common/GradientBackground";
+import QuizCategoriesScreen from "./QuizCategoriesScreen";
 
 export default function PlayScreen() {
-  const { state: themeState } = useTheme();
-
-  return (
-    <GradientBackground>
-      <SafeAreaView style={styles.container}>
-        <View style={styles.content}>
-          <Text style={[styles.title, { color: themeState.colors.text }]}>
-            PlayScreen
-          </Text>
-          <Text
-            style={[
-              styles.subtitle,
-              { color: themeState.colors.textSecondary },
-            ]}
-          >
-            Coming soon - Quiz categories grid
-          </Text>
-        </View>
-      </SafeAreaView>
-    </GradientBackground>
-  );
+  return <QuizCategoriesScreen />;
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal: 16,
   },
-  content: {
-    flex: 1,
-    justifyContent: "center",
+  header: {
+    paddingVertical: 24,
+    paddingHorizontal: 8,
     alignItems: "center",
-    paddingHorizontal: 24,
   },
   title: {
     fontSize: 32,
     fontWeight: "700",
-    marginBottom: 16,
+    marginBottom: 8,
   },
   subtitle: {
-    fontSize: 18,
+    fontSize: 16,
     textAlign: "center",
+  },
+  categoriesContainer: {
+    paddingBottom: 24,
+  },
+  row: {
+    justifyContent: "space-between",
+    marginBottom: 16,
+  },
+  categoryCard: {
+    flex: 1,
+    marginHorizontal: 4,
+    padding: 20,
+    borderRadius: 16,
+    borderWidth: 1,
+    alignItems: "center",
+    minHeight: 180,
+  },
+  categoryIcon: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  categoryEmoji: {
+    fontSize: 32,
+  },
+  categoryName: {
+    fontSize: 18,
+    fontWeight: "600",
+    marginBottom: 8,
+    textAlign: "center",
+  },
+  categoryDescription: {
+    fontSize: 14,
+    textAlign: "center",
+    marginBottom: 12,
+    lineHeight: 20,
+  },
+  categoryStats: {
+    marginTop: "auto",
+  },
+  quizCountBadge: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
+  },
+  quizCount: {
+    fontSize: 12,
+    fontWeight: "600",
   },
 });

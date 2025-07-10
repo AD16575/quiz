@@ -6,14 +6,13 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
 import GradientBackground from "../components/common/GradientBackground";
 import GradientText from "../components/common/GradientText";
+import Logo from "../components/common/Logo";
 
 export default function WelcomeScreen() {
   const navigation = useNavigation();
@@ -22,12 +21,14 @@ export default function WelcomeScreen() {
 
   const toggleTheme = () => {
     themeDispatch({ type: "TOGGLE_THEME" });
+    // Also update quiz context theme
+    dispatch({ type: "TOGGLE_THEME" });
   };
 
   return (
     <GradientBackground>
       <SafeAreaView style={styles.container}>
-        {/* Theme Toggle */}
+        {/* Theme Toggle Button - Exact position as web */}
         <TouchableOpacity
           style={[
             styles.themeToggle,
@@ -46,29 +47,15 @@ export default function WelcomeScreen() {
         </TouchableOpacity>
 
         <View style={styles.content}>
-          {/* Logo Section */}
+          {/* Logo and Title Section - Matching web layout */}
           <View style={styles.logoSection}>
-            <View style={styles.logoContainer}>
-              <LinearGradient
-                colors={["rgb(238, 58, 124)", "rgb(24, 154, 144)"]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={styles.logoBackground}
-              >
-                <Text style={styles.logoText}>Q</Text>
-              </LinearGradient>
-              <View style={styles.logoAccentDot} />
-            </View>
+            <Logo size="large" />
             <View style={styles.titleContainer}>
               <GradientText style={styles.title}>MyQuiz</GradientText>
               <Text
                 style={[
                   styles.tagline,
-                  {
-                    color: themeState.isDark
-                      ? "rgb(156, 163, 175)"
-                      : "rgb(100, 116, 139)",
-                  },
+                  { color: themeState.colors.textSecondary },
                 ]}
               >
                 Play. Learn. Earn.
@@ -76,7 +63,34 @@ export default function WelcomeScreen() {
             </View>
           </View>
 
-          {/* Action Buttons */}
+          {/* Feature Preview Card - Like web version */}
+          <View
+            style={[
+              styles.featureCard,
+              {
+                backgroundColor: themeState.colors.surfaceCard,
+                borderColor: themeState.colors.borderLight,
+              },
+            ]}
+          >
+            <Ionicons name="play-circle" size={64} color="rgb(238, 58, 124)" />
+            <Text
+              style={[styles.featureTitle, { color: themeState.colors.text }]}
+            >
+              Ready to Start?
+            </Text>
+            <Text
+              style={[
+                styles.featureDescription,
+                { color: themeState.colors.textSecondary },
+              ]}
+            >
+              Challenge yourself with fun quizzes and earn points while
+              learning!
+            </Text>
+          </View>
+
+          {/* Action Buttons - Exact styling as web */}
           <View style={styles.actionContainer}>
             <TouchableOpacity
               style={styles.getStartedButton}
@@ -90,7 +104,7 @@ export default function WelcomeScreen() {
               style={[
                 styles.loginButton,
                 {
-                  borderColor: themeState.colors.secondary,
+                  borderColor: "rgb(24, 154, 144)",
                   backgroundColor: themeState.isDark
                     ? "rgba(24, 154, 144, 0.15)"
                     : "transparent",
@@ -98,17 +112,8 @@ export default function WelcomeScreen() {
               ]}
               onPress={() => navigation.navigate("Login" as never)}
             >
-              <Ionicons
-                name="log-in"
-                size={20}
-                color={themeState.colors.secondary}
-              />
-              <Text
-                style={[
-                  styles.loginText,
-                  { color: themeState.colors.secondary },
-                ]}
-              >
+              <Ionicons name="log-in" size={20} color="rgb(24, 154, 144)" />
+              <Text style={[styles.loginText, { color: "rgb(24, 154, 144)" }]}>
                 Login
               </Text>
             </TouchableOpacity>
@@ -126,11 +131,14 @@ const styles = StyleSheet.create({
   themeToggle: {
     position: "absolute",
     top: 60,
-    right: Spacing.md,
+    right: 24,
     zIndex: 1,
-    padding: Spacing.sm,
-    borderRadius: BorderRadius.full,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
     borderWidth: 1,
+    justifyContent: "center",
+    alignItems: "center",
     shadowColor: "rgba(0, 0, 0, 0.1)",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 1,
@@ -150,43 +158,6 @@ const styles = StyleSheet.create({
     width: "100%",
     marginBottom: 48,
   },
-  logoContainer: {
-    height: 128,
-    width: 128,
-    position: "relative",
-    marginLeft: "auto",
-    marginRight: "auto",
-  },
-  logoBackground: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    borderRadius: 16,
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: "rgba(0, 0, 0, 0.1)",
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 1,
-    shadowRadius: 15,
-    elevation: 10,
-  },
-  logoText: {
-    color: "rgb(255, 255, 255)",
-    fontSize: 64,
-    fontWeight: "700",
-    textAlign: "center",
-  },
-  logoAccentDot: {
-    position: "absolute",
-    top: -4,
-    right: -4,
-    width: 24,
-    height: 24,
-    backgroundColor: "rgb(255, 204, 0)",
-    borderRadius: 12,
-  },
   titleContainer: {
     marginTop: 32,
     alignItems: "center",
@@ -194,29 +165,52 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 48,
     fontWeight: "700",
-    lineHeight: 48,
     textAlign: "center",
+    marginBottom: 16,
   },
   tagline: {
     fontSize: 20,
     fontWeight: "400",
-    lineHeight: 28,
-    marginTop: 16,
     textAlign: "center",
   },
-  actionContainer: {
-    marginTop: 48,
-    maxWidth: 448,
+  featureCard: {
     width: "100%",
+    maxWidth: 320,
+    height: 240,
+    borderRadius: 24,
+    borderWidth: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 48,
+    paddingHorizontal: 24,
+    shadowColor: "rgba(0, 0, 0, 0.1)",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 1,
+    shadowRadius: 12,
+    elevation: 5,
+  },
+  featureTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    marginTop: 16,
+    marginBottom: 8,
+    textAlign: "center",
+  },
+  featureDescription: {
+    fontSize: 14,
+    textAlign: "center",
+    lineHeight: 20,
+  },
+  actionContainer: {
+    width: "100%",
+    maxWidth: 448,
     gap: 16,
   },
   getStartedButton: {
     backgroundColor: "rgb(238, 58, 124)",
     borderRadius: 12,
-    paddingTop: 16,
-    paddingBottom: 16,
-    paddingLeft: 24,
-    paddingRight: 24,
+    paddingVertical: 16,
+    paddingHorizontal: 24,
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
@@ -228,18 +222,15 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   getStartedText: {
-    color: "rgb(255, 255, 255)",
+    color: "white",
     fontSize: 18,
     fontWeight: "600",
-    lineHeight: 28,
   },
   loginButton: {
     backgroundColor: "transparent",
     borderRadius: 12,
-    paddingTop: 16,
-    paddingBottom: 16,
-    paddingLeft: 24,
-    paddingRight: 24,
+    paddingVertical: 16,
+    paddingHorizontal: 24,
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
@@ -249,6 +240,5 @@ const styles = StyleSheet.create({
   loginText: {
     fontSize: 18,
     fontWeight: "600",
-    lineHeight: 28,
   },
 });

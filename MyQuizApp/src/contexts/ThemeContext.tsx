@@ -6,7 +6,9 @@ interface ThemeState {
   colors: typeof Colors.light;
 }
 
-type ThemeAction = { type: "TOGGLE_THEME" };
+type ThemeAction =
+  | { type: "TOGGLE_THEME" }
+  | { type: "SET_THEME"; payload: boolean };
 
 const initialState: ThemeState = {
   isDark: false,
@@ -19,6 +21,11 @@ function themeReducer(state: ThemeState, action: ThemeAction): ThemeState {
       return {
         isDark: !state.isDark,
         colors: !state.isDark ? Colors.dark : Colors.light,
+      };
+    case "SET_THEME":
+      return {
+        isDark: action.payload,
+        colors: action.payload ? Colors.dark : Colors.light,
       };
     default:
       return state;

@@ -5,9 +5,11 @@ export interface User {
   points: number;
   totalQuizzes: number;
   withdrawableAmount: number;
+  referralCode: string;
   referredUsers: number;
-  achievements: Achievement[];
+  memberSince: Date;
   streak: number;
+  achievements: Achievement[];
 }
 
 export interface Achievement {
@@ -20,25 +22,25 @@ export interface Achievement {
   unlockedAt?: Date;
 }
 
-export interface Category {
+export interface QuizCategory {
   id: string;
   name: string;
-  description: string;
   icon: string;
   color: string;
+  description: string;
   quizCount: number;
 }
 
 export interface Quiz {
   id: string;
   title: string;
-  description: string;
-  categoryId: string;
-  difficulty: "easy" | "medium" | "hard";
-  questionCount: number;
-  timeLimit: number;
-  points: number;
-  imageUrl?: string;
+  category: QuizCategory;
+  difficulty: "Easy" | "Medium" | "Hard";
+  questions: Question[];
+  pointsReward: number;
+  timeLimit?: number;
+  rating: number;
+  completedBy: number;
 }
 
 export interface Question {
@@ -47,17 +49,43 @@ export interface Question {
   options: string[];
   correctAnswer: number;
   explanation?: string;
-  imageUrl?: string;
 }
 
 export interface QuizResult {
-  id: string;
   quizId: string;
+  userId: string;
   score: number;
   totalQuestions: number;
-  timeSpent: number;
   pointsEarned: number;
+  timeTaken: number;
   completedAt: Date;
+}
+
+export interface PointTransaction {
+  id: string;
+  userId: string;
+  type: "Quiz" | "Referral" | "Bonus" | "Withdrawal";
+  amount: number;
+  description: string;
+  date: Date;
+  status: "Pending" | "Completed" | "Failed";
+}
+
+export interface WithdrawalRequest {
+  id: string;
+  userId: string;
+  amount: number;
+  requestDate: Date;
+  status: "Pending" | "Approved" | "Rejected" | "Completed";
+  paymentMethod: string;
+  paymentDetails: string;
+}
+
+export interface ReferralInfo {
+  code: string;
+  referredUsers: User[];
+  totalEarnings: number;
+  pendingEarnings: number;
 }
 
 export interface LeaderboardEntry {
@@ -71,15 +99,6 @@ export interface LeaderboardEntry {
   streak: number;
 }
 
-export interface PointTransaction {
-  id: string;
-  type: "earned" | "spent" | "withdrawn";
-  amount: number;
-  description: string;
-  date: Date;
-  relatedQuizId?: string;
-}
-
 // Navigation Types
 export type RootStackParamList = {
   Splash: undefined;
@@ -87,9 +106,10 @@ export type RootStackParamList = {
   Signup: undefined;
   Login: undefined;
   Main: undefined;
+  QuizCategories: undefined;
+  QuizList: { categoryId: string; categoryName: string };
   QuizPlay: { quizId: string };
   QuizResult: { result: QuizResult };
-  QuizList: { categoryId: string };
   Referral: undefined;
   Withdrawal: undefined;
   PointHistory: undefined;
@@ -98,7 +118,7 @@ export type RootStackParamList = {
 
 export type BottomTabParamList = {
   Home: undefined;
-  Play: undefined;
+  Categories: undefined;
   Leaderboard: undefined;
   Profile: undefined;
 };
