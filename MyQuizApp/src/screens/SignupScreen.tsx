@@ -44,7 +44,11 @@ export default function SignupScreen() {
     };
 
     dispatch({ type: "SET_USER", payload: mockUser });
-    navigation.navigate("Main" as never);
+    // Reset navigation stack and navigate to Main
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "Main" as never }],
+    });
   };
 
   return (
