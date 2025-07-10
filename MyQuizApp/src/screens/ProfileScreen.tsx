@@ -210,21 +210,21 @@ export default function ProfileScreen() {
               icon="people"
               title="Referral Program"
               subtitle={`${user.referredUsers} friends referred`}
-              onPress={() => {}} // Placeholder
+              onPress={() => navigation.navigate("Referral" as never)}
               color="rgb(24, 154, 144)"
             />
             <ProfileOption
               icon="wallet"
               title="Withdrawal"
               subtitle={`₹${user.withdrawableAmount} available`}
-              onPress={() => {}} // Placeholder
+              onPress={() => navigation.navigate("Withdrawal" as never)}
               color="rgb(255, 204, 0)"
             />
             <ProfileOption
               icon="list"
               title="Point History"
               subtitle="View all transactions"
-              onPress={() => {}} // Placeholder
+              onPress={() => navigation.navigate("PointHistory" as never)}
               color="rgb(147, 51, 234)"
             />
             <ProfileOption
