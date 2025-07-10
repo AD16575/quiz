@@ -90,7 +90,7 @@ export default function HomeScreen() {
         <View
           style={[
             styles.actionIconContainer,
-            { backgroundColor: color + "20" },
+            { borderColor: color + "20" },
           ]}
         >
           <Ionicons name={icon} size={48} color={color} />
@@ -138,9 +138,7 @@ export default function HomeScreen() {
           {/* Header */}
           <View style={styles.header}>
             <View style={styles.headerContent}>
-              <Logo size="small" />
               <View style={styles.headerText}>
-                <GradientText style={styles.appName}>MyQuiz</GradientText>
                 <Text
                   style={[styles.greeting, { color: themeState.colors.text }]}
                 >
@@ -413,7 +411,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   pointContent: {
-    flexDirection: "row",
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
     gap: Spacing.xs,
@@ -426,6 +424,7 @@ const styles = StyleSheet.create({
   pointTitle: {
     fontSize: FontSizes.xs,
     color: "rgba(255, 255, 255, 0.8)",
+    textAlign: "center",
   },
   playSection: {
     paddingHorizontal: Spacing.md,
@@ -487,7 +486,7 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.md,
   },
   quickActionsGrid: {
-    flexDirection: "row",
+    flexDirection: "column",
     gap: Spacing.sm,
   },
   actionCard: {
@@ -513,6 +512,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginBottom: Spacing.sm,
+    borderWidth: 2
   },
   actionTitle: {
     fontSize: FontSizes.lg,
