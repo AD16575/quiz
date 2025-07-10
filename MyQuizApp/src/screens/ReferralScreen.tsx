@@ -154,7 +154,7 @@ export default function ReferralScreen() {
           {/* Referral Stats */}
           <View style={styles.statsSection}>
             <LinearGradient
-              colors={["rgb(24, 154, 144)", "rgba(24, 154, 144, 0.8)"]}
+              colors={["rgb(24, 154, 115)", "rgba(24, 154, 144, 0.8)"]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={styles.statsCard}
