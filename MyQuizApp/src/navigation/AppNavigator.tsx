@@ -16,6 +16,9 @@ import QuizPlayScreen from "../screens/QuizPlayScreen";
 import QuizResultScreen from "../screens/QuizResultScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import LeaderboardScreen from "../screens/LeaderboardScreen";
+import ReferralScreen from "../screens/ReferralScreen";
+import WithdrawalScreen from "../screens/WithdrawalScreen";
+import PointHistoryScreen from "../screens/PointHistoryScreen";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -68,6 +71,9 @@ export function AppNavigator() {
           <Stack.Screen name="QuizResult" component={QuizResultScreen} />
           <Stack.Screen name="Profile" component={ProfileScreen} />
           <Stack.Screen name="Leaderboard" component={LeaderboardScreen} />
+          <Stack.Screen name="Referral" component={ReferralScreen} />
+          <Stack.Screen name="Withdrawal" component={WithdrawalScreen} />
+          <Stack.Screen name="PointHistory" component={PointHistoryScreen} />
         </>
       )}
     </Stack.Navigator>
