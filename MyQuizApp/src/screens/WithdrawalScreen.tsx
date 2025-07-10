@@ -107,7 +107,7 @@ export default function WithdrawalScreen() {
     >
       <View style={styles.methodLeft}>
         <View
-          style={[styles.methodIcon, { backgroundColor: method.color + "20" }]}
+          style={[styles.methodIcon, { borderColor: method.color + "20" }]}
         >
           <Ionicons name={method.icon} size={24} color={method.color} />
         </View>
@@ -538,6 +538,7 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
+    borderWidth: 2,
     justifyContent: "center",
     alignItems: "center",
     marginRight: Spacing.md,
