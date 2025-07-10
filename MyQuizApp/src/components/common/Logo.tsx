@@ -1,13 +1,16 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
 interface LogoProps {
   size?: "small" | "medium" | "large";
+  showText?: boolean;
 }
 
-export default function Logo({ size = "medium" }: LogoProps) {
-  const logoSize = size === "small" ? 40 : size === "medium" ? 80 : 128;
+export default function Logo({ size = "medium", showText = true }: LogoProps) {
+  const logoSize = size === "small" ? 60 : size === "medium" ? 100 : 128;
+  const fontSize = size === "small" ? 32 : size === "medium" ? 48 : 64;
+  const dotSize = size === "small" ? 16 : size === "medium" ? 20 : 24;
 
   return (
     <View style={[styles.container, { width: logoSize, height: logoSize }]}>
@@ -16,14 +19,16 @@ export default function Logo({ size = "medium" }: LogoProps) {
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={[styles.gradientBackground, { borderRadius: 16 }]}
-      />
+      >
+        {showText && <Text style={[styles.logoText, { fontSize }]}>Q</Text>}
+      </LinearGradient>
       <View
         style={[
           styles.accentDot,
           {
-            width: 24,
-            height: 24,
-            backgroundColor: "rgb(255, 204, 0)",
+            width: dotSize,
+            height: dotSize,
+            borderRadius: dotSize / 2,
             right: -4,
             top: -4,
           },
@@ -48,8 +53,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  logoText: {
+    color: "white",
+    fontWeight: "700",
+    textAlign: "center",
+  },
   accentDot: {
     position: "absolute",
-    borderRadius: 50,
+    backgroundColor: "rgb(255, 204, 0)",
   },
 });
