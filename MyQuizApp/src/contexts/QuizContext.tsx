@@ -37,6 +37,8 @@ const mockUser: User = {
   totalQuizzes: 47,
   withdrawableAmount: 125,
   referredUsers: 8,
+  referralCode: "ABC123",
+  memberSince: new Date("2023-01-15"),
   streak: 5,
   achievements: [
     {
