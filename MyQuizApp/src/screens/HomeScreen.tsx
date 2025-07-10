@@ -261,7 +261,7 @@ export default function HomeScreen() {
                     styles.playButton,
                     { backgroundColor: "rgb(238, 58, 124)" },
                   ]}
-                  onPress={() => navigation.navigate("Play" as never)}
+                  onPress={() => navigation.navigate("QuizCategories" as never)}
                   activeOpacity={0.8}
                 >
                   <Ionicons name="play" size={20} color="white" />
@@ -284,14 +284,14 @@ export default function HomeScreen() {
                 subtitle={`${user.referredUsers} Friends Referred`}
                 icon="people"
                 color="rgb(24, 154, 144)"
-                onPress={() => navigation.navigate("Referral" as never)}
+                onPress={() => navigation.navigate("Profile" as never)}
               />
               <ActionCard
                 title="Withdrawal"
                 subtitle={`₹${user.withdrawableAmount} Available`}
                 icon="wallet"
                 color="rgb(255, 204, 0)"
-                onPress={() => navigation.navigate("Withdrawal" as never)}
+                onPress={() => navigation.navigate("Profile" as never)}
               />
             </View>
           </View>
