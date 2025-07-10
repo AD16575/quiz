@@ -80,7 +80,7 @@ export default function WithdrawalScreen() {
     Alert.alert(
       "Withdrawal Request",
       `Your withdrawal request of ₹${amount} has been submitted. You will receive the amount within the specified time.`,
-      [{ text: "OK", onPress: () => navigation.goBack() }],
+      [{ text: "OK", onPress: () => navigation.goBack() }]
     );
   };
 
@@ -106,9 +106,7 @@ export default function WithdrawalScreen() {
       activeOpacity={0.8}
     >
       <View style={styles.methodLeft}>
-        <View
-          style={[styles.methodIcon, { borderColor: method.color + "20" }]}
-        >
+        <View style={[styles.methodIcon, { borderColor: method.color + "20" }]}>
           <Ionicons name={method.icon} size={24} color={method.color} />
         </View>
         <View style={styles.methodInfo}>
