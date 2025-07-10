@@ -17,6 +17,12 @@ import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
 import GradientBackground from "../components/common/GradientBackground";
 import Logo from "../components/common/Logo";
+import {
+  validateEmail,
+  validatePassword,
+  validateForm,
+  FormErrors,
+} from "../utils/validation";
 
 export default function LoginScreen() {
   const navigation = useNavigation();
@@ -27,31 +33,64 @@ export default function LoginScreen() {
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = () => {
-    if (!formData.email || !formData.password) {
-      Alert.alert("Error", "Please fill in all fields");
+  const validateAndLogin = async () => {
+    // Clear previous errors
+    setErrors({});
+
+    // Validate form
+    const { isValid, errors: validationErrors } = validateForm(formData, {
+      email: validateEmail,
+      password: validatePassword,
+    });
+
+    if (!isValid) {
+      setErrors(validationErrors);
       return;
     }
 
-    // Mock login - matching web version
-    const user = {
-      id: "1",
-      name: "John Doe",
-      email: formData.email,
-      points: 2500,
-      totalQuizzes: 15,
-      withdrawableAmount: 1200,
-      referralCode: "ABC123",
-      referredUsers: 3,
-      memberSince: new Date("2023-01-15"),
-    };
-    dispatch({ type: "SET_USER", payload: user });
-    navigation.navigate("Home" as never);
+    setIsLoading(true);
+
+    try {
+      // Simulate API call delay
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // Mock login validation
+      if (
+        formData.email === "test@example.com" &&
+        formData.password === "password123"
+      ) {
+        Alert.alert("Error", "Invalid email or password");
+        setIsLoading(false);
+        return;
+      }
+
+      // Mock successful login
+      const user = {
+        id: "1",
+        name: "John Doe",
+        email: formData.email,
+        points: 2500,
+        totalQuizzes: 15,
+        withdrawableAmount: 1200,
+        referralCode: "ABC123",
+        referredUsers: 3,
+        memberSince: new Date("2023-01-15"),
+      };
+
+      dispatch({ type: "SET_USER", payload: user });
+      navigation.navigate("Home" as never);
+    } catch (error) {
+      Alert.alert("Error", "Login failed. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleGoogleLogin = () => {
-    // Mock Google login - matching web version
+    // Mock Google login
     const user = {
       id: "1",
       name: "John Doe",
@@ -65,6 +104,15 @@ export default function LoginScreen() {
     };
     dispatch({ type: "SET_USER", payload: user });
     navigation.navigate("Home" as never);
+  };
+
+  const handleFieldChange = (field: string, value: string) => {
+    setFormData({ ...formData, [field]: value });
+
+    // Clear error for this field when user starts typing
+    if (errors[field]) {
+      setErrors({ ...errors, [field]: "" });
+    }
   };
 
   return (
@@ -95,7 +143,7 @@ export default function LoginScreen() {
           </View>
 
           <View style={styles.content}>
-            {/* Logo Section - Matching web version */}
+            {/* Logo Section */}
             <View style={styles.logoSection}>
               <Logo size="medium" />
               <Text style={[styles.title, { color: themeState.colors.text }]}>
@@ -126,7 +174,9 @@ export default function LoginScreen() {
                     styles.inputWrapper,
                     {
                       backgroundColor: themeState.colors.surface,
-                      borderColor: themeState.colors.border,
+                      borderColor: errors.email
+                        ? "rgb(239, 68, 68)"
+                        : themeState.colors.border,
                     },
                   ]}
                 >
@@ -134,9 +184,11 @@ export default function LoginScreen() {
                     name="mail"
                     size={16}
                     color={
-                      themeState.isDark
-                        ? "rgb(156, 163, 175)"
-                        : "rgb(100, 116, 139)"
+                      errors.email
+                        ? "rgb(239, 68, 68)"
+                        : themeState.isDark
+                          ? "rgb(156, 163, 175)"
+                          : "rgb(100, 116, 139)"
                     }
                     style={styles.inputIcon}
                   />
@@ -149,13 +201,15 @@ export default function LoginScreen() {
                         : "rgb(100, 116, 139)"
                     }
                     value={formData.email}
-                    onChangeText={(text) =>
-                      setFormData({ ...formData, email: text })
-                    }
+                    onChangeText={(text) => handleFieldChange("email", text)}
                     keyboardType="email-address"
                     autoCapitalize="none"
+                    autoCorrect={false}
                   />
                 </View>
+                {errors.email ? (
+                  <Text style={styles.errorText}>{errors.email}</Text>
+                ) : null}
               </View>
 
               <View style={styles.inputContainer}>
@@ -167,7 +221,9 @@ export default function LoginScreen() {
                     styles.inputWrapper,
                     {
                       backgroundColor: themeState.colors.surface,
-                      borderColor: themeState.colors.border,
+                      borderColor: errors.password
+                        ? "rgb(239, 68, 68)"
+                        : themeState.colors.border,
                     },
                   ]}
                 >
@@ -175,9 +231,11 @@ export default function LoginScreen() {
                     name="lock-closed"
                     size={16}
                     color={
-                      themeState.isDark
-                        ? "rgb(156, 163, 175)"
-                        : "rgb(100, 116, 139)"
+                      errors.password
+                        ? "rgb(239, 68, 68)"
+                        : themeState.isDark
+                          ? "rgb(156, 163, 175)"
+                          : "rgb(100, 116, 139)"
                     }
                     style={styles.inputIcon}
                   />
@@ -190,10 +248,9 @@ export default function LoginScreen() {
                         : "rgb(100, 116, 139)"
                     }
                     value={formData.password}
-                    onChangeText={(text) =>
-                      setFormData({ ...formData, password: text })
-                    }
+                    onChangeText={(text) => handleFieldChange("password", text)}
                     secureTextEntry={!showPassword}
+                    autoCorrect={false}
                   />
                   <TouchableOpacity
                     onPress={() => setShowPassword(!showPassword)}
@@ -210,6 +267,9 @@ export default function LoginScreen() {
                     />
                   </TouchableOpacity>
                 </View>
+                {errors.password ? (
+                  <Text style={styles.errorText}>{errors.password}</Text>
+                ) : null}
               </View>
 
               <TouchableOpacity style={styles.forgotPassword}>
@@ -219,11 +279,18 @@ export default function LoginScreen() {
               <TouchableOpacity
                 style={[
                   styles.loginButton,
-                  { backgroundColor: "rgb(24, 154, 144)" },
+                  {
+                    backgroundColor: isLoading
+                      ? "rgba(24, 154, 144, 0.6)"
+                      : "rgb(24, 154, 144)",
+                  },
                 ]}
-                onPress={handleLogin}
+                onPress={validateAndLogin}
+                disabled={isLoading}
               >
-                <Text style={styles.loginButtonText}>Login</Text>
+                <Text style={styles.loginButtonText}>
+                  {isLoading ? "Logging in..." : "Login"}
+                </Text>
               </TouchableOpacity>
 
               <View style={styles.divider}>
@@ -383,6 +450,11 @@ const styles = StyleSheet.create({
   },
   eyeIcon: {
     padding: 12,
+  },
+  errorText: {
+    color: "rgb(239, 68, 68)",
+    fontSize: FontSizes.sm,
+    marginTop: 4,
   },
   forgotPassword: {
     alignSelf: "flex-end",
