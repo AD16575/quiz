@@ -47,7 +47,7 @@ export default function HomeScreen() {
 
     return (
       <LinearGradient
-        colors={gradientColors[variant]}
+        colors={gradientColors[variant] as [string, string]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
         style={styles.pointCard}
@@ -70,6 +70,7 @@ export default function HomeScreen() {
     icon,
     color,
     onPress,
+    bgcolor,
   }: {
     title: string;
     value: number;
@@ -77,21 +78,19 @@ export default function HomeScreen() {
     icon: keyof typeof Ionicons.glyphMap;
     color: string;
     onPress: () => void;
+    bgcolor: string;
   }) => (
     <TouchableOpacity
       style={[
         styles.actionCard,
-        { backgroundColor: themeState.colors.surface },
+        { backgroundColor: bgcolor, borderColor: color },
       ]}
       onPress={onPress}
       activeOpacity={0.8}
     >
       <View style={styles.actionHeader}>
         <View
-          style={[
-            styles.actionIconContainer,
-            { borderColor: color + "20" },
-          ]}
+          style={[styles.actionIconContainer, { borderColor: color + "20" }]}
         >
           <Ionicons name={icon} size={48} color={color} />
         </View>
@@ -120,8 +119,8 @@ export default function HomeScreen() {
           {title === "Referral Program"
             ? "View Details"
             : title === "Withdrawal"
-              ? "Withdraw Now"
-              : "View History"}
+            ? "Withdraw Now"
+            : "View History"}
         </Text>
       </TouchableOpacity>
     </TouchableOpacity>
@@ -251,6 +250,7 @@ export default function HomeScreen() {
                 subtitle="Friends Referred"
                 icon="people"
                 color="rgb(24, 154, 144)"
+                bgcolor="rgba(24, 154, 144, 0.2)"
                 onPress={() => navigation.navigate("Referral" as never)}
               />
               <ActionCard
@@ -258,7 +258,8 @@ export default function HomeScreen() {
                 value={user.withdrawableAmount}
                 subtitle="Available"
                 icon="wallet"
-                color="rgb(255, 204, 0)"
+                color="rgb(249, 115, 22)"
+                bgcolor="rgba(249, 115, 22, 0.2)"
                 onPress={() => navigation.navigate("Withdrawal" as never)}
               />
             </View>
@@ -512,7 +513,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginBottom: Spacing.sm,
-    borderWidth: 2
+    borderWidth: 2,
   },
   actionTitle: {
     fontSize: FontSizes.lg,
