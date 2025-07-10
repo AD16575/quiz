@@ -81,6 +81,23 @@ function BottomTabNavigator() {
 export function AppNavigator() {
   const { state } = useQuiz();
 
+  if (state.user) {
+    // User is logged in - show main app screens
+    return (
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name="Main" component={BottomTabNavigator} />
+        <Stack.Screen name="QuizList" component={QuizListScreen} />
+        <Stack.Screen name="QuizPlay" component={QuizPlayScreen} />
+        <Stack.Screen name="QuizResult" component={QuizResultScreen} />
+      </Stack.Navigator>
+    );
+  }
+
+  // User not logged in - show auth flow
   return (
     <Stack.Navigator
       screenOptions={{
@@ -91,10 +108,6 @@ export function AppNavigator() {
       <Stack.Screen name="Welcome" component={WelcomeScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Signup" component={SignupScreen} />
-      <Stack.Screen name="Main" component={BottomTabNavigator} />
-      <Stack.Screen name="QuizList" component={QuizListScreen} />
-      <Stack.Screen name="QuizPlay" component={QuizPlayScreen} />
-      <Stack.Screen name="QuizResult" component={QuizResultScreen} />
     </Stack.Navigator>
   );
 }
