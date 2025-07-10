@@ -34,43 +34,45 @@ export default function HomeScreen() {
     title,
     value,
     icon,
-    color,
     variant,
   }: {
     title: string;
     value: number;
     icon: keyof typeof Ionicons.glyphMap;
-    color: string;
     variant: "default" | "earned" | "withdrawable";
-  }) => (
-    <View style={[dynamicStyles.pointCard, { borderLeftColor: color }]}>
-      <View style={dynamicStyles.pointContent}>
-        <View
-          style={[dynamicStyles.pointIcon, { backgroundColor: color + "20" }]}
-        >
-          <Ionicons name={icon} size={24} color={color} />
+  }) => {
+    const gradientColors = {
+      default: ["rgb(24, 154, 144)", "rgba(24, 154, 144, 0.8)"],
+      earned: ["rgb(255, 204, 0)", "rgb(249, 115, 22)"],
+      withdrawable: ["rgb(238, 58, 124)", "rgb(147, 51, 234)"],
+    };
+
+    return (
+      <LinearGradient
+        colors={gradientColors[variant]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+        style={dynamicStyles.pointCard}
+      >
+        <View style={dynamicStyles.pointContent}>
+          <Ionicons
+            name={icon}
+            size={24}
+            color="white"
+            style={dynamicStyles.pointIcon}
+          />
+          <View style={dynamicStyles.pointText}>
+            <Text style={dynamicStyles.pointTitle}>{title}</Text>
+            <Text style={dynamicStyles.pointValue}>
+              {variant === "withdrawable"
+                ? `₹${value}`
+                : value.toLocaleString()}
+            </Text>
+          </View>
         </View>
-        <View style={dynamicStyles.pointText}>
-          <Text
-            style={[
-              dynamicStyles.pointValue,
-              { color: themeState.colors.text },
-            ]}
-          >
-            {variant === "withdrawable" ? `₹${value}` : value.toLocaleString()}
-          </Text>
-          <Text
-            style={[
-              dynamicStyles.pointTitle,
-              { color: themeState.colors.textSecondary },
-            ]}
-          >
-            {title}
-          </Text>
-        </View>
-      </View>
-    </View>
-  );
+      </LinearGradient>
+    );
+  };
 
   const CategoryCard = ({ category }: { category: any }) => (
     <TouchableOpacity
@@ -206,21 +208,18 @@ export default function HomeScreen() {
               title="Total Points"
               value={user.points}
               icon="star"
-              color="rgb(238, 58, 124)"
               variant="default"
             />
             <PointCard
               title="Quizzes Played"
               value={user.totalQuizzes}
               icon="play-circle"
-              color="rgb(24, 154, 144)"
               variant="earned"
             />
             <PointCard
               title="Withdrawable"
               value={user.withdrawableAmount}
               icon="wallet"
-              color="rgb(255, 204, 0)"
               variant="withdrawable"
             />
           </View>
@@ -436,40 +435,35 @@ const createStyles = (colors: any) =>
     },
     pointCard: {
       flex: 1,
-      backgroundColor: colors.surfaceCard,
-      borderRadius: BorderRadius.lg,
-      padding: Spacing.md,
-      borderLeftWidth: 4,
+      borderRadius: BorderRadius.xl,
+      padding: Spacing.lg,
       minWidth: (width - Spacing.md * 2 - Spacing.sm) / 3 - Spacing.sm,
-      shadowColor: "rgba(0, 0, 0, 0.05)",
-      shadowOffset: { width: 0, height: 2 },
+      shadowColor: "rgba(0, 0, 0, 0.1)",
+      shadowOffset: { width: 0, height: 4 },
       shadowOpacity: 1,
-      shadowRadius: 8,
-      elevation: 2,
+      shadowRadius: 12,
+      elevation: 5,
     },
     pointContent: {
+      flexDirection: "row",
       alignItems: "center",
+      gap: Spacing.sm,
     },
     pointIcon: {
-      width: 40,
-      height: 40,
-      borderRadius: BorderRadius.lg,
-      justifyContent: "center",
-      alignItems: "center",
-      marginBottom: Spacing.sm,
+      marginRight: 0,
     },
     pointText: {
-      alignItems: "center",
-    },
-    pointValue: {
-      fontSize: FontSizes.lg,
-      fontWeight: "bold",
-      textAlign: "center",
+      flex: 1,
     },
     pointTitle: {
       fontSize: FontSizes.xs,
-      marginTop: 2,
-      textAlign: "center",
+      color: "rgba(255, 255, 255, 0.8)",
+      marginBottom: 2,
+    },
+    pointValue: {
+      fontSize: FontSizes.lg,
+      fontWeight: "700",
+      color: "white",
     },
   });
 
