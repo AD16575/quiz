@@ -6,14 +6,13 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
 import GradientBackground from "../components/common/GradientBackground";
 import GradientText from "../components/common/GradientText";
+import Logo from "../components/common/Logo";
 
 export default function WelcomeScreen() {
   const navigation = useNavigation();
@@ -22,12 +21,14 @@ export default function WelcomeScreen() {
 
   const toggleTheme = () => {
     themeDispatch({ type: "TOGGLE_THEME" });
+    // Also update quiz context theme
+    dispatch({ type: "TOGGLE_THEME" });
   };
 
   return (
     <GradientBackground>
       <SafeAreaView style={styles.container}>
-        {/* Theme Toggle */}
+        {/* Theme Toggle Button - Exact position as web */}
         <TouchableOpacity
           style={[
             styles.themeToggle,
@@ -46,29 +47,15 @@ export default function WelcomeScreen() {
         </TouchableOpacity>
 
         <View style={styles.content}>
-          {/* Logo Section */}
+          {/* Logo and Title Section - Matching web layout */}
           <View style={styles.logoSection}>
-            <View style={styles.logoContainer}>
-              <LinearGradient
-                colors={["rgb(238, 58, 124)", "rgb(24, 154, 144)"]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={styles.logoBackground}
-              >
-                <Text style={styles.logoText}>Q</Text>
-              </LinearGradient>
-              <View style={styles.logoAccentDot} />
-            </View>
+            <Logo size="large" />
             <View style={styles.titleContainer}>
               <GradientText style={styles.title}>MyQuiz</GradientText>
               <Text
                 style={[
                   styles.tagline,
-                  {
-                    color: themeState.isDark
-                      ? "rgb(156, 163, 175)"
-                      : "rgb(100, 116, 139)",
-                  },
+                  { color: themeState.colors.textSecondary },
                 ]}
               >
                 Play. Learn. Earn.
@@ -76,7 +63,34 @@ export default function WelcomeScreen() {
             </View>
           </View>
 
-          {/* Action Buttons */}
+          {/* Feature Preview Card - Like web version */}
+          <View
+            style={[
+              styles.featureCard,
+              {
+                backgroundColor: themeState.colors.surfaceCard,
+                borderColor: themeState.colors.borderLight,
+              },
+            ]}
+          >
+            <Ionicons name="play-circle" size={64} color="rgb(238, 58, 124)" />
+            <Text
+              style={[styles.featureTitle, { color: themeState.colors.text }]}
+            >
+              Ready to Start?
+            </Text>
+            <Text
+              style={[
+                styles.featureDescription,
+                { color: themeState.colors.textSecondary },
+              ]}
+            >
+              Challenge yourself with fun quizzes and earn points while
+              learning!
+            </Text>
+          </View>
+
+          {/* Action Buttons - Exact styling as web */}
           <View style={styles.actionContainer}>
             <TouchableOpacity
               style={styles.getStartedButton}
@@ -90,7 +104,7 @@ export default function WelcomeScreen() {
               style={[
                 styles.loginButton,
                 {
-                  borderColor: themeState.colors.secondary,
+                  borderColor: "rgb(24, 154, 144)",
                   backgroundColor: themeState.isDark
                     ? "rgba(24, 154, 144, 0.15)"
                     : "transparent",
@@ -98,17 +112,8 @@ export default function WelcomeScreen() {
               ]}
               onPress={() => navigation.navigate("Login" as never)}
             >
-              <Ionicons
-                name="log-in"
-                size={20}
-                color={themeState.colors.secondary}
-              />
-              <Text
-                style={[
-                  styles.loginText,
-                  { color: themeState.colors.secondary },
-                ]}
-              >
+              <Ionicons name="log-in" size={20} color="rgb(24, 154, 144)" />
+              <Text style={[styles.loginText, { color: "rgb(24, 154, 144)" }]}>
                 Login
               </Text>
             </TouchableOpacity>
