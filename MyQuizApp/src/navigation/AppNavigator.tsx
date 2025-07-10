@@ -87,21 +87,14 @@ export function AppNavigator() {
         headerShown: false,
       }}
     >
-      {!state.user ? (
-        <>
-          <Stack.Screen name="Splash" component={SplashScreen} />
-          <Stack.Screen name="Welcome" component={WelcomeScreen} />
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Signup" component={SignupScreen} />
-        </>
-      ) : (
-        <>
-          <Stack.Screen name="Main" component={BottomTabNavigator} />
-          <Stack.Screen name="QuizList" component={QuizListScreen} />
-          <Stack.Screen name="QuizPlay" component={QuizPlayScreen} />
-          <Stack.Screen name="QuizResult" component={QuizResultScreen} />
-        </>
-      )}
+      <Stack.Screen name="Splash" component={SplashScreen} />
+      <Stack.Screen name="Welcome" component={WelcomeScreen} />
+      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Signup" component={SignupScreen} />
+      <Stack.Screen name="Main" component={BottomTabNavigator} />
+      <Stack.Screen name="QuizList" component={QuizListScreen} />
+      <Stack.Screen name="QuizPlay" component={QuizPlayScreen} />
+      <Stack.Screen name="QuizResult" component={QuizResultScreen} />
     </Stack.Navigator>
   );
 }
