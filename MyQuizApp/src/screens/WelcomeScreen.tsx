@@ -67,34 +67,6 @@ export default function WelcomeScreen() {
             </View>
           </View>
 
-          {/* Play Icon Card - Matching web version */}
-          <View style={styles.playIconSection}>
-            <View
-              style={[
-                styles.playCard,
-                {
-                  backgroundColor: "rgba(238, 58, 124, 0.1)",
-                  borderColor: "rgba(238, 58, 124, 0.2)",
-                },
-              ]}
-            >
-              <Ionicons name="play" size={64} color="rgb(238, 58, 124)" />
-              <Text
-                style={[
-                  styles.playCardText,
-                  {
-                    color: themeState.isDark
-                      ? "rgb(156, 163, 175)"
-                      : "rgb(100, 116, 139)",
-                  },
-                ]}
-              >
-                Challenge yourself with fun quizzes and earn points while
-                learning!
-              </Text>
-            </View>
-          </View>
-
           {/* Action Buttons */}
           <View style={styles.actionContainer}>
             <TouchableOpacity
@@ -178,31 +150,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
     textAlign: "center",
   },
-  playIconSection: {
-    marginVertical: 32,
-    width: "100%",
-  },
-  playCard: {
-    width: 256,
-    height: 256,
-    alignSelf: "center",
-    borderRadius: 24,
-    borderWidth: 2,
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: "rgba(0, 0, 0, 0.1)",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 1,
-    shadowRadius: 12,
-    elevation: 5,
-    paddingHorizontal: 16,
-  },
-  playCardText: {
-    fontSize: 14,
-    textAlign: "center",
-    marginTop: 16,
-    lineHeight: 20,
-  },
+
   actionContainer: {
     marginTop: 32,
     width: "100%",
