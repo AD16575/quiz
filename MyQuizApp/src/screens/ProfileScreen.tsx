@@ -52,7 +52,7 @@ export default function ProfileScreen() {
       onPress={onPress}
     >
       <View style={styles.optionLeft}>
-        <View style={[styles.optionIcon, { backgroundColor: color + "20" }]}>
+        <View style={[styles.optionIcon, { borderColor: color + "20" }]}>
           <Ionicons name={icon} size={24} color={color} />
         </View>
         <View style={styles.optionText}>
@@ -238,7 +238,7 @@ export default function ProfileScreen() {
               icon="settings"
               title="Settings"
               subtitle="App preferences"
-              onPress={() => {}} // Placeholder
+              onPress={() => { }} // Placeholder
               color="rgb(100, 116, 139)"
             />
           </View>
@@ -385,6 +385,7 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
+    borderWidth: 2,
     justifyContent: "center",
     alignItems: "center",
     marginRight: Spacing.md,
