@@ -20,6 +20,8 @@ interface QuizState {
 
 type QuizAction =
   | { type: "SET_USER"; payload: User }
+  | { type: "LOGOUT" }
+  | { type: "ADD_POINTS"; payload: number }
   | { type: "SET_CATEGORIES"; payload: Category[] }
   | { type: "SET_QUIZZES"; payload: Quiz[] }
   | { type: "SET_CURRENT_QUIZ"; payload: Quiz | null }
@@ -142,7 +144,7 @@ const mockLeaderboard: LeaderboardEntry[] = [
 ];
 
 const initialState: QuizState = {
-  user: mockUser,
+  user: null,
   categories: mockCategories,
   quizzes: [],
   results: [],
@@ -155,6 +157,15 @@ function quizReducer(state: QuizState, action: QuizAction): QuizState {
   switch (action.type) {
     case "SET_USER":
       return { ...state, user: action.payload };
+    case "LOGOUT":
+      return { ...state, user: null };
+    case "ADD_POINTS":
+      return {
+        ...state,
+        user: state.user
+          ? { ...state.user, points: state.user.points + action.payload }
+          : null,
+      };
     case "SET_CATEGORIES":
       return { ...state, categories: action.payload };
     case "SET_QUIZZES":
