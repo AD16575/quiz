@@ -14,9 +14,13 @@ import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
 import GradientBackground from "../components/common/GradientBackground";
 import Logo from "../components/common/Logo";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../types";
+
+type NavigationProp = StackNavigationProp<RootStackParamList>;
 
 export default function ProfileScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp>();
   const { state, dispatch } = useQuiz();
   const { state: themeState, dispatch: themeDispatch } = useTheme();
   const { user } = state;
@@ -210,28 +214,28 @@ export default function ProfileScreen() {
               icon="people"
               title="Referral Program"
               subtitle={`${user.referredUsers} friends referred`}
-              onPress={() => navigation.navigate("Referral" as never)}
+              onPress={() => navigation.navigate("Referral")}
               color="rgb(24, 154, 144)"
             />
             <ProfileOption
               icon="wallet"
               title="Withdrawal"
               subtitle={`₹${user.withdrawableAmount} available`}
-              onPress={() => navigation.navigate("Withdrawal" as never)}
+              onPress={() => navigation.navigate("Withdrawal")}
               color="rgb(255, 204, 0)"
             />
             <ProfileOption
               icon="list"
               title="Point History"
               subtitle="View all transactions"
-              onPress={() => navigation.navigate("PointHistory" as never)}
+              onPress={() => navigation.navigate("PointHistory")}
               color="rgb(147, 51, 234)"
             />
             <ProfileOption
               icon="trophy"
               title="Leaderboard"
               subtitle="See your ranking"
-              onPress={() => navigation.navigate("Leaderboard" as never)}
+              onPress={() => navigation.navigate("Leaderboard")}
               color="rgb(249, 115, 22)"
             />
             <ProfileOption
@@ -269,6 +273,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.md,
+    paddingTop: 30,
     borderBottomWidth: 1,
     borderBottomColor: "rgba(255, 255, 255, 0.1)",
   },

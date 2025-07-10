@@ -15,6 +15,10 @@ import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
 import GradientBackground from "../components/common/GradientBackground";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../types";
+
+type NavigationProp = StackNavigationProp<RootStackParamList>;
 
 const { width } = Dimensions.get("window");
 
@@ -70,7 +74,7 @@ const categories = [
 ];
 
 export default function QuizCategoriesScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp>();
   const { state } = useQuiz();
   const { state: themeState } = useTheme();
   const { user } = state;
@@ -83,8 +87,8 @@ export default function QuizCategoriesScreen() {
       ]}
       onPress={() =>
         navigation.navigate(
-          "QuizList" as never,
-          { categoryId: category.id } as never,
+          "QuizList",
+          { categoryId: category.id },
         )
       }
       activeOpacity={0.8}
@@ -143,8 +147,8 @@ export default function QuizCategoriesScreen() {
             ]}
             onPress={() =>
               navigation.navigate(
-                "QuizList" as never,
-                { categoryId: category.id } as never,
+                "QuizList",
+                { categoryId: category.id },
               )
             }
           >
@@ -275,7 +279,7 @@ export default function QuizCategoriesScreen() {
                     styles.surpriseButton,
                     { borderColor: "rgb(238, 58, 124)" },
                   ]}
-                  onPress={() => navigation.navigate("QuizRandom" as never)}
+                  onPress={() => navigation.navigate("QuizRandom")}
                 >
                   <Text style={styles.surpriseButtonText}>Surprise Me!</Text>
                 </TouchableOpacity>
@@ -298,6 +302,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.md,
+    paddingTop: 30,
     borderBottomWidth: 1,
     borderBottomColor: "rgba(255, 255, 255, 0.1)",
   },

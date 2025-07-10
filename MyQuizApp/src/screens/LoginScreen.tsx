@@ -23,9 +23,13 @@ import {
   validateForm,
   FormErrors,
 } from "../utils/validation";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../types";
+
+type NavigationProp = StackNavigationProp<RootStackParamList>;
 
 export default function LoginScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp>();
   const { dispatch } = useQuiz();
   const { state: themeState } = useTheme();
   const [formData, setFormData] = useState({
@@ -81,7 +85,7 @@ export default function LoginScreen() {
       };
 
       dispatch({ type: "SET_USER", payload: user });
-      navigation.navigate("Home" as never);
+      navigation.navigate("Home");
     } catch (error) {
       Alert.alert("Error", "Login failed. Please try again.");
     } finally {
@@ -103,7 +107,7 @@ export default function LoginScreen() {
       memberSince: new Date("2023-01-15"),
     };
     dispatch({ type: "SET_USER", payload: user });
-    navigation.navigate("Home" as never);
+    navigation.navigate("Home");
   };
 
   const handleFieldChange = (field: string, value: string) => {
@@ -360,7 +364,7 @@ export default function LoginScreen() {
                   Don't have an account?{" "}
                 </Text>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("Signup" as never)}
+                  onPress={() => navigation.navigate("Signup")}
                 >
                   <Text style={styles.signupLink}>Sign up here</Text>
                 </TouchableOpacity>
@@ -382,8 +386,9 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: Spacing.md,
-    paddingTop: Spacing.md,
-    paddingBottom: Spacing.sm,
+    paddingTop: 30,
+    // paddingTop: Spacing.md,
+    // paddingBottom: Spacing.sm,
   },
   backButton: {
     padding: Spacing.sm,
@@ -499,11 +504,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 12,
+    paddingVertical: 10,
     borderRadius: BorderRadius.lg,
     borderWidth: 1,
     gap: 8,
-    height: 48,
+    height: 50,
   },
   googleButtonText: {
     fontSize: FontSizes.lg,

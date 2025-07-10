@@ -99,4 +99,5 @@ export type RootStackParamList = {
   PointHistory: undefined;
   Settings: undefined;
   Leaderboard: undefined;
+  QuizRandom: undefined;
 };

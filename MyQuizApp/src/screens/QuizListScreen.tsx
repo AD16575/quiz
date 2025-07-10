@@ -13,6 +13,10 @@ import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
 import GradientBackground from "../components/common/GradientBackground";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../types";
+
+type NavigationProp = StackNavigationProp<RootStackParamList>;
 
 const mockQuizzes = [
   {
@@ -58,7 +62,7 @@ const mockQuizzes = [
 ];
 
 export default function QuizListScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp>();
   const route = useRoute();
   const { state } = useQuiz();
   const { state: themeState } = useTheme();
@@ -107,15 +111,13 @@ export default function QuizListScreen() {
               style={[
                 styles.difficultyBadge,
                 {
-                  backgroundColor: difficultyColors[quiz.difficulty].background,
-                  borderColor: difficultyColors[quiz.difficulty].border,
-                },
-              ]}
-            >
+                  backgroundColor: difficultyColors[quiz.difficulty as keyof typeof difficultyColors].background,
+                  borderColor: difficultyColors[quiz.difficulty as keyof typeof difficultyColors].border,
+                }]}>
               <Text
                 style={[
                   styles.difficultyText,
-                  { color: difficultyColors[quiz.difficulty].text },
+                  { color: difficultyColors[quiz.difficulty as keyof typeof difficultyColors].text },
                 ]}
               >
                 {quiz.difficulty}
@@ -210,8 +212,7 @@ export default function QuizListScreen() {
             ]}
             onPress={() =>
               navigation.navigate(
-                "QuizPlay" as never,
-                { quizId: quiz.id } as never,
+                "QuizPlay", { quizId: quiz.id }
               )
             }
           >
@@ -301,7 +302,7 @@ export default function QuizListScreen() {
                 styles.browseMoreButton,
                 { borderColor: "rgb(238, 58, 124)" },
               ]}
-              onPress={() => navigation.navigate("QuizCategories" as never)}
+              onPress={() => navigation.navigate("QuizCategories")}
             >
               <Text style={styles.browseMoreButtonText}>
                 Browse All Categories
@@ -324,6 +325,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.md,
+    paddingTop: 30,
     borderBottomWidth: 1,
     borderBottomColor: "rgba(255, 255, 255, 0.1)",
   },

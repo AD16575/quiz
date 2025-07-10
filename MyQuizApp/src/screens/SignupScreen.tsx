@@ -26,9 +26,13 @@ import {
   validateForm,
   FormErrors,
 } from "../utils/validation";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../types";
+
+type NavigationProp = StackNavigationProp<RootStackParamList>;
 
 export default function SignupScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp>();
   const { dispatch } = useQuiz();
   const { state: themeState } = useTheme();
   const [formData, setFormData] = useState({
@@ -103,7 +107,7 @@ export default function SignupScreen() {
         : "Welcome! You've received 100 welcome bonus points!";
 
       Alert.alert("Account Created!", bonusMessage, [
-        { text: "OK", onPress: () => navigation.navigate("Home" as never) },
+        { text: "OK", onPress: () => navigation.navigate("Home") },
       ]);
     } catch (error) {
       Alert.alert("Error", "Signup failed. Please try again.");
@@ -126,7 +130,7 @@ export default function SignupScreen() {
       memberSince: new Date(),
     };
     dispatch({ type: "SET_USER", payload: newUser });
-    navigation.navigate("Home" as never);
+    navigation.navigate("Home");
   };
 
   const handleFieldChange = (field: string, value: string) => {
@@ -516,7 +520,7 @@ export default function SignupScreen() {
                     Already have an account?{" "}
                   </Text>
                   <TouchableOpacity
-                    onPress={() => navigation.navigate("Login" as never)}
+                    onPress={() => navigation.navigate("Login")}
                   >
                     <Text style={styles.loginLink}>Login here</Text>
                   </TouchableOpacity>
@@ -542,8 +546,9 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: Spacing.md,
-    paddingTop: Spacing.md,
+    paddingTop: 30,
     paddingBottom: Spacing.sm,
+
   },
   backButton: {
     padding: Spacing.sm,
@@ -665,7 +670,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 12,
+    paddingVertical: 10,
     borderRadius: BorderRadius.lg,
     borderWidth: 1,
     gap: 8,

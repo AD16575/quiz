@@ -17,11 +17,15 @@ import { useTheme } from "../contexts/ThemeContext";
 import GradientBackground from "../components/common/GradientBackground";
 import Logo from "../components/common/Logo";
 import GradientText from "../components/common/GradientText";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../types";
+
+type NavigationProp = StackNavigationProp<RootStackParamList>;
 
 const { width } = Dimensions.get("window");
 
 export default function HomeScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp>();
   const { state } = useQuiz();
   const { state: themeState } = useTheme();
   const { user, categories } = state;
@@ -131,8 +135,8 @@ export default function HomeScreen() {
       <SafeAreaView style={styles.container}>
         <ScrollView
           showsVerticalScrollIndicator={false}
+          style={styles.scrollView}
           contentContainerStyle={styles.scrollContent}
-          nestedScrollEnabled={true}
         >
           {/* Header */}
           <View style={styles.header}>
@@ -158,7 +162,7 @@ export default function HomeScreen() {
                 styles.settingsButton,
                 { backgroundColor: themeState.colors.surfaceCard },
               ]}
-              onPress={() => navigation.navigate("Profile" as never)}
+              onPress={() => navigation.navigate("Profile")}
             >
               <Ionicons
                 name="settings-outline"
@@ -183,7 +187,7 @@ export default function HomeScreen() {
               variant="earned"
             />
             <PointCard
-              title="Withdrawable"
+              title="Withdraw"
               value={user.withdrawableAmount}
               icon="wallet"
               variant="withdrawable"
@@ -226,7 +230,7 @@ export default function HomeScreen() {
                     styles.playButton,
                     { backgroundColor: "rgb(238, 58, 124)" },
                   ]}
-                  onPress={() => navigation.navigate("QuizCategories" as never)}
+                  onPress={() => navigation.navigate("QuizCategories")}
                   activeOpacity={0.8}
                 >
                   <Ionicons name="play" size={20} color="white" />
@@ -251,7 +255,7 @@ export default function HomeScreen() {
                 icon="people"
                 color="rgb(24, 154, 144)"
                 bgcolor="rgba(24, 154, 144, 0.2)"
-                onPress={() => navigation.navigate("Referral" as never)}
+                onPress={() => navigation.navigate("Referral")}
               />
               <ActionCard
                 title="Withdrawal"
@@ -260,7 +264,7 @@ export default function HomeScreen() {
                 icon="wallet"
                 color="rgb(249, 115, 22)"
                 bgcolor="rgba(249, 115, 22, 0.2)"
-                onPress={() => navigation.navigate("Withdrawal" as never)}
+                onPress={() => navigation.navigate("Withdrawal")}
               />
             </View>
           </View>
@@ -353,8 +357,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  scrollView: {
+    flex: 1,
+  },
   scrollContent: {
     flexGrow: 1,
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.lg,
     paddingBottom: 100,
   },
   header: {

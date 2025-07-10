@@ -190,7 +190,7 @@ export default function PointHistoryScreen() {
         <View
           style={[
             styles.transactionIcon,
-            { backgroundColor: transaction.color + "20" },
+            { borderColor: transaction.color + "20" },
           ]}
         >
           <Ionicons
@@ -412,6 +412,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.md,
+    paddingTop: 30,
     borderBottomWidth: 1,
     borderBottomColor: "rgba(255, 255, 255, 0.1)",
   },
@@ -538,6 +539,7 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
+    borderWidth: 2,
     justifyContent: "center",
     alignItems: "center",
     marginRight: Spacing.md,

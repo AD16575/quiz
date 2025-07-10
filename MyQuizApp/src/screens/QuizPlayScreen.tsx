@@ -14,6 +14,10 @@ import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
 import GradientBackground from "../components/common/GradientBackground";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../types";
+
+type NavigationProp = StackNavigationProp<RootStackParamList>;
 
 const { width } = Dimensions.get("window");
 
@@ -45,7 +49,7 @@ const mockQuiz = {
 };
 
 export default function QuizPlayScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp>();
   const route = useRoute();
   const { state, dispatch } = useQuiz();
   const { state: themeState } = useTheme();
@@ -117,7 +121,7 @@ export default function QuizPlayScreen() {
       completedAt: new Date(),
     };
 
-    navigation.navigate("QuizResult" as never, { result } as never);
+    navigation.navigate("QuizResult", { result });
   };
 
   const handleQuitQuiz = () => {
@@ -149,31 +153,31 @@ export default function QuizPlayScreen() {
     if (!showFeedback) {
       return selectedAnswer === index
         ? [
-            styles.answerButton,
-            styles.selectedAnswer,
-            { backgroundColor: "rgba(238, 58, 124, 0.1)" },
-          ]
+          styles.answerButton,
+          styles.selectedAnswer,
+          { backgroundColor: "rgba(238, 58, 124, 0.1)" },
+        ]
         : [
-            styles.answerButton,
-            {
-              backgroundColor: themeState.colors.surface,
-              borderColor: themeState.colors.border,
-            },
-          ];
+          styles.answerButton,
+          {
+            backgroundColor: themeState.colors.surface,
+            borderColor: themeState.colors.border,
+          },
+        ];
     }
 
     if (selectedAnswer === index) {
       return index === currentQ.correctAnswer
         ? [
-            styles.answerButton,
-            styles.correctAnswer,
-            { backgroundColor: "rgba(34, 197, 94, 0.1)" },
-          ]
+          styles.answerButton,
+          styles.correctAnswer,
+          { backgroundColor: "rgba(34, 197, 94, 0.1)" },
+        ]
         : [
-            styles.answerButton,
-            styles.incorrectAnswer,
-            { backgroundColor: "rgba(239, 68, 68, 0.1)" },
-          ];
+          styles.answerButton,
+          styles.incorrectAnswer,
+          { backgroundColor: "rgba(239, 68, 68, 0.1)" },
+        ];
     }
 
     if (index === currentQ.correctAnswer) {
@@ -392,6 +396,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.md,
+    paddingTop: 40,
   },
   headerContent: {
     flexDirection: "row",

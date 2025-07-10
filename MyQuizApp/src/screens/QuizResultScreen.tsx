@@ -15,9 +15,14 @@ import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
 import GradientBackground from "../components/common/GradientBackground";
+import { RootStackParamList } from "../types";
+import { StackNavigationProp } from "@react-navigation/stack";
+
+type NavigationProp = StackNavigationProp<RootStackParamList>;
+
 
 export default function QuizResultScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp>();
   const route = useRoute();
   const { dispatch } = useQuiz();
   const { state: themeState } = useTheme();
@@ -41,7 +46,7 @@ export default function QuizResultScreen() {
             </Text>
             <TouchableOpacity
               style={[styles.button, { backgroundColor: "rgb(238, 58, 124)" }]}
-              onPress={() => navigation.navigate("QuizCategories" as never)}
+              onPress={() => navigation.navigate("QuizCategories")}
             >
               <Text style={styles.buttonText}>Back to Quizzes</Text>
             </TouchableOpacity>
@@ -99,6 +104,7 @@ export default function QuizResultScreen() {
     <GradientBackground>
       <SafeAreaView style={styles.container}>
         <ScrollView
+          style={styles.scrollView}
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
         >
@@ -288,8 +294,7 @@ export default function QuizResultScreen() {
                 ]}
                 onPress={() =>
                   navigation.navigate(
-                    "QuizPlay" as never,
-                    { quizId: result.quizId } as never,
+                    "QuizPlay",{ quizId: result.quizId }
                   )
                 }
               >
@@ -302,7 +307,7 @@ export default function QuizResultScreen() {
                   styles.outlineButton,
                   { borderColor: "rgb(238, 58, 124)" },
                 ]}
-                onPress={() => navigation.navigate("Home" as never)}
+                onPress={() => navigation.navigate("Home")}
               >
                 <Ionicons name="home" size={20} color="rgb(238, 58, 124)" />
                 <Text
@@ -373,7 +378,7 @@ export default function QuizResultScreen() {
                 styles.suggestionButton,
                 { backgroundColor: "rgb(255, 204, 0)" },
               ]}
-              onPress={() => navigation.navigate("QuizCategories" as never)}
+              onPress={() => navigation.navigate("QuizCategories")}
             >
               <Text style={styles.suggestionButtonText}>Browse Quizzes</Text>
             </TouchableOpacity>
@@ -387,6 +392,10 @@ export default function QuizResultScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  scrollView: {
+    flex: 1,
+    paddingTop: 30,
   },
   scrollContent: {
     flexGrow: 1,
