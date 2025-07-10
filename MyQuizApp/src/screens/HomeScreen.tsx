@@ -28,9 +28,6 @@ export default function HomeScreen() {
 
   if (!user) return null;
 
-  const featuredCategories = categories.slice(0, 4);
-  const dynamicStyles = createStyles(themeState.colors);
-
   const PointCard = ({
     title,
     value,
@@ -53,65 +50,18 @@ export default function HomeScreen() {
         colors={gradientColors[variant]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
-        style={dynamicStyles.pointCard}
+        style={styles.pointCard}
       >
-        <View style={dynamicStyles.pointContent}>
-          <Ionicons
-            name={icon}
-            size={24}
-            color="white"
-            style={dynamicStyles.pointIcon}
-          />
-          <View style={dynamicStyles.pointText}>
-            <Text style={dynamicStyles.pointTitle}>{title}</Text>
-            <Text style={dynamicStyles.pointValue}>
-              {variant === "withdrawable"
-                ? `₹${value}`
-                : value.toLocaleString()}
-            </Text>
-          </View>
+        <View style={styles.pointContent}>
+          <Ionicons name={icon} size={20} color="white" />
+          <Text style={styles.pointValue}>
+            {variant === "withdrawable" ? `₹${value}` : value.toLocaleString()}
+          </Text>
+          <Text style={styles.pointTitle}>{title}</Text>
         </View>
       </LinearGradient>
     );
   };
-
-  const CategoryCard = ({ category }: { category: any }) => (
-    <TouchableOpacity
-      style={[
-        dynamicStyles.categoryCard,
-        { backgroundColor: category.color + "15" },
-      ]}
-      onPress={() =>
-        navigation.navigate(
-          "QuizList" as never,
-          { categoryId: category.id } as never,
-        )
-      }
-    >
-      <View
-        style={[
-          dynamicStyles.categoryIcon,
-          { backgroundColor: category.color },
-        ]}
-      >
-        <Text style={dynamicStyles.categoryEmoji}>{category.icon}</Text>
-      </View>
-      <Text
-        style={[dynamicStyles.categoryName, { color: themeState.colors.text }]}
-      >
-        {category.name}
-      </Text>
-      <Text
-        style={[
-          dynamicStyles.categoryDescription,
-          { color: themeState.colors.textSecondary },
-        ]}
-        numberOfLines={2}
-      >
-        {category.description}
-      </Text>
-    </TouchableOpacity>
-  );
 
   const ActionCard = ({
     title,
@@ -130,19 +80,21 @@ export default function HomeScreen() {
   }) => (
     <TouchableOpacity
       style={[
-        dynamicStyles.actionCard,
+        styles.actionCard,
         { backgroundColor: themeState.colors.surface },
       ]}
       onPress={onPress}
       activeOpacity={0.8}
     >
       <View style={styles.actionHeader}>
-        <Ionicons
-          name={icon}
-          size={48}
-          color={color}
-          style={styles.actionIcon}
-        />
+        <View
+          style={[
+            styles.actionIconContainer,
+            { backgroundColor: color + "20" },
+          ]}
+        >
+          <Ionicons name={icon} size={48} color={color} />
+        </View>
         <Text style={[styles.actionTitle, { color: themeState.colors.text }]}>
           {title}
         </Text>
@@ -177,31 +129,26 @@ export default function HomeScreen() {
 
   return (
     <GradientBackground>
-      <SafeAreaView style={dynamicStyles.container}>
+      <SafeAreaView style={styles.container}>
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={dynamicStyles.scrollContent}
+          contentContainerStyle={styles.scrollContent}
           nestedScrollEnabled={true}
         >
-          {/* Header - Matching web dashboard */}
-          <View style={dynamicStyles.header}>
-            <View style={dynamicStyles.headerContent}>
+          {/* Header */}
+          <View style={styles.header}>
+            <View style={styles.headerContent}>
               <Logo size="small" />
-              <View style={dynamicStyles.headerText}>
-                <GradientText style={dynamicStyles.appName}>
-                  MyQuiz
-                </GradientText>
+              <View style={styles.headerText}>
+                <GradientText style={styles.appName}>MyQuiz</GradientText>
                 <Text
-                  style={[
-                    dynamicStyles.greeting,
-                    { color: themeState.colors.text },
-                  ]}
+                  style={[styles.greeting, { color: themeState.colors.text }]}
                 >
                   Hello, {user.name}! 👋
                 </Text>
                 <Text
                   style={[
-                    dynamicStyles.subGreeting,
+                    styles.subGreeting,
                     { color: themeState.colors.textSecondary },
                   ]}
                 >
@@ -211,7 +158,7 @@ export default function HomeScreen() {
             </View>
             <TouchableOpacity
               style={[
-                dynamicStyles.settingsButton,
+                styles.settingsButton,
                 { backgroundColor: themeState.colors.surfaceCard },
               ]}
               onPress={() => navigation.navigate("Profile" as never)}
@@ -224,8 +171,8 @@ export default function HomeScreen() {
             </TouchableOpacity>
           </View>
 
-          {/* Quick Stats - Matching web version */}
-          <View style={dynamicStyles.statsContainer}>
+          {/* Quick Stats */}
+          <View style={styles.statsContainer}>
             <PointCard
               title="Total Points"
               value={user.points}
@@ -246,7 +193,7 @@ export default function HomeScreen() {
             />
           </View>
 
-          {/* Play Now Section - Exact web match */}
+          {/* Play Now Section */}
           <View style={styles.playSection}>
             <View
               style={[
@@ -292,7 +239,7 @@ export default function HomeScreen() {
             </View>
           </View>
 
-          {/* Quick Actions - Matching web dashboard cards */}
+          {/* Quick Actions */}
           <View style={styles.quickActionsSection}>
             <Text
               style={[styles.sectionTitle, { color: themeState.colors.text }]}
@@ -319,7 +266,7 @@ export default function HomeScreen() {
             </View>
           </View>
 
-          {/* Recent Activity - Matching web version */}
+          {/* Recent Activity */}
           <View style={styles.activitySection}>
             <Text
               style={[styles.sectionTitle, { color: themeState.colors.text }]}
@@ -403,95 +350,83 @@ export default function HomeScreen() {
   );
 }
 
-const createStyles = (colors: any) =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-    },
-    scrollContent: {
-      flexGrow: 1,
-      paddingBottom: 100,
-    },
-    header: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "flex-start",
-      paddingHorizontal: Spacing.md,
-      paddingVertical: Spacing.lg,
-    },
-    headerContent: {
-      flexDirection: "row",
-      alignItems: "center",
-      gap: Spacing.sm,
-      flex: 1,
-    },
-    headerText: {
-      flex: 1,
-    },
-    appName: {
-      fontSize: FontSizes.lg,
-      fontWeight: "700",
-      marginBottom: 2,
-    },
-    greeting: {
-      fontSize: FontSizes.lg,
-      fontWeight: "600",
-      marginBottom: 2,
-    },
-    subGreeting: {
-      fontSize: FontSizes.sm,
-    },
-    settingsButton: {
-      padding: Spacing.sm,
-      borderRadius: BorderRadius.full,
-      shadowColor: "rgba(0, 0, 0, 0.1)",
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 1,
-      shadowRadius: 8,
-      elevation: 3,
-    },
-    statsContainer: {
-      flexDirection: "row",
-      flexWrap: "wrap",
-      paddingHorizontal: Spacing.md,
-      gap: Spacing.sm,
-      marginBottom: Spacing.lg,
-    },
-    pointCard: {
-      flex: 1,
-      borderRadius: BorderRadius.xl,
-      padding: Spacing.lg,
-      minWidth: (width - Spacing.md * 2 - Spacing.sm) / 3 - Spacing.sm,
-      shadowColor: "rgba(0, 0, 0, 0.1)",
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 1,
-      shadowRadius: 12,
-      elevation: 5,
-    },
-    pointContent: {
-      flexDirection: "row",
-      alignItems: "center",
-      gap: Spacing.sm,
-    },
-    pointIcon: {
-      marginRight: 0,
-    },
-    pointText: {
-      flex: 1,
-    },
-    pointTitle: {
-      fontSize: FontSizes.xs,
-      color: "rgba(255, 255, 255, 0.8)",
-      marginBottom: 2,
-    },
-    pointValue: {
-      fontSize: FontSizes.lg,
-      fontWeight: "700",
-      color: "white",
-    },
-  });
-
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    paddingBottom: 100,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.lg,
+  },
+  headerContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Spacing.sm,
+    flex: 1,
+  },
+  headerText: {
+    flex: 1,
+  },
+  appName: {
+    fontSize: FontSizes.lg,
+    fontWeight: "700",
+    marginBottom: 2,
+  },
+  greeting: {
+    fontSize: FontSizes.lg,
+    fontWeight: "600",
+    marginBottom: 2,
+  },
+  subGreeting: {
+    fontSize: FontSizes.sm,
+  },
+  settingsButton: {
+    padding: Spacing.sm,
+    borderRadius: BorderRadius.full,
+    shadowColor: "rgba(0, 0, 0, 0.1)",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 1,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  statsContainer: {
+    flexDirection: "row",
+    paddingHorizontal: Spacing.md,
+    gap: Spacing.sm,
+    marginBottom: Spacing.lg,
+  },
+  pointCard: {
+    flex: 1,
+    borderRadius: BorderRadius.xl,
+    padding: Spacing.md,
+    shadowColor: "rgba(0, 0, 0, 0.1)",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 1,
+    shadowRadius: 12,
+    elevation: 5,
+  },
+  pointContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: Spacing.xs,
+  },
+  pointValue: {
+    fontSize: FontSizes.md,
+    fontWeight: "700",
+    color: "white",
+  },
+  pointTitle: {
+    fontSize: FontSizes.xs,
+    color: "rgba(255, 255, 255, 0.8)",
+  },
   playSection: {
     paddingHorizontal: Spacing.md,
     marginBottom: Spacing.xl,
@@ -571,7 +506,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: Spacing.md,
   },
-  actionIcon: {
+  actionIconContainer: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: Spacing.sm,
   },
   actionTitle: {
