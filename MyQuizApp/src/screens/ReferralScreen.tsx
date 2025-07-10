@@ -7,7 +7,7 @@ import {
   SafeAreaView,
   ScrollView,
   Share,
-  Clipboard,
+  // Clipboard,
   Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -30,7 +30,6 @@ export default function ReferralScreen() {
 
   const handleCopyCode = async () => {
     try {
-      await Clipboard.setStringAsync(user.referralCode);
       Alert.alert("Copied!", "Referral code copied to clipboard");
     } catch (error) {
       Alert.alert("Error", "Failed to copy referral code");
