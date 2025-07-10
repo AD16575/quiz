@@ -16,6 +16,15 @@ import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
 import GradientBackground from "../components/common/GradientBackground";
+import {
+  validateAmount,
+  validateUPI,
+  validateAccountNumber,
+  validateIFSC,
+  validatePayPalEmail,
+  validateSufficientBalance,
+  FormErrors,
+} from "../utils/validation";
 
 export default function WithdrawalScreen() {
   const navigation = useNavigation();
@@ -31,6 +40,8 @@ export default function WithdrawalScreen() {
     ifscCode: "",
     paypalEmail: "",
   });
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [isLoading, setIsLoading] = useState(false);
 
   if (!user) return null;
 
@@ -61,32 +72,110 @@ export default function WithdrawalScreen() {
     },
   ];
 
-  const handleWithdraw = () => {
-    if (!selectedMethod) {
-      Alert.alert("Error", "Please select a withdrawal method");
-      return;
-    }
-
-    if (!amount || parseInt(amount) < getMinAmount()) {
-      Alert.alert("Error", `Minimum withdrawal amount is ₹${getMinAmount()}`);
-      return;
-    }
-
-    if (parseInt(amount) > user.withdrawableAmount) {
-      Alert.alert("Error", "Insufficient balance");
-      return;
-    }
-
-    Alert.alert(
-      "Withdrawal Request",
-      `Your withdrawal request of ₹${amount} has been submitted. You will receive the amount within the specified time.`,
-      [{ text: "OK", onPress: () => navigation.goBack() }]
-    );
-  };
-
   const getMinAmount = () => {
     const method = withdrawalMethods.find((m) => m.id === selectedMethod);
     return method?.minAmount || 100;
+  };
+
+  const validateWithdrawal = () => {
+    const newErrors: FormErrors = {};
+
+    // Validate withdrawal method selection
+    if (!selectedMethod) {
+      newErrors.method = "Please select a withdrawal method";
+    }
+
+    // Validate amount
+    const minAmount = getMinAmount();
+    const amountValidation = validateAmount(
+      amount,
+      minAmount,
+      user.withdrawableAmount,
+    );
+    if (!amountValidation.isValid) {
+      newErrors.amount = amountValidation.error || "";
+    } else {
+      // Check sufficient balance
+      const balanceValidation = validateSufficientBalance(
+        amount,
+        user.withdrawableAmount,
+      );
+      if (!balanceValidation.isValid) {
+        newErrors.amount = balanceValidation.error || "";
+      }
+    }
+
+    // Validate payment details based on selected method
+    if (selectedMethod === "upi") {
+      const upiValidation = validateUPI(paymentDetails.upiId);
+      if (!upiValidation.isValid) {
+        newErrors.upiId = upiValidation.error || "";
+      }
+    } else if (selectedMethod === "bank") {
+      const accountValidation = validateAccountNumber(
+        paymentDetails.accountNumber,
+      );
+      if (!accountValidation.isValid) {
+        newErrors.accountNumber = accountValidation.error || "";
+      }
+
+      const ifscValidation = validateIFSC(paymentDetails.ifscCode);
+      if (!ifscValidation.isValid) {
+        newErrors.ifscCode = ifscValidation.error || "";
+      }
+    } else if (selectedMethod === "paypal") {
+      const paypalValidation = validatePayPalEmail(paymentDetails.paypalEmail);
+      if (!paypalValidation.isValid) {
+        newErrors.paypalEmail = paypalValidation.error || "";
+      }
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleWithdraw = async () => {
+    if (!validateWithdrawal()) {
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      // Simulate API call delay
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      // Mock successful withdrawal request
+      Alert.alert(
+        "Withdrawal Request Submitted",
+        `Your withdrawal request of ₹${amount} has been submitted successfully. You will receive the amount within the specified time frame.`,
+        [{ text: "OK", onPress: () => navigation.goBack() }],
+      );
+    } catch (error) {
+      Alert.alert("Error", "Withdrawal request failed. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleFieldChange = (field: string, value: string) => {
+    if (field === "amount") {
+      setAmount(value);
+    } else {
+      setPaymentDetails({ ...paymentDetails, [field]: value });
+    }
+
+    // Clear error for this field when user starts typing
+    if (errors[field]) {
+      setErrors({ ...errors, [field]: "" });
+    }
+  };
+
+  const handleMethodSelect = (methodId: string) => {
+    setSelectedMethod(methodId);
+    if (errors.method) {
+      setErrors({ ...errors, method: "" });
+    }
   };
 
   const MethodCard = ({ method }: { method: any }) => (
@@ -98,11 +187,13 @@ export default function WithdrawalScreen() {
           borderColor:
             selectedMethod === method.id
               ? method.color
-              : "rgba(255, 255, 255, 0.1)",
-          borderWidth: selectedMethod === method.id ? 2 : 1,
+              : errors.method
+                ? "rgb(239, 68, 68)"
+                : "rgba(255, 255, 255, 0.1)",
+          borderWidth: selectedMethod === method.id || errors.method ? 2 : 1,
         },
       ]}
-      onPress={() => setSelectedMethod(method.id)}
+      onPress={() => handleMethodSelect(method.id)}
       activeOpacity={0.8}
     >
       <View style={styles.methodLeft}>
@@ -145,24 +236,29 @@ export default function WithdrawalScreen() {
         return (
           <View style={styles.detailsForm}>
             <Text style={[styles.formLabel, { color: themeState.colors.text }]}>
-              UPI ID
+              UPI ID <Text style={styles.required}>*</Text>
             </Text>
             <TextInput
               style={[
                 styles.formInput,
                 {
                   backgroundColor: themeState.colors.surface,
-                  borderColor: themeState.colors.border,
+                  borderColor: errors.upiId
+                    ? "rgb(239, 68, 68)"
+                    : themeState.colors.border,
                   color: themeState.colors.text,
                 },
               ]}
-              placeholder="Enter your UPI ID"
+              placeholder="Enter your UPI ID (e.g., username@paytm)"
               placeholderTextColor={themeState.colors.textSecondary}
               value={paymentDetails.upiId}
-              onChangeText={(text) =>
-                setPaymentDetails({ ...paymentDetails, upiId: text })
-              }
+              onChangeText={(text) => handleFieldChange("upiId", text)}
+              autoCapitalize="none"
+              autoCorrect={false}
             />
+            {errors.upiId ? (
+              <Text style={styles.errorText}>{errors.upiId}</Text>
+            ) : null}
           </View>
         );
 
@@ -173,14 +269,16 @@ export default function WithdrawalScreen() {
               <Text
                 style={[styles.formLabel, { color: themeState.colors.text }]}
               >
-                Account Number
+                Account Number <Text style={styles.required}>*</Text>
               </Text>
               <TextInput
                 style={[
                   styles.formInput,
                   {
                     backgroundColor: themeState.colors.surface,
-                    borderColor: themeState.colors.border,
+                    borderColor: errors.accountNumber
+                      ? "rgb(239, 68, 68)"
+                      : themeState.colors.border,
                     color: themeState.colors.text,
                   },
                 ]}
@@ -188,32 +286,45 @@ export default function WithdrawalScreen() {
                 placeholderTextColor={themeState.colors.textSecondary}
                 value={paymentDetails.accountNumber}
                 onChangeText={(text) =>
-                  setPaymentDetails({ ...paymentDetails, accountNumber: text })
+                  handleFieldChange("accountNumber", text)
                 }
+                keyboardType="numeric"
+                autoCorrect={false}
               />
+              {errors.accountNumber ? (
+                <Text style={styles.errorText}>{errors.accountNumber}</Text>
+              ) : null}
             </View>
             <View style={styles.formGroup}>
               <Text
                 style={[styles.formLabel, { color: themeState.colors.text }]}
               >
-                IFSC Code
+                IFSC Code <Text style={styles.required}>*</Text>
               </Text>
               <TextInput
                 style={[
                   styles.formInput,
                   {
                     backgroundColor: themeState.colors.surface,
-                    borderColor: themeState.colors.border,
+                    borderColor: errors.ifscCode
+                      ? "rgb(239, 68, 68)"
+                      : themeState.colors.border,
                     color: themeState.colors.text,
                   },
                 ]}
-                placeholder="Enter IFSC code"
+                placeholder="Enter IFSC code (e.g., SBIN0001234)"
                 placeholderTextColor={themeState.colors.textSecondary}
                 value={paymentDetails.ifscCode}
                 onChangeText={(text) =>
-                  setPaymentDetails({ ...paymentDetails, ifscCode: text })
+                  handleFieldChange("ifscCode", text.toUpperCase())
                 }
+                autoCapitalize="characters"
+                autoCorrect={false}
+                maxLength={11}
               />
+              {errors.ifscCode ? (
+                <Text style={styles.errorText}>{errors.ifscCode}</Text>
+              ) : null}
             </View>
           </View>
         );
@@ -222,24 +333,30 @@ export default function WithdrawalScreen() {
         return (
           <View style={styles.detailsForm}>
             <Text style={[styles.formLabel, { color: themeState.colors.text }]}>
-              PayPal Email
+              PayPal Email <Text style={styles.required}>*</Text>
             </Text>
             <TextInput
               style={[
                 styles.formInput,
                 {
                   backgroundColor: themeState.colors.surface,
-                  borderColor: themeState.colors.border,
+                  borderColor: errors.paypalEmail
+                    ? "rgb(239, 68, 68)"
+                    : themeState.colors.border,
                   color: themeState.colors.text,
                 },
               ]}
               placeholder="Enter your PayPal email"
               placeholderTextColor={themeState.colors.textSecondary}
               value={paymentDetails.paypalEmail}
-              onChangeText={(text) =>
-                setPaymentDetails({ ...paymentDetails, paypalEmail: text })
-              }
+              onChangeText={(text) => handleFieldChange("paypalEmail", text)}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoCorrect={false}
             />
+            {errors.paypalEmail ? (
+              <Text style={styles.errorText}>{errors.paypalEmail}</Text>
+            ) : null}
           </View>
         );
 
@@ -279,6 +396,7 @@ export default function WithdrawalScreen() {
           style={styles.scrollView}
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
         >
           {/* Balance Card */}
           <View style={styles.balanceSection}>
@@ -310,7 +428,7 @@ export default function WithdrawalScreen() {
               <Text
                 style={[styles.amountTitle, { color: themeState.colors.text }]}
               >
-                Withdrawal Amount
+                Withdrawal Amount <Text style={styles.required}>*</Text>
               </Text>
               <View
                 style={[
@@ -319,6 +437,10 @@ export default function WithdrawalScreen() {
                     backgroundColor: themeState.isDark
                       ? "rgba(255, 255, 255, 0.05)"
                       : "rgba(0, 0, 0, 0.05)",
+                    borderColor: errors.amount
+                      ? "rgb(239, 68, 68)"
+                      : "transparent",
+                    borderWidth: errors.amount ? 1 : 0,
                   },
                 ]}
               >
@@ -331,10 +453,23 @@ export default function WithdrawalScreen() {
                   placeholder="0"
                   placeholderTextColor={themeState.colors.textSecondary}
                   value={amount}
-                  onChangeText={setAmount}
+                  onChangeText={(text) => handleFieldChange("amount", text)}
                   keyboardType="numeric"
                 />
               </View>
+              {errors.amount ? (
+                <Text style={styles.errorText}>{errors.amount}</Text>
+              ) : null}
+              {selectedMethod && !errors.amount && (
+                <Text
+                  style={[
+                    styles.helperText,
+                    { color: themeState.colors.textSecondary },
+                  ]}
+                >
+                  Minimum withdrawal: ₹{getMinAmount()}
+                </Text>
+              )}
             </View>
           </View>
 
@@ -343,8 +478,11 @@ export default function WithdrawalScreen() {
             <Text
               style={[styles.sectionTitle, { color: themeState.colors.text }]}
             >
-              Select Withdrawal Method
+              Select Withdrawal Method <Text style={styles.required}>*</Text>
             </Text>
+            {errors.method ? (
+              <Text style={styles.errorText}>{errors.method}</Text>
+            ) : null}
             <View style={styles.methodsList}>
               {withdrawalMethods.map((method) => (
                 <MethodCard key={method.id} method={method} />
@@ -361,17 +499,18 @@ export default function WithdrawalScreen() {
               style={[
                 styles.withdrawButton,
                 {
-                  backgroundColor:
-                    selectedMethod && amount
-                      ? "rgb(34, 197, 94)"
-                      : "rgba(34, 197, 94, 0.5)",
+                  backgroundColor: isLoading
+                    ? "rgba(34, 197, 94, 0.6)"
+                    : "rgb(34, 197, 94)",
                 },
               ]}
               onPress={handleWithdraw}
-              disabled={!selectedMethod || !amount}
+              disabled={isLoading}
             >
               <Ionicons name="send" size={20} color="white" />
-              <Text style={styles.withdrawButtonText}>Request Withdrawal</Text>
+              <Text style={styles.withdrawButtonText}>
+                {isLoading ? "Processing..." : "Request Withdrawal"}
+              </Text>
             </TouchableOpacity>
           </View>
 
@@ -486,6 +625,9 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.md,
     textAlign: "center",
   },
+  required: {
+    color: "rgb(239, 68, 68)",
+  },
   amountInputContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -502,6 +644,16 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: FontSizes.xl,
     fontWeight: "700",
+    textAlign: "center",
+  },
+  errorText: {
+    color: "rgb(239, 68, 68)",
+    fontSize: FontSizes.sm,
+    marginTop: 8,
+  },
+  helperText: {
+    fontSize: FontSizes.sm,
+    marginTop: 8,
     textAlign: "center",
   },
   methodsSection: {
@@ -536,10 +688,10 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
-    borderWidth: 2,
     justifyContent: "center",
     alignItems: "center",
     marginRight: Spacing.md,
+    borderWidth: 2,
   },
   methodInfo: {
     flex: 1,
