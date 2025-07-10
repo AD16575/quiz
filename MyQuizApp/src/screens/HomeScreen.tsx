@@ -115,12 +115,14 @@ export default function HomeScreen() {
 
   const ActionCard = ({
     title,
+    value,
     subtitle,
     icon,
     color,
     onPress,
   }: {
     title: string;
+    value: number;
     subtitle: string;
     icon: keyof typeof Ionicons.glyphMap;
     color: string;
@@ -132,24 +134,43 @@ export default function HomeScreen() {
         { backgroundColor: themeState.colors.surface },
       ]}
       onPress={onPress}
+      activeOpacity={0.8}
     >
-      <Ionicons name={icon} size={48} color={color} style={styles.actionIcon} />
-      <Text style={[styles.actionTitle, { color: themeState.colors.text }]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.actionSubtitle,
-          { color: themeState.colors.textSecondary },
-        ]}
-      >
-        {subtitle}
-      </Text>
+      <View style={styles.actionHeader}>
+        <Ionicons
+          name={icon}
+          size={48}
+          color={color}
+          style={styles.actionIcon}
+        />
+        <Text style={[styles.actionTitle, { color: themeState.colors.text }]}>
+          {title}
+        </Text>
+      </View>
+      <View style={styles.actionContent}>
+        <Text style={[styles.actionValue, { color }]}>
+          {title === "Withdrawal" ? `₹${value}` : value}
+        </Text>
+        <Text
+          style={[
+            styles.actionSubtitle,
+            { color: themeState.colors.textSecondary },
+          ]}
+        >
+          {subtitle}
+        </Text>
+      </View>
       <TouchableOpacity
         style={[styles.actionButton, { borderColor: color }]}
         onPress={onPress}
       >
-        <Text style={[styles.actionButtonText, { color }]}>View Details</Text>
+        <Text style={[styles.actionButtonText, { color }]}>
+          {title === "Referral Program"
+            ? "View Details"
+            : title === "Withdrawal"
+              ? "Withdraw Now"
+              : "View History"}
+        </Text>
       </TouchableOpacity>
     </TouchableOpacity>
   );
@@ -281,17 +302,19 @@ export default function HomeScreen() {
             <View style={styles.quickActionsGrid}>
               <ActionCard
                 title="Referral Program"
-                subtitle={`${user.referredUsers} Friends Referred`}
+                value={user.referredUsers}
+                subtitle="Friends Referred"
                 icon="people"
                 color="rgb(24, 154, 144)"
-                onPress={() => navigation.navigate("Profile" as never)}
+                onPress={() => navigation.navigate("Referral" as never)}
               />
               <ActionCard
                 title="Withdrawal"
-                subtitle={`₹${user.withdrawableAmount} Available`}
+                value={user.withdrawableAmount}
+                subtitle="Available"
                 icon="wallet"
                 color="rgb(255, 204, 0)"
-                onPress={() => navigation.navigate("Profile" as never)}
+                onPress={() => navigation.navigate("Withdrawal" as never)}
               />
             </View>
           </View>
@@ -535,37 +558,51 @@ const styles = StyleSheet.create({
   actionCard: {
     flex: 1,
     borderRadius: BorderRadius.lg,
-    padding: Spacing.md,
-    alignItems: "center",
-    shadowColor: "rgba(0, 0, 0, 0.05)",
-    shadowOffset: { width: 0, height: 2 },
+    padding: Spacing.lg,
+    shadowColor: "rgba(0, 0, 0, 0.1)",
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 1,
-    shadowRadius: 8,
-    elevation: 2,
+    shadowRadius: 12,
+    elevation: 5,
+    borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.1)",
+  },
+  actionHeader: {
+    alignItems: "center",
+    marginBottom: Spacing.md,
   },
   actionIcon: {
     marginBottom: Spacing.sm,
   },
   actionTitle: {
-    fontSize: FontSizes.md,
-    fontWeight: "600",
-    marginBottom: 4,
+    fontSize: FontSizes.lg,
+    fontWeight: "700",
     textAlign: "center",
+  },
+  actionContent: {
+    alignItems: "center",
+    marginBottom: Spacing.lg,
+  },
+  actionValue: {
+    fontSize: FontSizes.xxl,
+    fontWeight: "700",
+    marginBottom: 4,
   },
   actionSubtitle: {
-    fontSize: FontSizes.xs,
+    fontSize: FontSizes.sm,
     textAlign: "center",
-    marginBottom: Spacing.md,
   },
   actionButton: {
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.sm,
+    paddingHorizontal: Spacing.lg,
+    paddingVertical: Spacing.md,
     borderRadius: BorderRadius.lg,
     borderWidth: 1,
+    alignSelf: "stretch",
+    alignItems: "center",
   },
   actionButtonText: {
-    fontSize: FontSizes.sm,
-    fontWeight: "500",
+    fontSize: FontSizes.md,
+    fontWeight: "600",
   },
   activitySection: {
     paddingHorizontal: Spacing.md,
