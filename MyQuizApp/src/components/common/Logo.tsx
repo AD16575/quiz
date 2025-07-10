@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
 interface LogoProps {
@@ -8,6 +8,7 @@ interface LogoProps {
 
 export default function Logo({ size = "medium" }: LogoProps) {
   const logoSize = size === "small" ? 40 : size === "medium" ? 80 : 128;
+  const textSize = size === "small" ? 20 : size === "medium" ? 40 : 64;
 
   return (
     <View style={[styles.container, { width: logoSize, height: logoSize }]}>
@@ -16,7 +17,9 @@ export default function Logo({ size = "medium" }: LogoProps) {
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={[styles.gradientBackground, { borderRadius: 16 }]}
-      />
+      >
+        <Text style={[styles.logoText, { fontSize: textSize }]}>Q</Text>
+      </LinearGradient>
       <View
         style={[
           styles.accentDot,
@@ -47,6 +50,11 @@ const styles = StyleSheet.create({
     height: "100%",
     justifyContent: "center",
     alignItems: "center",
+  },
+  logoText: {
+    color: "rgb(255, 255, 255)",
+    fontWeight: "700",
+    textAlign: "center",
   },
   accentDot: {
     position: "absolute",
