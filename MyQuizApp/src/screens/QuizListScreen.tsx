@@ -244,82 +244,80 @@ export default function QuizListScreen() {
   );
 
   return (
-    <GradientBackground>
-      <SafeAreaView style={styles.container}>
-        {/* Header */}
-        <View style={styles.header}>
-          <View style={styles.headerLeft}>
-            <TouchableOpacity
-              style={[
-                styles.backButton,
-                {
-                  backgroundColor: themeState.colors.surface,
-                  borderColor: themeState.colors.border,
-                },
-              ]}
-              onPress={() => navigation.goBack()}
+    <SafeGradientBackground style={styles.container}>
+      {/* Header */}
+      <View style={styles.header}>
+        <View style={styles.headerLeft}>
+          <TouchableOpacity
+            style={[
+              styles.backButton,
+              {
+                backgroundColor: themeState.colors.surface,
+                borderColor: themeState.colors.border,
+              },
+            ]}
+            onPress={() => navigation.goBack()}
+          >
+            <Ionicons
+              name="arrow-back"
+              size={20}
+              color={themeState.colors.text}
+            />
+          </TouchableOpacity>
+          <View style={styles.headerText}>
+            <Text
+              style={[styles.headerTitle, { color: themeState.colors.text }]}
             >
-              <Ionicons
-                name="arrow-back"
-                size={20}
-                color={themeState.colors.text}
-              />
-            </TouchableOpacity>
-            <View style={styles.headerText}>
-              <Text
-                style={[styles.headerTitle, { color: themeState.colors.text }]}
-              >
-                {categoryId ? categoryNames[categoryId] : "Quizzes"}
-              </Text>
-              <Text
-                style={[
-                  styles.headerSubtitle,
-                  { color: themeState.colors.textSecondary },
-                ]}
-              >
-                {mockQuizzes.length} quizzes available
-              </Text>
-            </View>
-          </View>
-        </View>
-
-        <ScrollView
-          style={styles.scrollView}
-          contentContainerStyle={styles.scrollContent}
-          showsVerticalScrollIndicator={false}
-        >
-          {/* Quiz Cards */}
-          <View style={styles.quizzesContainer}>
-            {mockQuizzes.map((quiz, index) => (
-              <QuizCard key={quiz.id} quiz={quiz} />
-            ))}
-          </View>
-
-          {/* Browse More Section */}
-          <View style={styles.browseMoreSection}>
+              {categoryId ? categoryNames[categoryId] : "Quizzes"}
+            </Text>
             <Text
               style={[
-                styles.browseMoreText,
+                styles.headerSubtitle,
                 { color: themeState.colors.textSecondary },
               ]}
             >
-              Looking for more quizzes?
+              {mockQuizzes.length} quizzes available
             </Text>
-            <TouchableOpacity
-              style={[
-                styles.browseMoreButton,
-                { borderColor: "rgb(238, 58, 124)" },
-              ]}
-              onPress={() => navigation.navigate("QuizCategories")}
-            >
-              <Text style={styles.browseMoreButtonText}>
-                Browse All Categories
-              </Text>
-            </TouchableOpacity>
           </View>
-        </ScrollView>
-      </SafeAreaView>
-    </GradientBackground>
+        </View>
+      </View>
+
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Quiz Cards */}
+        <View style={styles.quizzesContainer}>
+          {mockQuizzes.map((quiz, index) => (
+            <QuizCard key={quiz.id} quiz={quiz} />
+          ))}
+        </View>
+
+        {/* Browse More Section */}
+        <View style={styles.browseMoreSection}>
+          <Text
+            style={[
+              styles.browseMoreText,
+              { color: themeState.colors.textSecondary },
+            ]}
+          >
+            Looking for more quizzes?
+          </Text>
+          <TouchableOpacity
+            style={[
+              styles.browseMoreButton,
+              { borderColor: "rgb(238, 58, 124)" },
+            ]}
+            onPress={() => navigation.navigate("QuizCategories")}
+          >
+            <Text style={styles.browseMoreButtonText}>
+              Browse All Categories
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </SafeGradientBackground>
   );
 }
 
