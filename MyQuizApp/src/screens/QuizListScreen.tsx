@@ -5,14 +5,13 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  SafeAreaView,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
-import GradientBackground from "../components/common/GradientBackground";
+import SafeGradientBackground from "../components/common/SafeGradientBackground";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types";
 
@@ -111,13 +110,26 @@ export default function QuizListScreen() {
               style={[
                 styles.difficultyBadge,
                 {
-                  backgroundColor: difficultyColors[quiz.difficulty as keyof typeof difficultyColors].background,
-                  borderColor: difficultyColors[quiz.difficulty as keyof typeof difficultyColors].border,
-                }]}>
+                  backgroundColor:
+                    difficultyColors[
+                      quiz.difficulty as keyof typeof difficultyColors
+                    ].background,
+                  borderColor:
+                    difficultyColors[
+                      quiz.difficulty as keyof typeof difficultyColors
+                    ].border,
+                },
+              ]}
+            >
               <Text
                 style={[
                   styles.difficultyText,
-                  { color: difficultyColors[quiz.difficulty as keyof typeof difficultyColors].text },
+                  {
+                    color:
+                      difficultyColors[
+                        quiz.difficulty as keyof typeof difficultyColors
+                      ].text,
+                  },
                 ]}
               >
                 {quiz.difficulty}
@@ -210,11 +222,7 @@ export default function QuizListScreen() {
               styles.playButton,
               { backgroundColor: "rgb(24, 154, 144)" },
             ]}
-            onPress={() =>
-              navigation.navigate(
-                "QuizPlay", { quizId: quiz.id }
-              )
-            }
+            onPress={() => navigation.navigate("QuizPlay", { quizId: quiz.id })}
           >
             <Ionicons name="play" size={16} color="white" />
             <Text style={styles.playButtonText}>Play</Text>
