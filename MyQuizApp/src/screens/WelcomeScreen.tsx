@@ -1,18 +1,12 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  SafeAreaView,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
-import GradientBackground from "../components/common/GradientBackground";
+import SafeGradientBackground from "../components/common/SafeGradientBackground";
 import Logo from "../components/common/Logo";
 import GradientText from "../components/common/GradientText";
 
@@ -26,78 +20,76 @@ export default function WelcomeScreen() {
   };
 
   return (
-    <GradientBackground>
-      <SafeAreaView style={styles.container}>
-        {/* Theme Toggle */}
-        <TouchableOpacity
-          style={[
-            styles.themeToggle,
-            {
-              backgroundColor: themeState.colors.surface,
-              borderColor: themeState.colors.border,
-            },
-          ]}
-          onPress={toggleTheme}
-        >
-          <Ionicons
-            name={themeState.isDark ? "sunny" : "moon"}
-            size={24}
-            color={themeState.colors.text}
-          />
-        </TouchableOpacity>
+    <SafeGradientBackground style={styles.container}>
+      {/* Theme Toggle */}
+      <TouchableOpacity
+        style={[
+          styles.themeToggle,
+          {
+            backgroundColor: themeState.colors.surface,
+            borderColor: themeState.colors.border,
+          },
+        ]}
+        onPress={toggleTheme}
+      >
+        <Ionicons
+          name={themeState.isDark ? "sunny" : "moon"}
+          size={24}
+          color={themeState.colors.text}
+        />
+      </TouchableOpacity>
 
-        <View style={styles.content}>
-          {/* Logo Section */}
-          <View style={styles.logoSection}>
-            <Logo size="large" />
-            <View style={styles.titleContainer}>
-              <GradientText style={styles.title}>MyQuiz</GradientText>
-              <Text
-                style={[
-                  styles.tagline,
-                  {
-                    color: themeState.isDark
-                      ? "rgb(156, 163, 175)"
-                      : "rgb(100, 116, 139)",
-                  },
-                ]}
-              >
-                Play. Learn. Earn.
-              </Text>
-            </View>
-          </View>
-
-          {/* Action Buttons */}
-          <View style={styles.actionContainer}>
-            <TouchableOpacity
-              style={styles.getStartedButton}
-              onPress={() => navigation.navigate("Signup" as never)}
-            >
-              <Ionicons name="play" size={20} color="white" />
-              <Text style={styles.getStartedText}>Get Started</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
+      <View style={styles.content}>
+        {/* Logo Section */}
+        <View style={styles.logoSection}>
+          <Logo size="large" />
+          <View style={styles.titleContainer}>
+            <GradientText style={styles.title}>MyQuiz</GradientText>
+            <Text
               style={[
-                styles.loginButton,
+                styles.tagline,
                 {
-                  borderColor: "rgb(24, 154, 144)",
-                  backgroundColor: themeState.isDark
-                    ? "rgba(24, 154, 144, 0.15)"
-                    : "transparent",
+                  color: themeState.isDark
+                    ? "rgb(156, 163, 175)"
+                    : "rgb(100, 116, 139)",
                 },
               ]}
-              onPress={() => navigation.navigate("Login" as never)}
             >
-              <Ionicons name="log-in" size={20} color="rgb(24, 154, 144)" />
-              <Text style={[styles.loginText, { color: "rgb(24, 154, 144)" }]}>
-                Login
-              </Text>
-            </TouchableOpacity>
+              Play. Learn. Earn.
+            </Text>
           </View>
         </View>
-      </SafeAreaView>
-    </GradientBackground>
+
+        {/* Action Buttons */}
+        <View style={styles.actionContainer}>
+          <TouchableOpacity
+            style={styles.getStartedButton}
+            onPress={() => navigation.navigate("Signup" as never)}
+          >
+            <Ionicons name="play" size={20} color="white" />
+            <Text style={styles.getStartedText}>Get Started</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[
+              styles.loginButton,
+              {
+                borderColor: "rgb(24, 154, 144)",
+                backgroundColor: themeState.isDark
+                  ? "rgba(24, 154, 144, 0.15)"
+                  : "transparent",
+              },
+            ]}
+            onPress={() => navigation.navigate("Login" as never)}
+          >
+            <Ionicons name="log-in" size={20} color="rgb(24, 154, 144)" />
+            <Text style={[styles.loginText, { color: "rgb(24, 154, 144)" }]}>
+              Login
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </SafeGradientBackground>
   );
 }
 
