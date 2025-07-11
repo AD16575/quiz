@@ -5,7 +5,6 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  SafeAreaView,
   Dimensions,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -14,7 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
-import GradientBackground from "../components/common/GradientBackground";
+import SafeGradientBackground from "../components/common/SafeGradientBackground";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types";
 
@@ -86,10 +85,7 @@ export default function QuizCategoriesScreen() {
         { backgroundColor: themeState.colors.surface },
       ]}
       onPress={() =>
-        navigation.navigate(
-          "QuizList",
-          { categoryId: category.id },
-        )
+        navigation.navigate("QuizList", { categoryId: category.id })
       }
       activeOpacity={0.8}
     >
@@ -146,10 +142,7 @@ export default function QuizCategoriesScreen() {
               { backgroundColor: "rgb(24, 154, 144)" },
             ]}
             onPress={() =>
-              navigation.navigate(
-                "QuizList",
-                { categoryId: category.id },
-              )
+              navigation.navigate("QuizList", { categoryId: category.id })
             }
           >
             <Text style={styles.playButtonText}>Play Now</Text>
