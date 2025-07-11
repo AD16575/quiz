@@ -5,12 +5,11 @@ import {
   StyleSheet,
   Animated,
   Easing,
-  SafeAreaView,
   ActivityIndicator,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "../contexts/ThemeContext";
-import GradientBackground from "../components/common/GradientBackground";
+import SafeGradientBackground from "../components/common/SafeGradientBackground";
 import Logo from "../components/common/Logo";
 import GradientText from "../components/common/GradientText";
 
