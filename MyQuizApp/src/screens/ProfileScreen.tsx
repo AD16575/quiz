@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  SafeAreaView,
   ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -12,7 +11,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
-import GradientBackground from "../components/common/GradientBackground";
+import SafeGradientBackground from "../components/common/SafeGradientBackground";
 import Logo from "../components/common/Logo";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types";
@@ -242,7 +241,7 @@ export default function ProfileScreen() {
               icon="settings"
               title="Settings"
               subtitle="App preferences"
-              onPress={() => { }} // Placeholder
+              onPress={() => {}} // Placeholder
               color="rgb(100, 116, 139)"
             />
           </View>
