@@ -87,73 +87,71 @@ export default function SplashScreen() {
   });
 
   return (
-    <GradientBackground>
-      <SafeAreaView style={styles.container}>
-        <View style={styles.content}>
-          {/* Animated Logo */}
-          <Animated.View
-            style={[
-              styles.logoContainer,
-              {
-                opacity: fadeAnim,
-                transform: [{ scale: scaleAnim }],
-              },
-            ]}
-          >
-            <Logo size="large" />
-          </Animated.View>
+    <SafeGradientBackground style={styles.container}>
+      <View style={styles.content}>
+        {/* Animated Logo */}
+        <Animated.View
+          style={[
+            styles.logoContainer,
+            {
+              opacity: fadeAnim,
+              transform: [{ scale: scaleAnim }],
+            },
+          ]}
+        >
+          <Logo size="large" />
+        </Animated.View>
 
-          {/* Title - Matching web gradient text */}
-          <Animated.View
-            style={[
-              styles.titleContainer,
-              {
-                opacity: titleAnim,
-                transform: [{ translateY: titleTransform }],
-              },
-            ]}
-          >
-            <GradientText style={styles.title}>MyQuiz</GradientText>
-          </Animated.View>
+        {/* Title - Matching web gradient text */}
+        <Animated.View
+          style={[
+            styles.titleContainer,
+            {
+              opacity: titleAnim,
+              transform: [{ translateY: titleTransform }],
+            },
+          ]}
+        >
+          <GradientText style={styles.title}>MyQuiz</GradientText>
+        </Animated.View>
 
-          {/* Tagline */}
-          <Animated.View
+        {/* Tagline */}
+        <Animated.View
+          style={[
+            styles.taglineContainer,
+            {
+              opacity: taglineAnim,
+              transform: [{ translateY: taglineTransform }],
+            },
+          ]}
+        >
+          <Text
             style={[
-              styles.taglineContainer,
+              styles.tagline,
               {
-                opacity: taglineAnim,
-                transform: [{ translateY: taglineTransform }],
+                color: themeState.isDark
+                  ? "rgb(156, 163, 175)"
+                  : "rgb(100, 116, 139)",
               },
             ]}
           >
-            <Text
-              style={[
-                styles.tagline,
-                {
-                  color: themeState.isDark
-                    ? "rgb(156, 163, 175)"
-                    : "rgb(100, 116, 139)",
-                },
-              ]}
-            >
-              Play. Learn. Earn.
-            </Text>
-          </Animated.View>
+            Play. Learn. Earn.
+          </Text>
+        </Animated.View>
 
-          {/* Loading Spinner - Matching web design */}
-          <Animated.View
-            style={[
-              styles.spinnerContainer,
-              {
-                opacity: spinnerAnim,
-              },
-            ]}
-          >
-            <ActivityIndicator size="large" color="rgb(238, 58, 124)" />
-          </Animated.View>
-        </View>
-      </SafeAreaView>
-    </GradientBackground>
+        {/* Loading Spinner - Matching web design */}
+        <Animated.View
+          style={[
+            styles.spinnerContainer,
+            {
+              opacity: spinnerAnim,
+            },
+          ]}
+        >
+          <ActivityIndicator size="large" color="rgb(238, 58, 124)" />
+        </Animated.View>
+      </View>
+    </SafeGradientBackground>
   );
 }
 
