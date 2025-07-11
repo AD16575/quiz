@@ -6,8 +6,10 @@ export interface User {
   totalQuizzes: number;
   withdrawableAmount: number;
   referredUsers: number;
-  achievements: Achievement[];
-  streak: number;
+  referralCode: string;
+  memberSince: Date;
+  achievements?: Achievement[];
+  streak?: number;
 }
 
 export interface Achievement {
@@ -51,12 +53,12 @@ export interface Question {
 }
 
 export interface QuizResult {
-  id: string;
   quizId: string;
+  userId: string;
   score: number;
   totalQuestions: number;
-  timeSpent: number;
   pointsEarned: number;
+  timeTaken: number;
   completedAt: Date;
 }
 
@@ -86,19 +88,16 @@ export type RootStackParamList = {
   Welcome: undefined;
   Signup: undefined;
   Login: undefined;
-  Main: undefined;
+  Home: undefined;
+  QuizCategories: undefined;
+  QuizList: { categoryId: string };
   QuizPlay: { quizId: string };
   QuizResult: { result: QuizResult };
-  QuizList: { categoryId: string };
+  Profile: undefined;
   Referral: undefined;
   Withdrawal: undefined;
   PointHistory: undefined;
   Settings: undefined;
-};
-
-export type BottomTabParamList = {
-  Home: undefined;
-  Play: undefined;
   Leaderboard: undefined;
-  Profile: undefined;
+  QuizRandom: undefined;
 };

@@ -13,6 +13,7 @@ import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
 import GradientBackground from "../components/common/GradientBackground";
+import Logo from "../components/common/Logo";
 import GradientText from "../components/common/GradientText";
 
 export default function WelcomeScreen() {
@@ -48,17 +49,7 @@ export default function WelcomeScreen() {
         <View style={styles.content}>
           {/* Logo Section */}
           <View style={styles.logoSection}>
-            <View style={styles.logoContainer}>
-              <LinearGradient
-                colors={["rgb(238, 58, 124)", "rgb(24, 154, 144)"]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={styles.logoBackground}
-              >
-                <Text style={styles.logoText}>Q</Text>
-              </LinearGradient>
-              <View style={styles.logoAccentDot} />
-            </View>
+            <Logo size="large" />
             <View style={styles.titleContainer}>
               <GradientText style={styles.title}>MyQuiz</GradientText>
               <Text
@@ -90,7 +81,7 @@ export default function WelcomeScreen() {
               style={[
                 styles.loginButton,
                 {
-                  borderColor: themeState.colors.secondary,
+                  borderColor: "rgb(24, 154, 144)",
                   backgroundColor: themeState.isDark
                     ? "rgba(24, 154, 144, 0.15)"
                     : "transparent",
@@ -98,17 +89,8 @@ export default function WelcomeScreen() {
               ]}
               onPress={() => navigation.navigate("Login" as never)}
             >
-              <Ionicons
-                name="log-in"
-                size={20}
-                color={themeState.colors.secondary}
-              />
-              <Text
-                style={[
-                  styles.loginText,
-                  { color: themeState.colors.secondary },
-                ]}
-              >
+              <Ionicons name="log-in" size={20} color="rgb(24, 154, 144)" />
+              <Text style={[styles.loginText, { color: "rgb(24, 154, 144)" }]}>
                 Login
               </Text>
             </TouchableOpacity>
@@ -143,49 +125,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 24,
     paddingVertical: 48,
+    maxWidth: 448,
+    width: "100%",
+    alignSelf: "center",
   },
   logoSection: {
     alignItems: "center",
-    maxWidth: 448,
-    width: "100%",
-    marginBottom: 48,
-  },
-  logoContainer: {
-    height: 128,
-    width: 128,
-    position: "relative",
-    marginLeft: "auto",
-    marginRight: "auto",
-  },
-  logoBackground: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    borderRadius: 16,
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: "rgba(0, 0, 0, 0.1)",
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 1,
-    shadowRadius: 15,
-    elevation: 10,
-  },
-  logoText: {
-    color: "rgb(255, 255, 255)",
-    fontSize: 64,
-    fontWeight: "700",
-    textAlign: "center",
-  },
-  logoAccentDot: {
-    position: "absolute",
-    top: -4,
-    right: -4,
-    width: 24,
-    height: 24,
-    backgroundColor: "rgb(255, 204, 0)",
-    borderRadius: 12,
+    marginBottom: 32,
   },
   titleContainer: {
     marginTop: 32,
@@ -204,19 +150,17 @@ const styles = StyleSheet.create({
     marginTop: 16,
     textAlign: "center",
   },
+
   actionContainer: {
-    marginTop: 48,
-    maxWidth: 448,
+    marginTop: 32,
     width: "100%",
     gap: 16,
   },
   getStartedButton: {
     backgroundColor: "rgb(238, 58, 124)",
     borderRadius: 12,
-    paddingTop: 16,
-    paddingBottom: 16,
-    paddingLeft: 24,
-    paddingRight: 24,
+    paddingVertical: 24,
+    paddingHorizontal: 24,
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
@@ -236,10 +180,8 @@ const styles = StyleSheet.create({
   loginButton: {
     backgroundColor: "transparent",
     borderRadius: 12,
-    paddingTop: 16,
-    paddingBottom: 16,
-    paddingLeft: 24,
-    paddingRight: 24,
+    paddingVertical: 24,
+    paddingHorizontal: 24,
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",

@@ -29,7 +29,7 @@ export default function GradientBackground({
   return (
     <View style={[styles.container, style]}>
       <LinearGradient
-        colors={gradientColors}
+        colors={gradientColors as [string, string]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={StyleSheet.absoluteFillObject}
