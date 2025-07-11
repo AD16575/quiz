@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  SafeAreaView,
   Alert,
   Dimensions,
 } from "react-native";
@@ -13,7 +12,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
-import GradientBackground from "../components/common/GradientBackground";
+import SafeGradientBackground from "../components/common/SafeGradientBackground";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types";
 
@@ -153,31 +152,31 @@ export default function QuizPlayScreen() {
     if (!showFeedback) {
       return selectedAnswer === index
         ? [
-          styles.answerButton,
-          styles.selectedAnswer,
-          { backgroundColor: "rgba(238, 58, 124, 0.1)" },
-        ]
+            styles.answerButton,
+            styles.selectedAnswer,
+            { backgroundColor: "rgba(238, 58, 124, 0.1)" },
+          ]
         : [
-          styles.answerButton,
-          {
-            backgroundColor: themeState.colors.surface,
-            borderColor: themeState.colors.border,
-          },
-        ];
+            styles.answerButton,
+            {
+              backgroundColor: themeState.colors.surface,
+              borderColor: themeState.colors.border,
+            },
+          ];
     }
 
     if (selectedAnswer === index) {
       return index === currentQ.correctAnswer
         ? [
-          styles.answerButton,
-          styles.correctAnswer,
-          { backgroundColor: "rgba(34, 197, 94, 0.1)" },
-        ]
+            styles.answerButton,
+            styles.correctAnswer,
+            { backgroundColor: "rgba(34, 197, 94, 0.1)" },
+          ]
         : [
-          styles.answerButton,
-          styles.incorrectAnswer,
-          { backgroundColor: "rgba(239, 68, 68, 0.1)" },
-        ];
+            styles.answerButton,
+            styles.incorrectAnswer,
+            { backgroundColor: "rgba(239, 68, 68, 0.1)" },
+          ];
     }
 
     if (index === currentQ.correctAnswer) {
