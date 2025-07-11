@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
-  SafeAreaView,
   Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -15,7 +14,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
-import GradientBackground from "../components/common/GradientBackground";
+import SafeGradientBackground from "../components/common/SafeGradientBackground";
 import Logo from "../components/common/Logo";
 import {
   validateEmail,
@@ -363,9 +362,7 @@ export default function LoginScreen() {
                 >
                   Don't have an account?{" "}
                 </Text>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("Signup")}
-                >
+                <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
                   <Text style={styles.signupLink}>Sign up here</Text>
                 </TouchableOpacity>
               </View>
