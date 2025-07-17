@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Alert,
   Dimensions,
+  ActivityIndicator,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
@@ -13,6 +14,7 @@ import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
 import SafeGradientBackground from "../components/common/SafeGradientBackground";
+import api from "../lib/api";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types";
 
@@ -60,6 +62,42 @@ export default function QuizPlayScreen() {
   const [answers, setAnswers] = useState<number[]>([]);
   const [timeLeft, setTimeLeft] = useState(mockQuiz.timeLimit * 60);
   const [showFeedback, setShowFeedback] = useState(false);
+  const [quiz, setQuiz] = useState(mockQuiz);
+  const [loading, setLoading] = useState(true);
+
+  // Load quiz data from API
+  useEffect(() => {
+    if (quizId) {
+      fetchQuizById(quizId);
+    } else {
+      setLoading(false);
+    }
+  }, [quizId]);
+
+  const fetchQuizById = async (id: string) => {
+    try {
+      console.log("📋 Fetching quiz by ID:", id);
+      setLoading(true);
+
+      const response = await api.getQuizById(id);
+      console.log("✅ Quiz fetched:", response);
+
+      // Use API quiz if available, otherwise fallback to mock data
+      if (response) {
+        setQuiz(response);
+        setTimeLeft((response.timeLimit || mockQuiz.timeLimit) * 60);
+      } else {
+        console.log("📋 Using fallback quiz data");
+        setQuiz(mockQuiz);
+      }
+    } catch (error: any) {
+      console.error("❌ Failed to fetch quiz:", error);
+      // Use fallback data on error
+      setQuiz(mockQuiz);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const timer = setInterval(() => {
