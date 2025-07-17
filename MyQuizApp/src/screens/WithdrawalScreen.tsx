@@ -142,17 +142,38 @@ export default function WithdrawalScreen() {
     setIsLoading(true);
 
     try {
-      // Simulate API call delay
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      console.log("💰 Submitting withdrawal request:", {
+        amount,
+        userId: user.id,
+        paymentMethod: selectedMethod,
+        paymentDetails,
+      });
 
-      // Mock successful withdrawal request
+      // Call the real withdrawal API
+      const response = await api.requestWithdrawal(
+        amount,
+        user.id,
+        selectedMethod,
+        paymentDetails,
+      );
+
+      console.log("✅ Withdrawal request submitted:", response);
+
+      // Show success message
       Alert.alert(
         "Withdrawal Request Submitted",
         `Your withdrawal request of ₹${amount} has been submitted successfully. You will receive the amount within the specified time frame.`,
         [{ text: "OK", onPress: () => navigation.goBack() }],
       );
-    } catch (error) {
-      Alert.alert("Error", "Withdrawal request failed. Please try again.");
+    } catch (error: any) {
+      console.error("❌ Withdrawal request failed:", error);
+
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.response?.data?.error ||
+        "Withdrawal request failed. Please try again.";
+
+      Alert.alert("Withdrawal Failed", errorMessage);
     } finally {
       setIsLoading(false);
     }
