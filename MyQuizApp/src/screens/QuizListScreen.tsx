@@ -318,7 +318,7 @@ export default function QuizListScreen() {
                 { color: themeState.colors.textSecondary },
               ]}
             >
-              {mockQuizzes.length} quizzes available
+              {quizzes.length} quizzes available
             </Text>
           </View>
         </View>
