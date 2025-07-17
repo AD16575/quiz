@@ -114,8 +114,23 @@ export default function SignupScreen() {
       Alert.alert("Account Created!", bonusMessage, [
         { text: "OK", onPress: () => navigation.navigate("Home") },
       ]);
-    } catch (error) {
-      Alert.alert("Error", "Signup failed. Please try again.");
+    } catch (error: any) {
+      console.error("❌ Registration failed:", error);
+
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.response?.data?.error ||
+        "Registration failed. Please try again.";
+
+      // Handle specific error cases
+      if (
+        error?.response?.status === 400 &&
+        error?.response?.data?.message?.includes("email")
+      ) {
+        setErrors({ email: "Email already exists" });
+      } else {
+        Alert.alert("Registration Failed", errorMessage);
+      }
     } finally {
       setIsLoading(false);
     }
