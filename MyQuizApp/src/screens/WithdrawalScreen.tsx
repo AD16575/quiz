@@ -24,7 +24,7 @@ import {
   validatePayPalEmail,
   validateSufficientBalance,
   FormErrors,
-} from "../utils/validation";
+} from '../utils/validation";\nimport api from "../lib/api';
 
 export default function WithdrawalScreen() {
   const navigation = useNavigation();
@@ -90,7 +90,7 @@ export default function WithdrawalScreen() {
     const amountValidation = validateAmount(
       amount,
       minAmount,
-      user.withdrawableAmount
+      user.withdrawableAmount,
     );
     if (!amountValidation.isValid) {
       newErrors.amount = amountValidation.error || "";
@@ -98,7 +98,7 @@ export default function WithdrawalScreen() {
       // Check sufficient balance
       const balanceValidation = validateSufficientBalance(
         amount,
-        user.withdrawableAmount
+        user.withdrawableAmount,
       );
       if (!balanceValidation.isValid) {
         newErrors.amount = balanceValidation.error || "";
@@ -113,7 +113,7 @@ export default function WithdrawalScreen() {
       }
     } else if (selectedMethod === "bank") {
       const accountValidation = validateAccountNumber(
-        paymentDetails.accountNumber
+        paymentDetails.accountNumber,
       );
       if (!accountValidation.isValid) {
         newErrors.accountNumber = accountValidation.error || "";
@@ -149,7 +149,7 @@ export default function WithdrawalScreen() {
       Alert.alert(
         "Withdrawal Request Submitted",
         `Your withdrawal request of ₹${amount} has been submitted successfully. You will receive the amount within the specified time frame.`,
-        [{ text: "OK", onPress: () => navigation.goBack() }]
+        [{ text: "OK", onPress: () => navigation.goBack() }],
       );
     } catch (error) {
       Alert.alert("Error", "Withdrawal request failed. Please try again.");
@@ -188,8 +188,8 @@ export default function WithdrawalScreen() {
             selectedMethod === method.id
               ? method.color
               : errors.method
-              ? "rgb(239, 68, 68)"
-              : "rgba(255, 255, 255, 0.1)",
+                ? "rgb(239, 68, 68)"
+                : "rgba(255, 255, 255, 0.1)",
           borderWidth: selectedMethod === method.id || errors.method ? 2 : 1,
         },
       ]}
