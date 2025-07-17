@@ -15,6 +15,8 @@ import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
 import SafeGradientBackground from "../components/common/SafeGradientBackground";
+import api from "../lib/api";
+import { TokenManager } from "../lib/axios";
 import Logo from "../components/common/Logo";
 import {
   validateEmail,
@@ -57,36 +59,48 @@ export default function LoginScreen() {
     setIsLoading(true);
 
     try {
-      // Simulate API call delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      console.log("🔐 Attempting login with:", { email: formData.email });
 
-      // Mock login validation
-      if (
-        formData.email === "test@example.com" &&
-        formData.password === "password123"
-      ) {
-        Alert.alert("Error", "Invalid email or password");
-        setIsLoading(false);
-        return;
+      // Call the real login API
+      const response = await api.login({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      console.log("✅ Login successful:", response);
+
+      // Store the token if provided
+      if (response.token) {
+        await TokenManager.setToken(response.token);
+        console.log("🔐 Token saved successfully");
       }
 
-      // Mock successful login
+      // Create user object from response
       const user = {
-        id: "1",
-        name: "John Doe",
-        email: formData.email,
-        points: 2500,
-        totalQuizzes: 15,
-        withdrawableAmount: 1200,
-        referralCode: "ABC123",
-        referredUsers: 3,
-        memberSince: new Date("2023-01-15"),
+        id: response.user?.id || response.id,
+        name: response.user?.name || response.name,
+        email: response.user?.email || response.email,
+        points: response.user?.points || 0,
+        totalQuizzes: response.user?.totalQuizzes || 0,
+        withdrawableAmount: response.user?.withdrawableAmount || 0,
+        referralCode: response.user?.referralCode || "",
+        referredUsers: response.user?.referredUsers || 0,
+        memberSince: response.user?.memberSince
+          ? new Date(response.user.memberSince)
+          : new Date(),
       };
 
       dispatch({ type: "SET_USER", payload: user });
       navigation.navigate("Home");
-    } catch (error) {
-      Alert.alert("Error", "Login failed. Please try again.");
+    } catch (error: any) {
+      console.error("❌ Login failed:", error);
+
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.response?.data?.error ||
+        "Login failed. Please check your credentials and try again.";
+
+      Alert.alert("Login Failed", errorMessage);
     } finally {
       setIsLoading(false);
     }
