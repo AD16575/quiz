@@ -11,6 +11,14 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
+import { GlobalStyles, GradientColors } from "../styles/globalStyles";
+import {
+  PointCard,
+  Card,
+  Button,
+  Header,
+  IconContainer,
+} from "../components/common";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
 import SafeGradientBackground from "../components/common/SafeGradientBackground";
@@ -31,43 +39,7 @@ export default function HomeScreen() {
 
   if (!user) return null;
 
-  const PointCard = ({
-    title,
-    value,
-    icon,
-    variant,
-  }: {
-    title: string;
-    value: number;
-    icon: keyof typeof Ionicons.glyphMap;
-    variant: "default" | "earned" | "withdrawable" | "defaultDark" | "earnedDark" | "withdrawableDark";
-  }) => {
-    const gradientColors = {
-      default: ["rgb(24, 154, 144)", "rgba(24, 154, 144, 0.8)"],
-      earned: ["rgb(255, 204, 0)", "rgb(249, 115, 22)"],
-      withdrawable: ["rgb(238, 58, 124)", "rgb(147, 51, 234)"],
-      defaultDark: ["rgba(24, 154, 144, 0.2)", "rgba(24, 154, 144, 0.5)"],
-      earnedDark: ["rgba(255, 204, 0, 0.2)", "rgba(255, 204, 0, 0.5)"],
-      withdrawableDark: ["rgba(238, 58, 124, 0.2)", "rgba(147, 51, 234, 0.5)"],
-    };
-
-    return (
-      <LinearGradient
-        colors={gradientColors[variant] as [string, string]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-        style={styles.pointCard}
-      >
-        <View style={styles.pointContent}>
-          <Ionicons name={icon} size={20} color="white" />
-          <Text style={styles.pointValue}>
-            {variant === "withdrawable" ? `₹${value}` : value.toLocaleString()}
-          </Text>
-          <Text style={styles.pointTitle}>{title}</Text>
-        </View>
-      </LinearGradient>
-    );
-  };
+  // Using the global PointCard component
 
   const ActionCard = ({
     title,
@@ -197,14 +169,12 @@ export default function HomeScreen() {
 
         {/* Play Now Section */}
         <View style={styles.playSection}>
-          <View
-            style={[
-              styles.playCard,
-              {
-                backgroundColor: "rgba(238, 58, 124, 0.1)",
-                borderColor: "rgba(238, 58, 124, 0.2)",
-              },
-            ]}
+          <Card
+            variant="outline"
+            style={{
+              backgroundColor: "rgba(238, 58, 124, 0.1)",
+              borderColor: "rgba(238, 58, 124, 0.2)",
+            }}
           >
             <View style={styles.playContent}>
               <Ionicons
@@ -238,7 +208,7 @@ export default function HomeScreen() {
                 <Text style={styles.playButtonText}>Play Now</Text>
               </TouchableOpacity>
             </View>
-          </View>
+          </Card>
         </View>
 
         {/* Quick Actions */}

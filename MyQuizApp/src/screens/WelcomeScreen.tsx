@@ -4,6 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
+import { GlobalStyles, GradientColors } from "../styles/globalStyles";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
 import SafeGradientBackground from "../components/common/SafeGradientBackground";
