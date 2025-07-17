@@ -282,7 +282,7 @@ export default function QuizPlayScreen() {
               <Text
                 style={[styles.quizTitle, { color: themeState.colors.text }]}
               >
-                {mockQuiz.title}
+                {quiz.title}
               </Text>
               <Text
                 style={[
