@@ -167,16 +167,14 @@ export default function HomeScreen() {
           />
         </View>
 
-        {/* Play Now Section */}
+                {/* Play Now Section */}
         <View style={styles.playSection}>
-          <View
-            style={[
-              styles.playCard,
-              {
-                backgroundColor: "rgba(238, 58, 124, 0.1)",
-                borderColor: "rgba(238, 58, 124, 0.2)",
-              },
-            ]}
+          <Card
+            variant="outline"
+            style={{
+              backgroundColor: "rgba(238, 58, 124, 0.1)",
+              borderColor: "rgba(238, 58, 124, 0.2)",
+            }}
           >
             <View style={styles.playContent}>
               <Ionicons
