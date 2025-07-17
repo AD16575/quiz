@@ -143,18 +143,18 @@ export default function QuizPlayScreen() {
       selectedAnswer !== null ? [...answers, selectedAnswer] : answers;
 
     const correctAnswers = finalAnswers.filter(
-      (answer, index) => answer === mockQuiz.questions[index]?.correctAnswer,
+      (answer, index) => answer === quiz.questions[index]?.correctAnswer,
     ).length;
 
     const result = {
-      quizId: mockQuiz.id,
+      quizId: quiz.id,
       userId: state.user?.id || "",
       score: correctAnswers,
-      totalQuestions: mockQuiz.questions.length,
+      totalQuestions: quiz.questions.length,
       pointsEarned: Math.floor(
-        (correctAnswers / mockQuiz.questions.length) * mockQuiz.pointsReward,
+        (correctAnswers / quiz.questions.length) * quiz.pointsReward,
       ),
-      timeTaken: mockQuiz.timeLimit * 60 - timeLeft,
+      timeTaken: quiz.timeLimit * 60 - timeLeft,
       completedAt: new Date(),
     };
 
