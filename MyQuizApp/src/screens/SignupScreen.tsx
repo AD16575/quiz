@@ -77,6 +77,7 @@ export default function SignupScreen() {
         name: formData.name,
         email: formData.email,
         password: formData.password,
+        referralCode: formData.referralCode
       });
 
       console.log("✅ Registration successful:", response);
