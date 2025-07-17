@@ -331,9 +331,37 @@ export default function QuizListScreen() {
       >
         {/* Quiz Cards */}
         <View style={styles.quizzesContainer}>
-          {mockQuizzes.map((quiz, index) => (
-            <QuizCard key={quiz.id} quiz={quiz} />
-          ))}
+          {loading ? (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator
+                size="large"
+                color={themeState.colors.primary}
+              />
+              <Text
+                style={[styles.loadingText, { color: themeState.colors.text }]}
+              >
+                Loading quizzes...
+              </Text>
+            </View>
+          ) : error ? (
+            <View style={styles.errorContainer}>
+              <Text
+                style={[styles.errorText, { color: themeState.colors.error }]}
+              >
+                {error}
+              </Text>
+              <TouchableOpacity
+                style={styles.retryButton}
+                onPress={() => categoryId && fetchQuizzes(categoryId)}
+              >
+                <Text style={styles.retryButtonText}>Retry</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            quizzes.map((quiz, index) => (
+              <QuizCard key={quiz.id || index} quiz={quiz} />
+            ))
+          )}
         </View>
 
         {/* Browse More Section */}
