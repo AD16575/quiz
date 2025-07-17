@@ -128,7 +128,7 @@ export default function QuizPlayScreen() {
       setShowFeedback(true);
       setTimeout(() => {
         setShowFeedback(false);
-        if (currentQuestion < mockQuiz.questions.length - 1) {
+        if (currentQuestion < quiz.questions.length - 1) {
           setCurrentQuestion(currentQuestion + 1);
           setSelectedAnswer(null);
         } else {
