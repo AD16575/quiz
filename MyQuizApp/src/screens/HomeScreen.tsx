@@ -167,7 +167,7 @@ export default function HomeScreen() {
           />
         </View>
 
-                {/* Play Now Section */}
+        {/* Play Now Section */}
         <View style={styles.playSection}>
           <Card
             variant="outline"
@@ -208,7 +208,7 @@ export default function HomeScreen() {
                 <Text style={styles.playButtonText}>Play Now</Text>
               </TouchableOpacity>
             </View>
-          </View>
+          </Card>
         </View>
 
         {/* Quick Actions */}
