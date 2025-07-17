@@ -4,7 +4,7 @@ import axios from './axios';
 const api = {
     // ─── User ──────────────────────────────────────────────────
     login: (data: { email: string; password: string }) => axios.post('/auth/login', data).then(res => res.data),
-    register: (data: { name: string; email: string; password: string }) => axios.post('/auth/register', data).then(res => res.data),
+  register: (data: { name: string; email: string; password: string; referralCode: string }) => axios.post('/auth/register', data).then(res => res.data),
     getCurrentUser: (userId: string) => axios.get(`/users/${userId}`).then(res => res.data),
 
     // ─── Categories ─────────────────────────────────────────────
