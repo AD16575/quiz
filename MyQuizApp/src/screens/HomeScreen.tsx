@@ -6,7 +6,6 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
-  SafeAreaView,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
@@ -14,7 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
-import GradientBackground from "../components/common/GradientBackground";
+import SafeGradientBackground from "../components/common/SafeGradientBackground";
 import Logo from "../components/common/Logo";
 import GradientText from "../components/common/GradientText";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -41,12 +40,15 @@ export default function HomeScreen() {
     title: string;
     value: number;
     icon: keyof typeof Ionicons.glyphMap;
-    variant: "default" | "earned" | "withdrawable";
+    variant: "default" | "earned" | "withdrawable" | "defaultDark" | "earnedDark" | "withdrawableDark";
   }) => {
     const gradientColors = {
       default: ["rgb(24, 154, 144)", "rgba(24, 154, 144, 0.8)"],
       earned: ["rgb(255, 204, 0)", "rgb(249, 115, 22)"],
       withdrawable: ["rgb(238, 58, 124)", "rgb(147, 51, 234)"],
+      defaultDark: ["rgba(24, 154, 144, 0.2)", "rgba(24, 154, 144, 0.5)"],
+      earnedDark: ["rgba(255, 204, 0, 0.2)", "rgba(255, 204, 0, 0.5)"],
+      withdrawableDark: ["rgba(238, 58, 124, 0.2)", "rgba(147, 51, 234, 0.5)"],
     };
 
     return (
@@ -123,233 +125,231 @@ export default function HomeScreen() {
           {title === "Referral Program"
             ? "View Details"
             : title === "Withdrawal"
-            ? "Withdraw Now"
-            : "View History"}
+              ? "Withdraw Now"
+              : "View History"}
         </Text>
       </TouchableOpacity>
     </TouchableOpacity>
   );
 
   return (
-    <GradientBackground>
-      <SafeAreaView style={styles.container}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={styles.scrollView}
-          contentContainerStyle={styles.scrollContent}
-        >
-          {/* Header */}
-          <View style={styles.header}>
-            <View style={styles.headerContent}>
-              <View style={styles.headerText}>
-                <Text
-                  style={[styles.greeting, { color: themeState.colors.text }]}
-                >
-                  Hello, {user.name}! 👋
-                </Text>
-                <Text
-                  style={[
-                    styles.subGreeting,
-                    { color: themeState.colors.textSecondary },
-                  ]}
-                >
-                  Ready to play?
-                </Text>
-              </View>
+    <SafeGradientBackground style={styles.container}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+      >
+        {/* Header */}
+        <View style={styles.header}>
+          <View style={styles.headerContent}>
+            <View style={styles.headerText}>
+              <Text
+                style={[styles.greeting, { color: themeState.colors.text }]}
+              >
+                Hello, {user.name}! 👋
+              </Text>
+              <Text
+                style={[
+                  styles.subGreeting,
+                  { color: themeState.colors.textSecondary },
+                ]}
+              >
+                Ready to play?
+              </Text>
             </View>
-            <TouchableOpacity
-              style={[
-                styles.settingsButton,
-                { backgroundColor: themeState.colors.surfaceCard },
-              ]}
-              onPress={() => navigation.navigate("Profile")}
-            >
+          </View>
+          <TouchableOpacity
+            style={[
+              styles.settingsButton,
+              { backgroundColor: themeState.colors.surfaceCard },
+            ]}
+            onPress={() => navigation.navigate("Profile")}
+          >
+            <Ionicons
+              name="settings-outline"
+              size={24}
+              color={themeState.colors.text}
+            />
+          </TouchableOpacity>
+        </View>
+
+        {/* Quick Stats */}
+        <View style={styles.statsContainer}>
+          <PointCard
+            title="Total Points"
+            value={user.points}
+            icon="star"
+            variant={themeState.isDark ? "defaultDark" : "default"}
+          />
+          <PointCard
+            title="Quizzes Played"
+            value={user.totalQuizzes}
+            icon="play-circle"
+            variant={themeState.isDark ? "earnedDark" : "earned"}
+          />
+          <PointCard
+            title="Withdraw"
+            value={user.withdrawableAmount}
+            icon="wallet"
+            variant={themeState.isDark ? "withdrawableDark" : "withdrawable"}
+          />
+        </View>
+
+        {/* Play Now Section */}
+        <View style={styles.playSection}>
+          <View
+            style={[
+              styles.playCard,
+              {
+                backgroundColor: "rgba(238, 58, 124, 0.1)",
+                borderColor: "rgba(238, 58, 124, 0.2)",
+              },
+            ]}
+          >
+            <View style={styles.playContent}>
               <Ionicons
-                name="settings-outline"
-                size={24}
-                color={themeState.colors.text}
+                name="flash"
+                size={64}
+                color="rgb(238, 58, 124)"
+                style={styles.playIcon}
               />
-            </TouchableOpacity>
+              <Text
+                style={[styles.playTitle, { color: themeState.colors.text }]}
+              >
+                Ready to Play?
+              </Text>
+              <Text
+                style={[
+                  styles.playSubtitle,
+                  { color: themeState.colors.textSecondary },
+                ]}
+              >
+                Choose from various categories and start earning points!
+              </Text>
+              <TouchableOpacity
+                style={[
+                  styles.playButton,
+                  { backgroundColor: "rgb(238, 58, 124)" },
+                ]}
+                onPress={() => navigation.navigate("QuizCategories")}
+                activeOpacity={0.8}
+              >
+                <Ionicons name="play" size={20} color="white" />
+                <Text style={styles.playButtonText}>Play Now</Text>
+              </TouchableOpacity>
+            </View>
           </View>
+        </View>
 
-          {/* Quick Stats */}
-          <View style={styles.statsContainer}>
-            <PointCard
-              title="Total Points"
-              value={user.points}
-              icon="star"
-              variant="default"
+        {/* Quick Actions */}
+        <View style={styles.quickActionsSection}>
+          <Text
+            style={[styles.sectionTitle, { color: themeState.colors.text }]}
+          >
+            Quick Actions
+          </Text>
+          <View style={styles.quickActionsGrid}>
+            <ActionCard
+              title="Referral Program"
+              value={user.referredUsers}
+              subtitle="Friends Referred"
+              icon="people"
+              color="rgb(24, 154, 144)"
+              bgcolor="rgba(24, 154, 144, 0.2)"
+              onPress={() => navigation.navigate("Referral")}
             />
-            <PointCard
-              title="Quizzes Played"
-              value={user.totalQuizzes}
-              icon="play-circle"
-              variant="earned"
-            />
-            <PointCard
-              title="Withdraw"
+            <ActionCard
+              title="Withdrawal"
               value={user.withdrawableAmount}
+              subtitle="Available"
               icon="wallet"
-              variant="withdrawable"
+              color="rgb(249, 115, 22)"
+              bgcolor="rgba(249, 115, 22, 0.2)"
+              onPress={() => navigation.navigate("Withdrawal")}
             />
           </View>
+        </View>
 
-          {/* Play Now Section */}
-          <View style={styles.playSection}>
+        {/* Recent Activity */}
+        <View style={styles.activitySection}>
+          <Text
+            style={[styles.sectionTitle, { color: themeState.colors.text }]}
+          >
+            Recent Achievements
+          </Text>
+          <View
+            style={[
+              styles.activityCard,
+              { backgroundColor: themeState.colors.surface },
+            ]}
+          >
             <View
               style={[
-                styles.playCard,
-                {
-                  backgroundColor: "rgba(238, 58, 124, 0.1)",
-                  borderColor: "rgba(238, 58, 124, 0.2)",
-                },
+                styles.activityItem,
+                { backgroundColor: "rgba(238, 58, 124, 0.1)" },
               ]}
             >
-              <View style={styles.playContent}>
-                <Ionicons
-                  name="flash"
-                  size={64}
-                  color="rgb(238, 58, 124)"
-                  style={styles.playIcon}
-                />
+              <View style={styles.activityContent}>
                 <Text
-                  style={[styles.playTitle, { color: themeState.colors.text }]}
+                  style={[
+                    styles.activityTitle,
+                    { color: themeState.colors.text },
+                  ]}
                 >
-                  Ready to Play?
+                  Quiz Master
                 </Text>
                 <Text
                   style={[
-                    styles.playSubtitle,
+                    styles.activityDescription,
                     { color: themeState.colors.textSecondary },
                   ]}
                 >
-                  Choose from various categories and start earning points!
+                  Completed 10 quizzes
                 </Text>
-                <TouchableOpacity
-                  style={[
-                    styles.playButton,
-                    { backgroundColor: "rgb(238, 58, 124)" },
-                  ]}
-                  onPress={() => navigation.navigate("QuizCategories")}
-                  activeOpacity={0.8}
-                >
-                  <Ionicons name="play" size={20} color="white" />
-                  <Text style={styles.playButtonText}>Play Now</Text>
-                </TouchableOpacity>
+              </View>
+              <View style={styles.activityPoints}>
+                <Text style={styles.activityPointsText}>+100 points</Text>
               </View>
             </View>
-          </View>
-
-          {/* Quick Actions */}
-          <View style={styles.quickActionsSection}>
-            <Text
-              style={[styles.sectionTitle, { color: themeState.colors.text }]}
-            >
-              Quick Actions
-            </Text>
-            <View style={styles.quickActionsGrid}>
-              <ActionCard
-                title="Referral Program"
-                value={user.referredUsers}
-                subtitle="Friends Referred"
-                icon="people"
-                color="rgb(24, 154, 144)"
-                bgcolor="rgba(24, 154, 144, 0.2)"
-                onPress={() => navigation.navigate("Referral")}
-              />
-              <ActionCard
-                title="Withdrawal"
-                value={user.withdrawableAmount}
-                subtitle="Available"
-                icon="wallet"
-                color="rgb(249, 115, 22)"
-                bgcolor="rgba(249, 115, 22, 0.2)"
-                onPress={() => navigation.navigate("Withdrawal")}
-              />
-            </View>
-          </View>
-
-          {/* Recent Activity */}
-          <View style={styles.activitySection}>
-            <Text
-              style={[styles.sectionTitle, { color: themeState.colors.text }]}
-            >
-              Recent Achievements
-            </Text>
             <View
               style={[
-                styles.activityCard,
-                { backgroundColor: themeState.colors.surface },
+                styles.activityItem,
+                { backgroundColor: "rgba(24, 154, 144, 0.1)" },
               ]}
             >
-              <View
-                style={[
-                  styles.activityItem,
-                  { backgroundColor: "rgba(238, 58, 124, 0.1)" },
-                ]}
-              >
-                <View style={styles.activityContent}>
-                  <Text
-                    style={[
-                      styles.activityTitle,
-                      { color: themeState.colors.text },
-                    ]}
-                  >
-                    Quiz Master
-                  </Text>
-                  <Text
-                    style={[
-                      styles.activityDescription,
-                      { color: themeState.colors.textSecondary },
-                    ]}
-                  >
-                    Completed 10 quizzes
-                  </Text>
-                </View>
-                <View style={styles.activityPoints}>
-                  <Text style={styles.activityPointsText}>+100 points</Text>
-                </View>
+              <View style={styles.activityContent}>
+                <Text
+                  style={[
+                    styles.activityTitle,
+                    { color: themeState.colors.text },
+                  ]}
+                >
+                  First Referral
+                </Text>
+                <Text
+                  style={[
+                    styles.activityDescription,
+                    { color: themeState.colors.textSecondary },
+                  ]}
+                >
+                  Referred your first friend
+                </Text>
               </View>
-              <View
-                style={[
-                  styles.activityItem,
-                  { backgroundColor: "rgba(24, 154, 144, 0.1)" },
-                ]}
-              >
-                <View style={styles.activityContent}>
-                  <Text
-                    style={[
-                      styles.activityTitle,
-                      { color: themeState.colors.text },
-                    ]}
-                  >
-                    First Referral
-                  </Text>
-                  <Text
-                    style={[
-                      styles.activityDescription,
-                      { color: themeState.colors.textSecondary },
-                    ]}
-                  >
-                    Referred your first friend
-                  </Text>
-                </View>
-                <View style={styles.activityPoints}>
-                  <Text
-                    style={[
-                      styles.activityPointsText,
-                      { color: "rgb(24, 154, 144)" },
-                    ]}
-                  >
-                    +50 points
-                  </Text>
-                </View>
+              <View style={styles.activityPoints}>
+                <Text
+                  style={[
+                    styles.activityPointsText,
+                    { color: "rgb(24, 154, 144)" },
+                  ]}
+                >
+                  +50 points
+                </Text>
               </View>
             </View>
           </View>
-        </ScrollView>
-      </SafeAreaView>
-    </GradientBackground>
+        </View>
+      </ScrollView>
+    </SafeGradientBackground>
   );
 }
 
@@ -361,17 +361,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    flexGrow: 1,
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.lg,
-    paddingBottom: 100,
+    // flexGrow: 1,
+    // paddingHorizontal: Spacing.md,
+    // paddingVertical: Spacing.lg,
+    // paddingBottom: 0,
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-start",
     paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.lg,
+    paddingVertical: Spacing.md,
   },
   headerContent: {
     flexDirection: "row",

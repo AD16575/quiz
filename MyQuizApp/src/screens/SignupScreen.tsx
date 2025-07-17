@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
-  SafeAreaView,
   Alert,
   ScrollView,
 } from "react-native";
@@ -16,7 +15,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
-import GradientBackground from "../components/common/GradientBackground";
+import SafeGradientBackground from "../components/common/SafeGradientBackground";
 import Logo from "../components/common/Logo";
 import {
   validateEmail,
@@ -147,47 +146,358 @@ export default function SignupScreen() {
   };
 
   return (
-    <GradientBackground>
-      <SafeAreaView style={styles.container}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.keyboardView}
+    <SafeGradientBackground style={styles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.keyboardView}
+      >
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
         >
-          <ScrollView
-            contentContainerStyle={styles.scrollContent}
-            showsVerticalScrollIndicator={false}
-            keyboardShouldPersistTaps="handled"
-          >
-            {/* Header */}
-            <View style={styles.header}>
-              <TouchableOpacity
+          {/* Header */}
+          <View style={styles.header}>
+            <TouchableOpacity
+              style={[
+                styles.backButton,
+                {
+                  backgroundColor: themeState.colors.surface,
+                  borderColor: themeState.colors.border,
+                },
+              ]}
+              onPress={() => navigation.goBack()}
+            >
+              <Ionicons
+                name="arrow-back"
+                size={20}
+                color={themeState.colors.text}
+              />
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.content}>
+            {/* Logo Section */}
+            <View style={styles.logoSection}>
+              <Logo size="medium" />
+              <Text style={[styles.title, { color: themeState.colors.text }]}>
+                Join MyQuiz
+              </Text>
+              <Text
                 style={[
-                  styles.backButton,
+                  styles.subtitle,
                   {
-                    backgroundColor: themeState.colors.surface,
-                    borderColor: themeState.colors.border,
+                    color: themeState.isDark
+                      ? "rgb(156, 163, 175)"
+                      : "rgb(100, 116, 139)",
                   },
                 ]}
-                onPress={() => navigation.goBack()}
               >
-                <Ionicons
-                  name="arrow-back"
-                  size={20}
-                  color={themeState.colors.text}
-                />
-              </TouchableOpacity>
+                Start your learning journey today!
+              </Text>
             </View>
 
-            <View style={styles.content}>
-              {/* Logo Section */}
-              <View style={styles.logoSection}>
-                <Logo size="medium" />
-                <Text style={[styles.title, { color: themeState.colors.text }]}>
-                  Join MyQuiz
+            {/* Form */}
+            <View style={styles.form}>
+              <View style={styles.inputContainer}>
+                <Text style={[styles.label, { color: themeState.colors.text }]}>
+                  Full Name <Text style={styles.required}>*</Text>
                 </Text>
+                <View
+                  style={[
+                    styles.inputWrapper,
+                    {
+                      backgroundColor: themeState.colors.surface,
+                      borderColor: errors.name
+                        ? "rgb(239, 68, 68)"
+                        : themeState.colors.border,
+                    },
+                  ]}
+                >
+                  <Ionicons
+                    name="person"
+                    size={16}
+                    color={
+                      errors.name
+                        ? "rgb(239, 68, 68)"
+                        : themeState.isDark
+                          ? "rgb(156, 163, 175)"
+                          : "rgb(100, 116, 139)"
+                    }
+                    style={styles.inputIcon}
+                  />
+                  <TextInput
+                    style={[styles.input, { color: themeState.colors.text }]}
+                    placeholder="Enter your full name"
+                    placeholderTextColor={
+                      themeState.isDark
+                        ? "rgb(156, 163, 175)"
+                        : "rgb(100, 116, 139)"
+                    }
+                    value={formData.name}
+                    onChangeText={(text) => handleFieldChange("name", text)}
+                    autoCapitalize="words"
+                    autoCorrect={false}
+                  />
+                </View>
+                {errors.name ? (
+                  <Text style={styles.errorText}>{errors.name}</Text>
+                ) : null}
+              </View>
+
+              <View style={styles.inputContainer}>
+                <Text style={[styles.label, { color: themeState.colors.text }]}>
+                  Email <Text style={styles.required}>*</Text>
+                </Text>
+                <View
+                  style={[
+                    styles.inputWrapper,
+                    {
+                      backgroundColor: themeState.colors.surface,
+                      borderColor: errors.email
+                        ? "rgb(239, 68, 68)"
+                        : themeState.colors.border,
+                    },
+                  ]}
+                >
+                  <Ionicons
+                    name="mail"
+                    size={16}
+                    color={
+                      errors.email
+                        ? "rgb(239, 68, 68)"
+                        : themeState.isDark
+                          ? "rgb(156, 163, 175)"
+                          : "rgb(100, 116, 139)"
+                    }
+                    style={styles.inputIcon}
+                  />
+                  <TextInput
+                    style={[styles.input, { color: themeState.colors.text }]}
+                    placeholder="Enter your email"
+                    placeholderTextColor={
+                      themeState.isDark
+                        ? "rgb(156, 163, 175)"
+                        : "rgb(100, 116, 139)"
+                    }
+                    value={formData.email}
+                    onChangeText={(text) => handleFieldChange("email", text)}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                  />
+                </View>
+                {errors.email ? (
+                  <Text style={styles.errorText}>{errors.email}</Text>
+                ) : null}
+              </View>
+
+              <View style={styles.inputContainer}>
+                <Text style={[styles.label, { color: themeState.colors.text }]}>
+                  Password <Text style={styles.required}>*</Text>
+                </Text>
+                <View
+                  style={[
+                    styles.inputWrapper,
+                    {
+                      backgroundColor: themeState.colors.surface,
+                      borderColor: errors.password
+                        ? "rgb(239, 68, 68)"
+                        : themeState.colors.border,
+                    },
+                  ]}
+                >
+                  <Ionicons
+                    name="lock-closed"
+                    size={16}
+                    color={
+                      errors.password
+                        ? "rgb(239, 68, 68)"
+                        : themeState.isDark
+                          ? "rgb(156, 163, 175)"
+                          : "rgb(100, 116, 139)"
+                    }
+                    style={styles.inputIcon}
+                  />
+                  <TextInput
+                    style={[styles.input, { color: themeState.colors.text }]}
+                    placeholder="Create a strong password"
+                    placeholderTextColor={
+                      themeState.isDark
+                        ? "rgb(156, 163, 175)"
+                        : "rgb(100, 116, 139)"
+                    }
+                    value={formData.password}
+                    onChangeText={(text) => handleFieldChange("password", text)}
+                    secureTextEntry={!showPassword}
+                    autoCorrect={false}
+                  />
+                  <TouchableOpacity
+                    onPress={() => setShowPassword(!showPassword)}
+                    style={styles.eyeIcon}
+                  >
+                    <Ionicons
+                      name={showPassword ? "eye" : "eye-off"}
+                      size={16}
+                      color={
+                        themeState.isDark
+                          ? "rgb(156, 163, 175)"
+                          : "rgb(100, 116, 139)"
+                      }
+                    />
+                  </TouchableOpacity>
+                </View>
+                {errors.password ? (
+                  <Text style={styles.errorText}>{errors.password}</Text>
+                ) : null}
                 <Text
                   style={[
-                    styles.subtitle,
+                    styles.helperText,
+                    { color: themeState.colors.textSecondary },
+                  ]}
+                >
+                  Must contain at least 6 characters with letters and numbers
+                </Text>
+              </View>
+
+              <View style={styles.inputContainer}>
+                <Text style={[styles.label, { color: themeState.colors.text }]}>
+                  Referral Code{" "}
+                  <Text
+                    style={[
+                      styles.optional,
+                      { color: themeState.colors.textSecondary },
+                    ]}
+                  >
+                    (Optional)
+                  </Text>
+                </Text>
+                <View
+                  style={[
+                    styles.inputWrapper,
+                    {
+                      backgroundColor: themeState.colors.surface,
+                      borderColor: errors.referralCode
+                        ? "rgb(239, 68, 68)"
+                        : themeState.colors.border,
+                    },
+                  ]}
+                >
+                  <Ionicons
+                    name="gift"
+                    size={16}
+                    color={
+                      errors.referralCode
+                        ? "rgb(239, 68, 68)"
+                        : themeState.isDark
+                          ? "rgb(156, 163, 175)"
+                          : "rgb(100, 116, 139)"
+                    }
+                    style={styles.inputIcon}
+                  />
+                  <TextInput
+                    style={[styles.input, { color: themeState.colors.text }]}
+                    placeholder="Enter referral code"
+                    placeholderTextColor={
+                      themeState.isDark
+                        ? "rgb(156, 163, 175)"
+                        : "rgb(100, 116, 139)"
+                    }
+                    value={formData.referralCode}
+                    onChangeText={(text) =>
+                      handleFieldChange("referralCode", text)
+                    }
+                    autoCapitalize="characters"
+                    autoCorrect={false}
+                    maxLength={6}
+                  />
+                </View>
+                {errors.referralCode ? (
+                  <Text style={styles.errorText}>{errors.referralCode}</Text>
+                ) : null}
+                {!errors.referralCode && formData.referralCode ? (
+                  <Text
+                    style={[styles.helperText, { color: "rgb(34, 197, 94)" }]}
+                  >
+                    Get 50 extra bonus points with a valid referral code!
+                  </Text>
+                ) : null}
+              </View>
+
+              <TouchableOpacity
+                style={[
+                  styles.signupButton,
+                  {
+                    backgroundColor: isLoading
+                      ? "rgba(238, 58, 124, 0.6)"
+                      : "rgb(238, 58, 124)",
+                  },
+                ]}
+                onPress={validateAndSignup}
+                disabled={isLoading}
+              >
+                <Text style={styles.signupButtonText}>
+                  {isLoading ? "Creating Account..." : "Create Account"}
+                </Text>
+              </TouchableOpacity>
+
+              <View style={styles.divider}>
+                <View
+                  style={[
+                    styles.dividerLine,
+                    { backgroundColor: themeState.colors.border },
+                  ]}
+                />
+                <Text
+                  style={[
+                    styles.dividerText,
+                    {
+                      color: themeState.isDark
+                        ? "rgb(156, 163, 175)"
+                        : "rgb(100, 116, 139)",
+                      backgroundColor: themeState.colors.background,
+                    },
+                  ]}
+                >
+                  Or continue with
+                </Text>
+                <View
+                  style={[
+                    styles.dividerLine,
+                    { backgroundColor: themeState.colors.border },
+                  ]}
+                />
+              </View>
+
+              <TouchableOpacity
+                style={[
+                  styles.googleButton,
+                  {
+                    borderColor: themeState.colors.border,
+                    backgroundColor: themeState.colors.surface,
+                  },
+                ]}
+                onPress={handleGoogleSignup}
+              >
+                <Ionicons
+                  name="logo-google"
+                  size={16}
+                  color={themeState.colors.text}
+                />
+                <Text
+                  style={[
+                    styles.googleButtonText,
+                    { color: themeState.colors.text },
+                  ]}
+                >
+                  Sign up with Google
+                </Text>
+              </TouchableOpacity>
+
+              <View style={styles.loginPrompt}>
+                <Text
+                  style={[
+                    styles.loginText,
                     {
                       color: themeState.isDark
                         ? "rgb(156, 163, 175)"
@@ -195,342 +505,17 @@ export default function SignupScreen() {
                     },
                   ]}
                 >
-                  Start your learning journey today!
+                  Already have an account?{" "}
                 </Text>
-              </View>
-
-              {/* Form */}
-              <View style={styles.form}>
-                <View style={styles.inputContainer}>
-                  <Text
-                    style={[styles.label, { color: themeState.colors.text }]}
-                  >
-                    Full Name <Text style={styles.required}>*</Text>
-                  </Text>
-                  <View
-                    style={[
-                      styles.inputWrapper,
-                      {
-                        backgroundColor: themeState.colors.surface,
-                        borderColor: errors.name
-                          ? "rgb(239, 68, 68)"
-                          : themeState.colors.border,
-                      },
-                    ]}
-                  >
-                    <Ionicons
-                      name="person"
-                      size={16}
-                      color={
-                        errors.name
-                          ? "rgb(239, 68, 68)"
-                          : themeState.isDark
-                            ? "rgb(156, 163, 175)"
-                            : "rgb(100, 116, 139)"
-                      }
-                      style={styles.inputIcon}
-                    />
-                    <TextInput
-                      style={[styles.input, { color: themeState.colors.text }]}
-                      placeholder="Enter your full name"
-                      placeholderTextColor={
-                        themeState.isDark
-                          ? "rgb(156, 163, 175)"
-                          : "rgb(100, 116, 139)"
-                      }
-                      value={formData.name}
-                      onChangeText={(text) => handleFieldChange("name", text)}
-                      autoCapitalize="words"
-                      autoCorrect={false}
-                    />
-                  </View>
-                  {errors.name ? (
-                    <Text style={styles.errorText}>{errors.name}</Text>
-                  ) : null}
-                </View>
-
-                <View style={styles.inputContainer}>
-                  <Text
-                    style={[styles.label, { color: themeState.colors.text }]}
-                  >
-                    Email <Text style={styles.required}>*</Text>
-                  </Text>
-                  <View
-                    style={[
-                      styles.inputWrapper,
-                      {
-                        backgroundColor: themeState.colors.surface,
-                        borderColor: errors.email
-                          ? "rgb(239, 68, 68)"
-                          : themeState.colors.border,
-                      },
-                    ]}
-                  >
-                    <Ionicons
-                      name="mail"
-                      size={16}
-                      color={
-                        errors.email
-                          ? "rgb(239, 68, 68)"
-                          : themeState.isDark
-                            ? "rgb(156, 163, 175)"
-                            : "rgb(100, 116, 139)"
-                      }
-                      style={styles.inputIcon}
-                    />
-                    <TextInput
-                      style={[styles.input, { color: themeState.colors.text }]}
-                      placeholder="Enter your email"
-                      placeholderTextColor={
-                        themeState.isDark
-                          ? "rgb(156, 163, 175)"
-                          : "rgb(100, 116, 139)"
-                      }
-                      value={formData.email}
-                      onChangeText={(text) => handleFieldChange("email", text)}
-                      keyboardType="email-address"
-                      autoCapitalize="none"
-                      autoCorrect={false}
-                    />
-                  </View>
-                  {errors.email ? (
-                    <Text style={styles.errorText}>{errors.email}</Text>
-                  ) : null}
-                </View>
-
-                <View style={styles.inputContainer}>
-                  <Text
-                    style={[styles.label, { color: themeState.colors.text }]}
-                  >
-                    Password <Text style={styles.required}>*</Text>
-                  </Text>
-                  <View
-                    style={[
-                      styles.inputWrapper,
-                      {
-                        backgroundColor: themeState.colors.surface,
-                        borderColor: errors.password
-                          ? "rgb(239, 68, 68)"
-                          : themeState.colors.border,
-                      },
-                    ]}
-                  >
-                    <Ionicons
-                      name="lock-closed"
-                      size={16}
-                      color={
-                        errors.password
-                          ? "rgb(239, 68, 68)"
-                          : themeState.isDark
-                            ? "rgb(156, 163, 175)"
-                            : "rgb(100, 116, 139)"
-                      }
-                      style={styles.inputIcon}
-                    />
-                    <TextInput
-                      style={[styles.input, { color: themeState.colors.text }]}
-                      placeholder="Create a strong password"
-                      placeholderTextColor={
-                        themeState.isDark
-                          ? "rgb(156, 163, 175)"
-                          : "rgb(100, 116, 139)"
-                      }
-                      value={formData.password}
-                      onChangeText={(text) =>
-                        handleFieldChange("password", text)
-                      }
-                      secureTextEntry={!showPassword}
-                      autoCorrect={false}
-                    />
-                    <TouchableOpacity
-                      onPress={() => setShowPassword(!showPassword)}
-                      style={styles.eyeIcon}
-                    >
-                      <Ionicons
-                        name={showPassword ? "eye" : "eye-off"}
-                        size={16}
-                        color={
-                          themeState.isDark
-                            ? "rgb(156, 163, 175)"
-                            : "rgb(100, 116, 139)"
-                        }
-                      />
-                    </TouchableOpacity>
-                  </View>
-                  {errors.password ? (
-                    <Text style={styles.errorText}>{errors.password}</Text>
-                  ) : null}
-                  <Text
-                    style={[
-                      styles.helperText,
-                      { color: themeState.colors.textSecondary },
-                    ]}
-                  >
-                    Must contain at least 6 characters with letters and numbers
-                  </Text>
-                </View>
-
-                <View style={styles.inputContainer}>
-                  <Text
-                    style={[styles.label, { color: themeState.colors.text }]}
-                  >
-                    Referral Code{" "}
-                    <Text
-                      style={[
-                        styles.optional,
-                        { color: themeState.colors.textSecondary },
-                      ]}
-                    >
-                      (Optional)
-                    </Text>
-                  </Text>
-                  <View
-                    style={[
-                      styles.inputWrapper,
-                      {
-                        backgroundColor: themeState.colors.surface,
-                        borderColor: errors.referralCode
-                          ? "rgb(239, 68, 68)"
-                          : themeState.colors.border,
-                      },
-                    ]}
-                  >
-                    <Ionicons
-                      name="gift"
-                      size={16}
-                      color={
-                        errors.referralCode
-                          ? "rgb(239, 68, 68)"
-                          : themeState.isDark
-                            ? "rgb(156, 163, 175)"
-                            : "rgb(100, 116, 139)"
-                      }
-                      style={styles.inputIcon}
-                    />
-                    <TextInput
-                      style={[styles.input, { color: themeState.colors.text }]}
-                      placeholder="Enter referral code"
-                      placeholderTextColor={
-                        themeState.isDark
-                          ? "rgb(156, 163, 175)"
-                          : "rgb(100, 116, 139)"
-                      }
-                      value={formData.referralCode}
-                      onChangeText={(text) =>
-                        handleFieldChange("referralCode", text)
-                      }
-                      autoCapitalize="characters"
-                      autoCorrect={false}
-                      maxLength={6}
-                    />
-                  </View>
-                  {errors.referralCode ? (
-                    <Text style={styles.errorText}>{errors.referralCode}</Text>
-                  ) : null}
-                  {!errors.referralCode && formData.referralCode ? (
-                    <Text
-                      style={[styles.helperText, { color: "rgb(34, 197, 94)" }]}
-                    >
-                      Get 50 extra bonus points with a valid referral code!
-                    </Text>
-                  ) : null}
-                </View>
-
-                <TouchableOpacity
-                  style={[
-                    styles.signupButton,
-                    {
-                      backgroundColor: isLoading
-                        ? "rgba(238, 58, 124, 0.6)"
-                        : "rgb(238, 58, 124)",
-                    },
-                  ]}
-                  onPress={validateAndSignup}
-                  disabled={isLoading}
-                >
-                  <Text style={styles.signupButtonText}>
-                    {isLoading ? "Creating Account..." : "Create Account"}
-                  </Text>
+                <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+                  <Text style={styles.loginLink}>Login here</Text>
                 </TouchableOpacity>
-
-                <View style={styles.divider}>
-                  <View
-                    style={[
-                      styles.dividerLine,
-                      { backgroundColor: themeState.colors.border },
-                    ]}
-                  />
-                  <Text
-                    style={[
-                      styles.dividerText,
-                      {
-                        color: themeState.isDark
-                          ? "rgb(156, 163, 175)"
-                          : "rgb(100, 116, 139)",
-                        backgroundColor: themeState.colors.background,
-                      },
-                    ]}
-                  >
-                    Or continue with
-                  </Text>
-                  <View
-                    style={[
-                      styles.dividerLine,
-                      { backgroundColor: themeState.colors.border },
-                    ]}
-                  />
-                </View>
-
-                <TouchableOpacity
-                  style={[
-                    styles.googleButton,
-                    {
-                      borderColor: themeState.colors.border,
-                      backgroundColor: themeState.colors.surface,
-                    },
-                  ]}
-                  onPress={handleGoogleSignup}
-                >
-                  <Ionicons
-                    name="logo-google"
-                    size={16}
-                    color={themeState.colors.text}
-                  />
-                  <Text
-                    style={[
-                      styles.googleButtonText,
-                      { color: themeState.colors.text },
-                    ]}
-                  >
-                    Sign up with Google
-                  </Text>
-                </TouchableOpacity>
-
-                <View style={styles.loginPrompt}>
-                  <Text
-                    style={[
-                      styles.loginText,
-                      {
-                        color: themeState.isDark
-                          ? "rgb(156, 163, 175)"
-                          : "rgb(100, 116, 139)",
-                      },
-                    ]}
-                  >
-                    Already have an account?{" "}
-                  </Text>
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate("Login")}
-                  >
-                    <Text style={styles.loginLink}>Login here</Text>
-                  </TouchableOpacity>
-                </View>
               </View>
             </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
-    </GradientBackground>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeGradientBackground>
   );
 }
 
@@ -546,9 +531,8 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: Spacing.md,
-    paddingTop: 30,
+    // paddingTop: 30,
     paddingBottom: Spacing.sm,
-
   },
   backButton: {
     padding: Spacing.sm,

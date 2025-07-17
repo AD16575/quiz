@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  SafeAreaView,
   ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -12,7 +11,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
-import GradientBackground from "../components/common/GradientBackground";
+import SafeGradientBackground from "../components/common/SafeGradientBackground";
 import Logo from "../components/common/Logo";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types";
@@ -84,182 +83,176 @@ export default function ProfileScreen() {
   );
 
   return (
-    <GradientBackground>
-      <SafeAreaView style={styles.container}>
-        {/* Header */}
-        <View style={styles.header}>
-          <TouchableOpacity
-            style={[
-              styles.backButton,
-              {
-                backgroundColor: themeState.colors.surface,
-                borderColor: themeState.colors.border,
-              },
-            ]}
-            onPress={() => navigation.goBack()}
-          >
-            <Ionicons
-              name="arrow-back"
-              size={20}
-              color={themeState.colors.text}
-            />
-          </TouchableOpacity>
-          <Text style={[styles.headerTitle, { color: themeState.colors.text }]}>
-            Profile
+    <SafeGradientBackground style={styles.container}>
+      {/* Header */}
+      <View style={styles.header}>
+        <TouchableOpacity
+          style={[
+            styles.backButton,
+            {
+              backgroundColor: themeState.colors.surface,
+              borderColor: themeState.colors.border,
+            },
+          ]}
+          onPress={() => navigation.goBack()}
+        >
+          <Ionicons
+            name="arrow-back"
+            size={20}
+            color={themeState.colors.text}
+          />
+        </TouchableOpacity>
+        <Text style={[styles.headerTitle, { color: themeState.colors.text }]}>
+          Profile
+        </Text>
+        <TouchableOpacity
+          style={[
+            styles.themeButton,
+            {
+              backgroundColor: themeState.colors.surface,
+              borderColor: themeState.colors.border,
+            },
+          ]}
+          onPress={toggleTheme}
+        >
+          <Ionicons
+            name={themeState.isDark ? "sunny" : "moon"}
+            size={20}
+            color={themeState.colors.text}
+          />
+        </TouchableOpacity>
+      </View>
+
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* User Info */}
+        <View style={styles.userSection}>
+          <Logo size="large" />
+          <Text style={[styles.userName, { color: themeState.colors.text }]}>
+            {user.name}
           </Text>
-          <TouchableOpacity
+          <Text
             style={[
-              styles.themeButton,
-              {
-                backgroundColor: themeState.colors.surface,
-                borderColor: themeState.colors.border,
-              },
+              styles.userEmail,
+              { color: themeState.colors.textSecondary },
             ]}
-            onPress={toggleTheme}
           >
-            <Ionicons
-              name={themeState.isDark ? "sunny" : "moon"}
-              size={20}
-              color={themeState.colors.text}
-            />
-          </TouchableOpacity>
+            {user.email}
+          </Text>
+          <Text
+            style={[
+              styles.memberSince,
+              { color: themeState.colors.textSecondary },
+            ]}
+          >
+            Member since {user.memberSince.getFullYear()}
+          </Text>
         </View>
 
-        <ScrollView
-          style={styles.scrollView}
-          contentContainerStyle={styles.scrollContent}
-          showsVerticalScrollIndicator={false}
-        >
-          {/* User Info */}
-          <View style={styles.userSection}>
-            <Logo size="large" />
-            <Text style={[styles.userName, { color: themeState.colors.text }]}>
-              {user.name}
-            </Text>
-            <Text
-              style={[
-                styles.userEmail,
-                { color: themeState.colors.textSecondary },
-              ]}
-            >
-              {user.email}
-            </Text>
-            <Text
-              style={[
-                styles.memberSince,
-                { color: themeState.colors.textSecondary },
-              ]}
-            >
-              Member since {user.memberSince.getFullYear()}
-            </Text>
-          </View>
-
-          {/* Stats */}
-          <View style={styles.statsSection}>
-            <View
-              style={[
-                styles.statsCard,
-                { backgroundColor: themeState.colors.surface },
-              ]}
-            >
-              <View style={styles.statItem}>
-                <Text
-                  style={[styles.statValue, { color: "rgb(238, 58, 124)" }]}
-                >
-                  {user.points}
-                </Text>
-                <Text
-                  style={[
-                    styles.statLabel,
-                    { color: themeState.colors.textSecondary },
-                  ]}
-                >
-                  Total Points
-                </Text>
-              </View>
-              <View style={styles.statItem}>
-                <Text
-                  style={[styles.statValue, { color: "rgb(24, 154, 144)" }]}
-                >
-                  {user.totalQuizzes}
-                </Text>
-                <Text
-                  style={[
-                    styles.statLabel,
-                    { color: themeState.colors.textSecondary },
-                  ]}
-                >
-                  Quizzes Played
-                </Text>
-              </View>
-              <View style={styles.statItem}>
-                <Text style={[styles.statValue, { color: "rgb(255, 204, 0)" }]}>
-                  ₹{user.withdrawableAmount}
-                </Text>
-                <Text
-                  style={[
-                    styles.statLabel,
-                    { color: themeState.colors.textSecondary },
-                  ]}
-                >
-                  Withdrawable
-                </Text>
-              </View>
+        {/* Stats */}
+        <View style={styles.statsSection}>
+          <View
+            style={[
+              styles.statsCard,
+              { backgroundColor: themeState.colors.surface },
+            ]}
+          >
+            <View style={styles.statItem}>
+              <Text style={[styles.statValue, { color: "rgb(238, 58, 124)" }]}>
+                {user.points}
+              </Text>
+              <Text
+                style={[
+                  styles.statLabel,
+                  { color: themeState.colors.textSecondary },
+                ]}
+              >
+                Total Points
+              </Text>
+            </View>
+            <View style={styles.statItem}>
+              <Text style={[styles.statValue, { color: "rgb(24, 154, 144)" }]}>
+                {user.totalQuizzes}
+              </Text>
+              <Text
+                style={[
+                  styles.statLabel,
+                  { color: themeState.colors.textSecondary },
+                ]}
+              >
+                Quizzes Played
+              </Text>
+            </View>
+            <View style={styles.statItem}>
+              <Text style={[styles.statValue, { color: "rgb(255, 204, 0)" }]}>
+                ₹{user.withdrawableAmount}
+              </Text>
+              <Text
+                style={[
+                  styles.statLabel,
+                  { color: themeState.colors.textSecondary },
+                ]}
+              >
+                Withdrawable
+              </Text>
             </View>
           </View>
+        </View>
 
-          {/* Profile Options */}
-          <View style={styles.optionsSection}>
-            <ProfileOption
-              icon="people"
-              title="Referral Program"
-              subtitle={`${user.referredUsers} friends referred`}
-              onPress={() => navigation.navigate("Referral")}
-              color="rgb(24, 154, 144)"
-            />
-            <ProfileOption
-              icon="wallet"
-              title="Withdrawal"
-              subtitle={`₹${user.withdrawableAmount} available`}
-              onPress={() => navigation.navigate("Withdrawal")}
-              color="rgb(255, 204, 0)"
-            />
-            <ProfileOption
-              icon="list"
-              title="Point History"
-              subtitle="View all transactions"
-              onPress={() => navigation.navigate("PointHistory")}
-              color="rgb(147, 51, 234)"
-            />
-            <ProfileOption
-              icon="trophy"
-              title="Leaderboard"
-              subtitle="See your ranking"
-              onPress={() => navigation.navigate("Leaderboard")}
-              color="rgb(249, 115, 22)"
-            />
-            <ProfileOption
-              icon="settings"
-              title="Settings"
-              subtitle="App preferences"
-              onPress={() => { }} // Placeholder
-              color="rgb(100, 116, 139)"
-            />
-          </View>
+        {/* Profile Options */}
+        <View style={styles.optionsSection}>
+          <ProfileOption
+            icon="people"
+            title="Referral Program"
+            subtitle={`${user.referredUsers} friends referred`}
+            onPress={() => navigation.navigate("Referral")}
+            color="rgb(24, 154, 144)"
+          />
+          <ProfileOption
+            icon="wallet"
+            title="Withdrawal"
+            subtitle={`₹${user.withdrawableAmount} available`}
+            onPress={() => navigation.navigate("Withdrawal")}
+            color="rgb(255, 204, 0)"
+          />
+          <ProfileOption
+            icon="list"
+            title="Point History"
+            subtitle="View all transactions"
+            onPress={() => navigation.navigate("PointHistory")}
+            color="rgb(147, 51, 234)"
+          />
+          <ProfileOption
+            icon="trophy"
+            title="Leaderboard"
+            subtitle="See your ranking"
+            onPress={() => navigation.navigate("Leaderboard")}
+            color="rgb(249, 115, 22)"
+          />
+          <ProfileOption
+            icon="settings"
+            title="Settings"
+            subtitle="App preferences"
+            onPress={() => {}} // Placeholder
+            color="rgb(100, 116, 139)"
+          />
+        </View>
 
-          {/* Logout */}
-          <View style={styles.logoutSection}>
-            <TouchableOpacity
-              style={[styles.logoutButton, { borderColor: "rgb(239, 68, 68)" }]}
-              onPress={handleLogout}
-            >
-              <Ionicons name="log-out" size={20} color="rgb(239, 68, 68)" />
-              <Text style={styles.logoutText}>Logout</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </GradientBackground>
+        {/* Logout */}
+        <View style={styles.logoutSection}>
+          <TouchableOpacity
+            style={[styles.logoutButton, { borderColor: "rgb(239, 68, 68)" }]}
+            onPress={handleLogout}
+          >
+            <Ionicons name="log-out" size={20} color="rgb(239, 68, 68)" />
+            <Text style={styles.logoutText}>Logout</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </SafeGradientBackground>
   );
 }
 
@@ -273,7 +266,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.md,
-    paddingTop: 30,
+    // paddingTop: 30,
     borderBottomWidth: 1,
     borderBottomColor: "rgba(255, 255, 255, 0.1)",
   },

@@ -8,6 +8,12 @@ interface GradientBackgroundProps {
   style?: ViewStyle;
 }
 
+// [
+//   "rgba(238, 58, 124, 0.1)",
+//   "rgb(255, 255, 255)",
+//   "rgba(24, 154, 144, 0.1)",
+// ];
+
 export default function GradientBackground({
   children,
   style,
@@ -16,9 +22,9 @@ export default function GradientBackground({
 
   const gradientColors = themeState.isDark
     ? [
-        "rgba(238, 58, 124, 0.015)",
-        "rgb(11, 17, 30)",
-        "rgba(24, 154, 144, 0.015)",
+        "rgba(0, 0, 0, 1)",
+        "rgb(0, 0, 0)",
+        "rgba(0, 0, 0, 1)",
       ]
     : [
         "rgba(238, 58, 124, 0.1)",

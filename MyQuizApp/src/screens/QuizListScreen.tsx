@@ -5,14 +5,13 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  SafeAreaView,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
-import GradientBackground from "../components/common/GradientBackground";
+import SafeGradientBackground from "../components/common/SafeGradientBackground";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types";
 
@@ -111,13 +110,26 @@ export default function QuizListScreen() {
               style={[
                 styles.difficultyBadge,
                 {
-                  backgroundColor: difficultyColors[quiz.difficulty as keyof typeof difficultyColors].background,
-                  borderColor: difficultyColors[quiz.difficulty as keyof typeof difficultyColors].border,
-                }]}>
+                  backgroundColor:
+                    difficultyColors[
+                      quiz.difficulty as keyof typeof difficultyColors
+                    ].background,
+                  borderColor:
+                    difficultyColors[
+                      quiz.difficulty as keyof typeof difficultyColors
+                    ].border,
+                },
+              ]}
+            >
               <Text
                 style={[
                   styles.difficultyText,
-                  { color: difficultyColors[quiz.difficulty as keyof typeof difficultyColors].text },
+                  {
+                    color:
+                      difficultyColors[
+                        quiz.difficulty as keyof typeof difficultyColors
+                      ].text,
+                  },
                 ]}
               >
                 {quiz.difficulty}
@@ -210,11 +222,7 @@ export default function QuizListScreen() {
               styles.playButton,
               { backgroundColor: "rgb(24, 154, 144)" },
             ]}
-            onPress={() =>
-              navigation.navigate(
-                "QuizPlay", { quizId: quiz.id }
-              )
-            }
+            onPress={() => navigation.navigate("QuizPlay", { quizId: quiz.id })}
           >
             <Ionicons name="play" size={16} color="white" />
             <Text style={styles.playButtonText}>Play</Text>
@@ -236,82 +244,80 @@ export default function QuizListScreen() {
   );
 
   return (
-    <GradientBackground>
-      <SafeAreaView style={styles.container}>
-        {/* Header */}
-        <View style={styles.header}>
-          <View style={styles.headerLeft}>
-            <TouchableOpacity
-              style={[
-                styles.backButton,
-                {
-                  backgroundColor: themeState.colors.surface,
-                  borderColor: themeState.colors.border,
-                },
-              ]}
-              onPress={() => navigation.goBack()}
+    <SafeGradientBackground style={styles.container}>
+      {/* Header */}
+      <View style={styles.header}>
+        <View style={styles.headerLeft}>
+          <TouchableOpacity
+            style={[
+              styles.backButton,
+              {
+                backgroundColor: themeState.colors.surface,
+                borderColor: themeState.colors.border,
+              },
+            ]}
+            onPress={() => navigation.goBack()}
+          >
+            <Ionicons
+              name="arrow-back"
+              size={20}
+              color={themeState.colors.text}
+            />
+          </TouchableOpacity>
+          <View style={styles.headerText}>
+            <Text
+              style={[styles.headerTitle, { color: themeState.colors.text }]}
             >
-              <Ionicons
-                name="arrow-back"
-                size={20}
-                color={themeState.colors.text}
-              />
-            </TouchableOpacity>
-            <View style={styles.headerText}>
-              <Text
-                style={[styles.headerTitle, { color: themeState.colors.text }]}
-              >
-                {categoryId ? categoryNames[categoryId] : "Quizzes"}
-              </Text>
-              <Text
-                style={[
-                  styles.headerSubtitle,
-                  { color: themeState.colors.textSecondary },
-                ]}
-              >
-                {mockQuizzes.length} quizzes available
-              </Text>
-            </View>
-          </View>
-        </View>
-
-        <ScrollView
-          style={styles.scrollView}
-          contentContainerStyle={styles.scrollContent}
-          showsVerticalScrollIndicator={false}
-        >
-          {/* Quiz Cards */}
-          <View style={styles.quizzesContainer}>
-            {mockQuizzes.map((quiz, index) => (
-              <QuizCard key={quiz.id} quiz={quiz} />
-            ))}
-          </View>
-
-          {/* Browse More Section */}
-          <View style={styles.browseMoreSection}>
+              {categoryId ? categoryNames[categoryId] : "Quizzes"}
+            </Text>
             <Text
               style={[
-                styles.browseMoreText,
+                styles.headerSubtitle,
                 { color: themeState.colors.textSecondary },
               ]}
             >
-              Looking for more quizzes?
+              {mockQuizzes.length} quizzes available
             </Text>
-            <TouchableOpacity
-              style={[
-                styles.browseMoreButton,
-                { borderColor: "rgb(238, 58, 124)" },
-              ]}
-              onPress={() => navigation.navigate("QuizCategories")}
-            >
-              <Text style={styles.browseMoreButtonText}>
-                Browse All Categories
-              </Text>
-            </TouchableOpacity>
           </View>
-        </ScrollView>
-      </SafeAreaView>
-    </GradientBackground>
+        </View>
+      </View>
+
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Quiz Cards */}
+        <View style={styles.quizzesContainer}>
+          {mockQuizzes.map((quiz, index) => (
+            <QuizCard key={quiz.id} quiz={quiz} />
+          ))}
+        </View>
+
+        {/* Browse More Section */}
+        <View style={styles.browseMoreSection}>
+          <Text
+            style={[
+              styles.browseMoreText,
+              { color: themeState.colors.textSecondary },
+            ]}
+          >
+            Looking for more quizzes?
+          </Text>
+          <TouchableOpacity
+            style={[
+              styles.browseMoreButton,
+              { borderColor: "rgb(238, 58, 124)" },
+            ]}
+            onPress={() => navigation.navigate("QuizCategories")}
+          >
+            <Text style={styles.browseMoreButtonText}>
+              Browse All Categories
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </SafeGradientBackground>
   );
 }
 
@@ -325,7 +331,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.md,
-    paddingTop: 30,
+    // paddingTop: 30,
     borderBottomWidth: 1,
     borderBottomColor: "rgba(255, 255, 255, 0.1)",
   },

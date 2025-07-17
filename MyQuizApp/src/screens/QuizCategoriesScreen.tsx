@@ -5,7 +5,6 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  SafeAreaView,
   Dimensions,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -14,7 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
-import GradientBackground from "../components/common/GradientBackground";
+import SafeGradientBackground from "../components/common/SafeGradientBackground";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types";
 
@@ -86,10 +85,7 @@ export default function QuizCategoriesScreen() {
         { backgroundColor: themeState.colors.surface },
       ]}
       onPress={() =>
-        navigation.navigate(
-          "QuizList",
-          { categoryId: category.id },
-        )
+        navigation.navigate("QuizList", { categoryId: category.id })
       }
       activeOpacity={0.8}
     >
@@ -146,10 +142,7 @@ export default function QuizCategoriesScreen() {
               { backgroundColor: "rgb(24, 154, 144)" },
             ]}
             onPress={() =>
-              navigation.navigate(
-                "QuizList",
-                { categoryId: category.id },
-              )
+              navigation.navigate("QuizList", { categoryId: category.id })
             }
           >
             <Text style={styles.playButtonText}>Play Now</Text>
@@ -180,115 +173,113 @@ export default function QuizCategoriesScreen() {
   );
 
   return (
-    <GradientBackground>
-      <SafeAreaView style={styles.container}>
-        {/* Header */}
-        <View style={styles.header}>
-          <View style={styles.headerLeft}>
-            <TouchableOpacity
-              style={[
-                styles.backButton,
-                {
-                  backgroundColor: themeState.colors.surface,
-                  borderColor: themeState.colors.border,
-                },
-              ]}
-              onPress={() => navigation.goBack()}
+    <SafeGradientBackground style={styles.container}>
+      {/* Header */}
+      <View style={styles.header}>
+        <View style={styles.headerLeft}>
+          <TouchableOpacity
+            style={[
+              styles.backButton,
+              {
+                backgroundColor: themeState.colors.surface,
+                borderColor: themeState.colors.border,
+              },
+            ]}
+            onPress={() => navigation.goBack()}
+          >
+            <Ionicons
+              name="arrow-back"
+              size={20}
+              color={themeState.colors.text}
+            />
+          </TouchableOpacity>
+          <View style={styles.headerText}>
+            <Text
+              style={[styles.headerTitle, { color: themeState.colors.text }]}
             >
+              Quiz Categories
+            </Text>
+            <Text
+              style={[
+                styles.headerSubtitle,
+                { color: themeState.colors.textSecondary },
+              ]}
+            >
+              Choose your favorite topic
+            </Text>
+          </View>
+        </View>
+        {user && (
+          <View style={styles.pointsContainer}>
+            <Text
+              style={[styles.pointsText, { color: themeState.colors.text }]}
+            >
+              {user.points} points
+            </Text>
+          </View>
+        )}
+      </View>
+
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Categories Grid */}
+        <View style={styles.categoriesContainer}>
+          {categories.map((category, index) => (
+            <CategoryCard key={category.id} category={category} />
+          ))}
+        </View>
+
+        {/* Random Quiz Card */}
+        <View style={styles.randomQuizSection}>
+          <View
+            style={[
+              styles.randomQuizCard,
+              {
+                backgroundColor: "rgba(238, 58, 124, 0.1)",
+                borderColor: "rgba(238, 58, 124, 0.2)",
+              },
+            ]}
+          >
+            <View style={styles.randomQuizContent}>
               <Ionicons
-                name="arrow-back"
-                size={20}
-                color={themeState.colors.text}
+                name="library-outline"
+                size={48}
+                color="rgb(238, 58, 124)"
+                style={styles.randomQuizIcon}
               />
-            </TouchableOpacity>
-            <View style={styles.headerText}>
               <Text
-                style={[styles.headerTitle, { color: themeState.colors.text }]}
+                style={[
+                  styles.randomQuizTitle,
+                  { color: themeState.colors.text },
+                ]}
               >
-                Quiz Categories
+                Can't Decide?
               </Text>
               <Text
                 style={[
-                  styles.headerSubtitle,
+                  styles.randomQuizDescription,
                   { color: themeState.colors.textSecondary },
                 ]}
               >
-                Choose your favorite topic
+                Let us pick a random quiz for you!
               </Text>
-            </View>
-          </View>
-          {user && (
-            <View style={styles.pointsContainer}>
-              <Text
-                style={[styles.pointsText, { color: themeState.colors.text }]}
+              <TouchableOpacity
+                style={[
+                  styles.surpriseButton,
+                  { borderColor: "rgb(238, 58, 124)" },
+                ]}
+                onPress={() => navigation.navigate("QuizRandom")}
               >
-                {user.points} points
-              </Text>
+                <Text style={styles.surpriseButtonText}>Surprise Me!</Text>
+              </TouchableOpacity>
             </View>
-          )}
+          </View>
         </View>
-
-        <ScrollView
-          style={styles.scrollView}
-          contentContainerStyle={styles.scrollContent}
-          showsVerticalScrollIndicator={false}
-        >
-          {/* Categories Grid */}
-          <View style={styles.categoriesContainer}>
-            {categories.map((category, index) => (
-              <CategoryCard key={category.id} category={category} />
-            ))}
-          </View>
-
-          {/* Random Quiz Card */}
-          <View style={styles.randomQuizSection}>
-            <View
-              style={[
-                styles.randomQuizCard,
-                {
-                  backgroundColor: "rgba(238, 58, 124, 0.1)",
-                  borderColor: "rgba(238, 58, 124, 0.2)",
-                },
-              ]}
-            >
-              <View style={styles.randomQuizContent}>
-                <Ionicons
-                  name="library-outline"
-                  size={48}
-                  color="rgb(238, 58, 124)"
-                  style={styles.randomQuizIcon}
-                />
-                <Text
-                  style={[
-                    styles.randomQuizTitle,
-                    { color: themeState.colors.text },
-                  ]}
-                >
-                  Can't Decide?
-                </Text>
-                <Text
-                  style={[
-                    styles.randomQuizDescription,
-                    { color: themeState.colors.textSecondary },
-                  ]}
-                >
-                  Let us pick a random quiz for you!
-                </Text>
-                <TouchableOpacity
-                  style={[
-                    styles.surpriseButton,
-                    { borderColor: "rgb(238, 58, 124)" },
-                  ]}
-                  onPress={() => navigation.navigate("QuizRandom")}
-                >
-                  <Text style={styles.surpriseButtonText}>Surprise Me!</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </GradientBackground>
+      </ScrollView>
+    </SafeGradientBackground>
   );
 }
 
@@ -302,7 +293,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.md,
-    paddingTop: 30,
+    // paddingTop: 30,
     borderBottomWidth: 1,
     borderBottomColor: "rgba(255, 255, 255, 0.1)",
   },

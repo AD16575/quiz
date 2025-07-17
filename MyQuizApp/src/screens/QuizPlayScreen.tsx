@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  SafeAreaView,
   Alert,
   Dimensions,
 } from "react-native";
@@ -13,7 +12,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
-import GradientBackground from "../components/common/GradientBackground";
+import SafeGradientBackground from "../components/common/SafeGradientBackground";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types";
 
@@ -153,31 +152,31 @@ export default function QuizPlayScreen() {
     if (!showFeedback) {
       return selectedAnswer === index
         ? [
-          styles.answerButton,
-          styles.selectedAnswer,
-          { backgroundColor: "rgba(238, 58, 124, 0.1)" },
-        ]
+            styles.answerButton,
+            styles.selectedAnswer,
+            { backgroundColor: "rgba(238, 58, 124, 0.1)" },
+          ]
         : [
-          styles.answerButton,
-          {
-            backgroundColor: themeState.colors.surface,
-            borderColor: themeState.colors.border,
-          },
-        ];
+            styles.answerButton,
+            {
+              backgroundColor: themeState.colors.surface,
+              borderColor: themeState.colors.border,
+            },
+          ];
     }
 
     if (selectedAnswer === index) {
       return index === currentQ.correctAnswer
         ? [
-          styles.answerButton,
-          styles.correctAnswer,
-          { backgroundColor: "rgba(34, 197, 94, 0.1)" },
-        ]
+            styles.answerButton,
+            styles.correctAnswer,
+            { backgroundColor: "rgba(34, 197, 94, 0.1)" },
+          ]
         : [
-          styles.answerButton,
-          styles.incorrectAnswer,
-          { backgroundColor: "rgba(239, 68, 68, 0.1)" },
-        ];
+            styles.answerButton,
+            styles.incorrectAnswer,
+            { backgroundColor: "rgba(239, 68, 68, 0.1)" },
+          ];
     }
 
     if (index === currentQ.correctAnswer) {
@@ -216,175 +215,162 @@ export default function QuizPlayScreen() {
   };
 
   return (
-    <GradientBackground>
-      <SafeAreaView style={styles.container}>
-        {/* Header */}
-        <View
-          style={[
-            styles.header,
-            {
-              backgroundColor: themeState.colors.background + "CC",
-              borderBottomColor: themeState.colors.border,
-            },
-          ]}
-        >
-          <View style={styles.headerContent}>
-            <View style={styles.headerLeft}>
-              <TouchableOpacity
-                style={[
-                  styles.quitButton,
-                  {
-                    backgroundColor: themeState.colors.surface,
-                    borderColor: themeState.colors.border,
-                  },
-                ]}
-                onPress={handleQuitQuiz}
-              >
-                <Ionicons
-                  name="close"
-                  size={20}
-                  color={themeState.colors.text}
-                />
-              </TouchableOpacity>
-              <View style={styles.headerText}>
-                <Text
-                  style={[styles.quizTitle, { color: themeState.colors.text }]}
-                >
-                  {mockQuiz.title}
-                </Text>
-                <Text
-                  style={[
-                    styles.questionInfo,
-                    { color: themeState.colors.textSecondary },
-                  ]}
-                >
-                  Question {currentQuestion + 1} of {mockQuiz.questions.length}
-                </Text>
-              </View>
-            </View>
-            <View style={styles.timerContainer}>
-              <Ionicons
-                name="time-outline"
-                size={16}
-                color={
-                  timeLeft < 60 ? "rgb(239, 68, 68)" : themeState.colors.text
-                }
-              />
-              <Text
-                style={[
-                  styles.timerText,
-                  {
-                    color:
-                      timeLeft < 60
-                        ? "rgb(239, 68, 68)"
-                        : themeState.colors.text,
-                  },
-                ]}
-              >
-                {formatTime(timeLeft)}
-              </Text>
-            </View>
-          </View>
-          {/* Progress Bar */}
-          <View
-            style={[
-              styles.progressBarContainer,
-              { backgroundColor: themeState.colors.border },
-            ]}
-          >
-            <View
+    <SafeGradientBackground style={styles.container}>
+      {/* Header */}
+      <View
+        style={[
+          styles.header,
+          {
+            backgroundColor: themeState.colors.background + "CC",
+            borderBottomColor: themeState.colors.border,
+          },
+        ]}
+      >
+        <View style={styles.headerContent}>
+          <View style={styles.headerLeft}>
+            <TouchableOpacity
               style={[
-                styles.progressBar,
+                styles.quitButton,
                 {
-                  width: `${progress}%`,
-                  backgroundColor: "rgb(238, 58, 124)",
+                  backgroundColor: themeState.colors.surface,
+                  borderColor: themeState.colors.border,
                 },
               ]}
-            />
-          </View>
-        </View>
-
-        {/* Quiz Content */}
-        <View style={styles.content}>
-          <View
-            style={[
-              styles.questionCard,
-              { backgroundColor: themeState.colors.surface },
-            ]}
-          >
-            {/* Question */}
-            <View style={styles.questionSection}>
+              onPress={handleQuitQuiz}
+            >
+              <Ionicons name="close" size={20} color={themeState.colors.text} />
+            </TouchableOpacity>
+            <View style={styles.headerText}>
               <Text
-                style={[styles.questionText, { color: themeState.colors.text }]}
+                style={[styles.quizTitle, { color: themeState.colors.text }]}
               >
-                {currentQ?.question}
+                {mockQuiz.title}
+              </Text>
+              <Text
+                style={[
+                  styles.questionInfo,
+                  { color: themeState.colors.textSecondary },
+                ]}
+              >
+                Question {currentQuestion + 1} of {mockQuiz.questions.length}
               </Text>
             </View>
-
-            {/* Answers */}
-            <View style={styles.answersSection}>
-              {currentQ?.options.map((option, index) => (
-                <TouchableOpacity
-                  key={index}
-                  style={getAnswerStyle(index)}
-                  onPress={() => handleAnswerSelect(index)}
-                  disabled={showFeedback}
-                  activeOpacity={0.8}
-                >
-                  <Text
-                    style={[
-                      styles.answerText,
-                      { color: themeState.colors.text },
-                    ]}
-                  >
-                    {option}
-                  </Text>
-                  {getAnswerIcon(index)}
-                </TouchableOpacity>
-              ))}
-            </View>
-
-            {/* Next Button or Feedback */}
-            {!showFeedback ? (
-              <TouchableOpacity
-                style={[
-                  styles.nextButton,
-                  {
-                    backgroundColor:
-                      selectedAnswer !== null
-                        ? "rgb(24, 154, 144)"
-                        : "rgba(24, 154, 144, 0.5)",
-                  },
-                ]}
-                onPress={handleNextQuestion}
-                disabled={selectedAnswer === null}
-              >
-                <Text style={styles.nextButtonText}>
-                  {currentQuestion === mockQuiz.questions.length - 1
-                    ? "Finish Quiz"
-                    : "Next Question"}
-                </Text>
-              </TouchableOpacity>
-            ) : (
-              <View style={styles.feedbackSection}>
-                <Text
-                  style={[
-                    styles.feedbackText,
-                    {
-                      color: isCorrect
-                        ? "rgb(34, 197, 94)"
-                        : "rgb(239, 68, 68)",
-                    },
-                  ]}
-                >
-                  {isCorrect ? "Correct! 🎉" : "Incorrect 😔"}
-                </Text>
-              </View>
-            )}
+          </View>
+          <View style={styles.timerContainer}>
+            <Ionicons
+              name="time-outline"
+              size={16}
+              color={
+                timeLeft < 60 ? "rgb(239, 68, 68)" : themeState.colors.text
+              }
+            />
+            <Text
+              style={[
+                styles.timerText,
+                {
+                  color:
+                    timeLeft < 60 ? "rgb(239, 68, 68)" : themeState.colors.text,
+                },
+              ]}
+            >
+              {formatTime(timeLeft)}
+            </Text>
           </View>
         </View>
-      </SafeAreaView>
-    </GradientBackground>
+        {/* Progress Bar */}
+        <View
+          style={[
+            styles.progressBarContainer,
+            { backgroundColor: themeState.colors.border },
+          ]}
+        >
+          <View
+            style={[
+              styles.progressBar,
+              {
+                width: `${progress}%`,
+                backgroundColor: "rgb(238, 58, 124)",
+              },
+            ]}
+          />
+        </View>
+      </View>
+
+      {/* Quiz Content */}
+      <View style={styles.content}>
+        <View
+          style={[
+            styles.questionCard,
+            { backgroundColor: themeState.colors.surface },
+          ]}
+        >
+          {/* Question */}
+          <View style={styles.questionSection}>
+            <Text
+              style={[styles.questionText, { color: themeState.colors.text }]}
+            >
+              {currentQ?.question}
+            </Text>
+          </View>
+
+          {/* Answers */}
+          <View style={styles.answersSection}>
+            {currentQ?.options.map((option, index) => (
+              <TouchableOpacity
+                key={index}
+                style={getAnswerStyle(index)}
+                onPress={() => handleAnswerSelect(index)}
+                disabled={showFeedback}
+                activeOpacity={0.8}
+              >
+                <Text
+                  style={[styles.answerText, { color: themeState.colors.text }]}
+                >
+                  {option}
+                </Text>
+                {getAnswerIcon(index)}
+              </TouchableOpacity>
+            ))}
+          </View>
+
+          {/* Next Button or Feedback */}
+          {!showFeedback ? (
+            <TouchableOpacity
+              style={[
+                styles.nextButton,
+                {
+                  backgroundColor:
+                    selectedAnswer !== null
+                      ? "rgb(24, 154, 144)"
+                      : "rgba(24, 154, 144, 0.5)",
+                },
+              ]}
+              onPress={handleNextQuestion}
+              disabled={selectedAnswer === null}
+            >
+              <Text style={styles.nextButtonText}>
+                {currentQuestion === mockQuiz.questions.length - 1
+                  ? "Finish Quiz"
+                  : "Next Question"}
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <View style={styles.feedbackSection}>
+              <Text
+                style={[
+                  styles.feedbackText,
+                  {
+                    color: isCorrect ? "rgb(34, 197, 94)" : "rgb(239, 68, 68)",
+                  },
+                ]}
+              >
+                {isCorrect ? "Correct! 🎉" : "Incorrect 😔"}
+              </Text>
+            </View>
+          )}
+        </View>
+      </View>
+    </SafeGradientBackground>
   );
 }
 
@@ -396,7 +382,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.md,
-    paddingTop: 40,
+    // paddingTop: 40,
   },
   headerContent: {
     flexDirection: "row",
