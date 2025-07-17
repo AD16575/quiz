@@ -531,7 +531,7 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: Spacing.md,
-    paddingTop: 30,
+    // paddingTop: 30,
     paddingBottom: Spacing.sm,
   },
   backButton: {

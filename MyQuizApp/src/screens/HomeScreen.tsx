@@ -40,12 +40,15 @@ export default function HomeScreen() {
     title: string;
     value: number;
     icon: keyof typeof Ionicons.glyphMap;
-    variant: "default" | "earned" | "withdrawable";
+    variant: "default" | "earned" | "withdrawable" | "defaultDark" | "earnedDark" | "withdrawableDark";
   }) => {
     const gradientColors = {
       default: ["rgb(24, 154, 144)", "rgba(24, 154, 144, 0.8)"],
       earned: ["rgb(255, 204, 0)", "rgb(249, 115, 22)"],
       withdrawable: ["rgb(238, 58, 124)", "rgb(147, 51, 234)"],
+      defaultDark: ["rgba(24, 154, 144, 0.2)", "rgba(24, 154, 144, 0.5)"],
+      earnedDark: ["rgba(255, 204, 0, 0.2)", "rgba(255, 204, 0, 0.5)"],
+      withdrawableDark: ["rgba(238, 58, 124, 0.2)", "rgba(147, 51, 234, 0.5)"],
     };
 
     return (
@@ -176,19 +179,19 @@ export default function HomeScreen() {
             title="Total Points"
             value={user.points}
             icon="star"
-            variant="default"
+            variant={themeState.isDark ? "defaultDark" : "default"}
           />
           <PointCard
             title="Quizzes Played"
             value={user.totalQuizzes}
             icon="play-circle"
-            variant="earned"
+            variant={themeState.isDark ? "earnedDark" : "earned"}
           />
           <PointCard
             title="Withdraw"
             value={user.withdrawableAmount}
             icon="wallet"
-            variant="withdrawable"
+            variant={themeState.isDark ? "withdrawableDark" : "withdrawable"}
           />
         </View>
 
@@ -358,17 +361,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    flexGrow: 1,
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.lg,
-    paddingBottom: 100,
+    // flexGrow: 1,
+    // paddingHorizontal: Spacing.md,
+    // paddingVertical: Spacing.lg,
+    // paddingBottom: 0,
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-start",
     paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.lg,
+    paddingVertical: Spacing.md,
   },
   headerContent: {
     flexDirection: "row",
