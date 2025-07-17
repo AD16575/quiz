@@ -252,6 +252,19 @@ export default function QuizPlayScreen() {
     return null;
   };
 
+  if (loading) {
+    return (
+      <SafeGradientBackground style={styles.container}>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={themeState.colors.primary} />
+          <Text style={[styles.loadingText, { color: themeState.colors.text }]}>
+            Loading quiz...
+          </Text>
+        </View>
+      </SafeGradientBackground>
+    );
+  }
+
   return (
     <SafeGradientBackground style={styles.container}>
       {/* Header */}
