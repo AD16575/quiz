@@ -12,6 +12,13 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { GlobalStyles, GradientColors } from "../styles/globalStyles";
+import {
+  PointCard,
+  Card,
+  Button,
+  Header,
+  IconContainer,
+} from "../components/common";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
 import SafeGradientBackground from "../components/common/SafeGradientBackground";
@@ -32,34 +39,7 @@ export default function HomeScreen() {
 
   if (!user) return null;
 
-  const PointCard = ({
-    title,
-    value,
-    icon,
-    variant,
-  }: {
-    title: string;
-    value: number;
-    icon: keyof typeof Ionicons.glyphMap;
-    variant: keyof typeof GradientColors.pointCards;
-  }) => {
-    return (
-      <LinearGradient
-        colors={GradientColors.pointCards[variant] as [string, string]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-        style={styles.pointCard}
-      >
-        <View style={styles.pointContent}>
-          <Ionicons name={icon} size={20} color="white" />
-          <Text style={styles.pointValue}>
-            {variant === "withdrawable" ? `₹${value}` : value.toLocaleString()}
-          </Text>
-          <Text style={styles.pointTitle}>{title}</Text>
-        </View>
-      </LinearGradient>
-    );
-  };
+  // Using the global PointCard component
 
   const ActionCard = ({
     title,
