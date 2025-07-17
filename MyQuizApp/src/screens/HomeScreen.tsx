@@ -11,6 +11,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
+import { GlobalStyles, GradientColors } from "../styles/globalStyles";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
 import SafeGradientBackground from "../components/common/SafeGradientBackground";
@@ -40,20 +41,11 @@ export default function HomeScreen() {
     title: string;
     value: number;
     icon: keyof typeof Ionicons.glyphMap;
-    variant: "default" | "earned" | "withdrawable" | "defaultDark" | "earnedDark" | "withdrawableDark";
+    variant: keyof typeof GradientColors.pointCards;
   }) => {
-    const gradientColors = {
-      default: ["rgb(24, 154, 144)", "rgba(24, 154, 144, 0.8)"],
-      earned: ["rgb(255, 204, 0)", "rgb(249, 115, 22)"],
-      withdrawable: ["rgb(238, 58, 124)", "rgb(147, 51, 234)"],
-      defaultDark: ["rgba(24, 154, 144, 0.2)", "rgba(24, 154, 144, 0.5)"],
-      earnedDark: ["rgba(255, 204, 0, 0.2)", "rgba(255, 204, 0, 0.5)"],
-      withdrawableDark: ["rgba(238, 58, 124, 0.2)", "rgba(147, 51, 234, 0.5)"],
-    };
-
     return (
       <LinearGradient
-        colors={gradientColors[variant] as [string, string]}
+        colors={GradientColors.pointCards[variant] as [string, string]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
         style={styles.pointCard}
