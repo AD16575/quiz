@@ -70,7 +70,7 @@ export default function SplashScreen() {
 
     // Navigate to welcome screen after 3 seconds (matching web)
     const timer = setTimeout(() => {
-      navigation.navigate("Welcome" as never);
+      navigation.replace("Welcome" as never);
     }, 3000);
 
     return () => clearTimeout(timer);
