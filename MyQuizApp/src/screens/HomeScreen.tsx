@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
+  ActivityIndicator,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
@@ -22,6 +23,7 @@ import {
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
 import SafeGradientBackground from "../components/common/SafeGradientBackground";
+import api from "../lib/api";
 import Logo from "../components/common/Logo";
 import GradientText from "../components/common/GradientText";
 import { StackNavigationProp } from "@react-navigation/stack";
