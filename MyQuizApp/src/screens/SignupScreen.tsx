@@ -16,6 +16,8 @@ import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
 import SafeGradientBackground from "../components/common/SafeGradientBackground";
+import api from "../lib/api";
+import { TokenManager } from "../lib/axios";
 import Logo from "../components/common/Logo";
 import {
   validateEmail,
@@ -64,38 +66,42 @@ export default function SignupScreen() {
     setIsLoading(true);
 
     try {
-      // Simulate API call delay
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      // Check if email already exists (mock validation)
-      if (formData.email === "existing@example.com") {
-        setErrors({ email: "Email already exists" });
-        setIsLoading(false);
-        return;
-      }
-
-      // Check if referral code is valid (mock validation)
-      if (
-        formData.referralCode &&
-        formData.referralCode !== "VALID1" &&
-        formData.referralCode !== "BONUS2"
-      ) {
-        setErrors({ referralCode: "Invalid referral code" });
-        setIsLoading(false);
-        return;
-      }
-
-      // Mock successful signup
-      const newUser = {
-        id: "1",
+      console.log("🔧 Attempting registration with:", {
         name: formData.name,
         email: formData.email,
-        points: formData.referralCode ? 150 : 100, // Bonus points for referral
-        totalQuizzes: 0,
-        withdrawableAmount: 0,
-        referralCode: Math.random().toString(36).substring(2, 8).toUpperCase(),
-        referredUsers: 0,
-        memberSince: new Date(),
+        referralCode: formData.referralCode,
+      });
+
+      // Call the real register API
+      const response = await api.register({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+      });
+
+      console.log("✅ Registration successful:", response);
+
+      // Store the token if provided
+      if (response.token) {
+        await TokenManager.setToken(response.token);
+        console.log("🔐 Token saved successfully");
+      }
+
+      // Create user object from response
+      const newUser = {
+        id: response.user?.id || response.id,
+        name: response.user?.name || response.name,
+        email: response.user?.email || response.email,
+        points: response.user?.points || (formData.referralCode ? 150 : 100),
+        totalQuizzes: response.user?.totalQuizzes || 0,
+        withdrawableAmount: response.user?.withdrawableAmount || 0,
+        referralCode:
+          response.user?.referralCode ||
+          Math.random().toString(36).substring(2, 8).toUpperCase(),
+        referredUsers: response.user?.referredUsers || 0,
+        memberSince: response.user?.memberSince
+          ? new Date(response.user.memberSince)
+          : new Date(),
       };
 
       dispatch({ type: "SET_USER", payload: newUser });
