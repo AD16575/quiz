@@ -23,7 +23,7 @@ type NavigationProp = StackNavigationProp<RootStackParamList>;
 
 const { width } = Dimensions.get("window");
 
-const categories = [
+const categoriesData = [
   {
     id: "general",
     name: "General Knowledge",
