@@ -290,7 +290,7 @@ export default function QuizPlayScreen() {
                   { color: themeState.colors.textSecondary },
                 ]}
               >
-                Question {currentQuestion + 1} of {mockQuiz.questions.length}
+                Question {currentQuestion + 1} of {quiz.questions.length}
               </Text>
             </View>
           </View>
@@ -387,7 +387,7 @@ export default function QuizPlayScreen() {
               disabled={selectedAnswer === null}
             >
               <Text style={styles.nextButtonText}>
-                {currentQuestion === mockQuiz.questions.length - 1
+                {currentQuestion === quiz.questions.length - 1
                   ? "Finish Quiz"
                   : "Next Question"}
               </Text>
