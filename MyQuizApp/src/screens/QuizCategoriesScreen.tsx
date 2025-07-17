@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
+  ActivityIndicator,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
@@ -14,6 +15,7 @@ import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
 import SafeGradientBackground from "../components/common/SafeGradientBackground";
+import api from "../lib/api";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types";
 
@@ -77,6 +79,42 @@ export default function QuizCategoriesScreen() {
   const { state } = useQuiz();
   const { state: themeState } = useTheme();
   const { user } = state;
+
+  const [categories, setCategories] = useState(categoriesData);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  // Load categories from API
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    try {
+      console.log("📚 Fetching categories...");
+      setLoading(true);
+
+      const response = await api.getCategories();
+      console.log("✅ Categories fetched:", response);
+
+      // Use API categories if available, otherwise fallback to mock data
+      if (response && Array.isArray(response)) {
+        setCategories(response);
+      } else if (response?.data && Array.isArray(response.data)) {
+        setCategories(response.data);
+      } else {
+        console.log("📚 Using fallback categories data");
+        setCategories(categoriesData);
+      }
+    } catch (error: any) {
+      console.error("❌ Failed to fetch categories:", error);
+      setError("Failed to load categories");
+      // Use fallback data on error
+      setCategories(categoriesData);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const CategoryCard = ({ category }: { category: any }) => (
     <TouchableOpacity
