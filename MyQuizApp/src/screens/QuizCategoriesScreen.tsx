@@ -535,4 +535,36 @@ const styles = StyleSheet.create({
     fontSize: FontSizes.md,
     fontWeight: "600",
   },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: Spacing.xl,
+  },
+  loadingText: {
+    marginTop: Spacing.md,
+    fontSize: FontSizes.md,
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: Spacing.xl,
+  },
+  errorText: {
+    fontSize: FontSizes.md,
+    textAlign: "center",
+    marginBottom: Spacing.md,
+  },
+  retryButton: {
+    backgroundColor: "rgb(238, 58, 124)",
+    paddingHorizontal: Spacing.lg,
+    paddingVertical: Spacing.sm,
+    borderRadius: BorderRadius.lg,
+  },
+  retryButtonText: {
+    color: "white",
+    fontSize: FontSizes.sm,
+    fontWeight: "600",
+  },
 });
