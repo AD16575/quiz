@@ -35,9 +35,53 @@ const { width } = Dimensions.get("window");
 
 export default function HomeScreen() {
   const navigation = useNavigation<NavigationProp>();
-  const { state } = useQuiz();
+  const { state, dispatch } = useQuiz();
   const { state: themeState } = useTheme();
   const { user, categories } = state;
+
+  const [loading, setLoading] = useState(false);
+
+  // Fetch updated user data when component mounts
+  useEffect(() => {
+    if (user?.id) {
+      fetchCurrentUser(user.id);
+    }
+  }, [user?.id]);
+
+  const fetchCurrentUser = async (userId: string) => {
+    try {
+      console.log("👤 Fetching current user data for:", userId);
+      setLoading(true);
+
+      const response = await api.getCurrentUser(userId);
+      console.log("✅ User data fetched:", response);
+
+      // Update user data in context
+      if (response) {
+        const updatedUser = {
+          id: response.id || user.id,
+          name: response.name || user.name,
+          email: response.email || user.email,
+          points: response.points || user.points,
+          totalQuizzes: response.totalQuizzes || user.totalQuizzes,
+          withdrawableAmount:
+            response.withdrawableAmount || user.withdrawableAmount,
+          referralCode: response.referralCode || user.referralCode,
+          referredUsers: response.referredUsers || user.referredUsers,
+          memberSince: response.memberSince
+            ? new Date(response.memberSince)
+            : user.memberSince,
+        };
+
+        dispatch({ type: "SET_USER", payload: updatedUser });
+      }
+    } catch (error: any) {
+      console.error("❌ Failed to fetch user data:", error);
+      // Continue with existing user data
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (!user) return null;
 
