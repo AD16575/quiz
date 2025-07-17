@@ -265,9 +265,37 @@ export default function QuizCategoriesScreen() {
       >
         {/* Categories Grid */}
         <View style={styles.categoriesContainer}>
-          {categories.map((category, index) => (
-            <CategoryCard key={category.id} category={category} />
-          ))}
+          {loading ? (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator
+                size="large"
+                color={themeState.colors.primary}
+              />
+              <Text
+                style={[styles.loadingText, { color: themeState.colors.text }]}
+              >
+                Loading categories...
+              </Text>
+            </View>
+          ) : error ? (
+            <View style={styles.errorContainer}>
+              <Text
+                style={[styles.errorText, { color: themeState.colors.error }]}
+              >
+                {error}
+              </Text>
+              <TouchableOpacity
+                style={styles.retryButton}
+                onPress={fetchCategories}
+              >
+                <Text style={styles.retryButtonText}>Retry</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            categories.map((category, index) => (
+              <CategoryCard key={category.id || index} category={category} />
+            ))
+          )}
         </View>
 
         {/* Random Quiz Card */}
