@@ -176,8 +176,8 @@ export default function QuizPlayScreen() {
     );
   };
 
-  const currentQ = mockQuiz.questions[currentQuestion];
-  const progress = ((currentQuestion + 1) / mockQuiz.questions.length) * 100;
+  const currentQ = quiz.questions[currentQuestion];
+  const progress = ((currentQuestion + 1) / quiz.questions.length) * 100;
   const isCorrect = selectedAnswer === currentQ?.correctAnswer;
 
   const formatTime = (seconds: number) => {
