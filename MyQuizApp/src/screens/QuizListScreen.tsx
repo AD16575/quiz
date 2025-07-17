@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
@@ -12,6 +13,7 @@ import { Colors, Spacing, FontSizes, BorderRadius } from "../styles/colors";
 import { useQuiz } from "../contexts/QuizContext";
 import { useTheme } from "../contexts/ThemeContext";
 import SafeGradientBackground from "../components/common/SafeGradientBackground";
+import api from "../lib/api";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types";
 
@@ -67,6 +69,46 @@ export default function QuizListScreen() {
   const { state: themeState } = useTheme();
 
   const { categoryId } = (route.params as { categoryId?: string }) || {};
+
+  const [quizzes, setQuizzes] = useState(mockQuizzes);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  // Load quizzes from API
+  useEffect(() => {
+    if (categoryId) {
+      fetchQuizzes(categoryId);
+    } else {
+      setLoading(false);
+    }
+  }, [categoryId]);
+
+  const fetchQuizzes = async (catId: string) => {
+    try {
+      console.log("📋 Fetching quizzes for category:", catId);
+      setLoading(true);
+
+      const response = await api.getQuizzes(catId);
+      console.log("✅ Quizzes fetched:", response);
+
+      // Use API quizzes if available, otherwise fallback to mock data
+      if (response && Array.isArray(response)) {
+        setQuizzes(response);
+      } else if (response?.data && Array.isArray(response.data)) {
+        setQuizzes(response.data);
+      } else {
+        console.log("📋 Using fallback quiz data");
+        setQuizzes(mockQuizzes);
+      }
+    } catch (error: any) {
+      console.error("❌ Failed to fetch quizzes:", error);
+      setError("Failed to load quizzes");
+      // Use fallback data on error
+      setQuizzes(mockQuizzes);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const categoryNames: Record<string, string> = {
     general: "General Knowledge",
