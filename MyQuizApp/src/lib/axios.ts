@@ -64,9 +64,25 @@ axiosInstance.interceptors.request.use(
 );
 
 axiosInstance.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    console.log(
+      `✅ API Response: ${response.config.method?.toUpperCase()} ${response.config.url}`,
+    );
+    console.log("📨 Response data:", response.data);
+    return response;
+  },
   (error) => {
-    console.log("API Error:", error?.response?.data || error.message);
+    console.error(
+      `❌ API Error: ${error.config?.method?.toUpperCase()} ${error.config?.url}`,
+    );
+    console.error("📨 Error response:", error?.response?.data || error.message);
+
+    // Handle 401 Unauthorized - token expired
+    if (error.response?.status === 401) {
+      TokenManager.removeToken();
+      // You might want to redirect to login screen here
+    }
+
     return Promise.reject(error);
   },
 );
